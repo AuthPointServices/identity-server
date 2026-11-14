@@ -7,3 +7,33 @@ de todos los productos (Orange, letgrid, …) y guarda las cuentas, las sesiones
 - `accounts.fretchcop.space`: la gestión de la cuenta, en `accounts-frontend` y `accounts-backend`.
 
 Cada producto es un cliente OIDC del realm, esté en un subdominio o en un dominio propio.
+
+## Requisitos
+
+- Java 21 (Keycloak y keycloak-config-cli)
+- PostgreSQL 16 o superior, y `psql`
+- `curl` y `python3` para los scripts
+
+## Desarrollo
+
+```sh
+cp .env.example .env
+scripts/mail.sh     # Mailpit en otra terminal: SMTP en :1025, bandeja en http://127.0.0.1:8025
+scripts/dev.sh      # descarga y verifica Keycloak, crea la base y lo arranca en http://localhost:8180
+scripts/apply.sh    # aplica config/ (se puede repetir: sólo cambia lo que difiere)
+scripts/check.sh    # comprueba el realm y los clientes
+```
+
+La consola queda en http://localhost:8180/admin con el usuario temporal de `.env`. No se edita a mano: lo que
+cambie ahí se pierde en el próximo `apply.sh`. Los cambios van en `config/`.
+
+## Configuración
+
+| Archivo | Qué tiene |
+|---|---|
+| `config/realm.yaml` | El realm: registro, contraseñas, bloqueos, sesiones, eventos, passkeys y correo |
+| `config/clients.yaml` | Un cliente OIDC por producto, con sus redirecciones y sus permisos |
+| `versions.env` | Versiones fijadas de Keycloak, keycloak-config-cli y Mailpit, con su SHA-256 |
+
+Desde Keycloak 26.8.2 la API de administración sólo acepta tokens con el scope `kc-admin-api`; los clientes que la
+usan lo tienen como opcional y lo piden al sacar el token.
