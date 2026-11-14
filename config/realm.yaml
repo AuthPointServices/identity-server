@@ -47,3 +47,11 @@ eventsEnabled: true
 eventsExpiration: 7776000
 adminEventsEnabled: true
 adminEventsDetailsEnabled: true
+
+# Passkeys: se ofrecen en el mismo formulario del correo. El RP ID es el dominio de la empresa, así una passkey
+# vale en auth. y en accounts. aunque el producto viva en otro dominio.
+webAuthnPolicyPasswordlessRpEntityName: $(env:BRAND_NAME)
+webAuthnPolicyPasswordlessRpId: $(env:PASSKEY_RP_ID)
+webAuthnPolicyPasswordlessPasskeysEnabled: true
+webAuthnPolicyRpEntityName: $(env:BRAND_NAME)
+webAuthnPolicyRpId: $(env:PASSKEY_RP_ID)
