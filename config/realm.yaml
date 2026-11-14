@@ -17,3 +17,16 @@ internationalizationEnabled: true
 supportedLocales: [es, en]
 defaultLocale: es
 sslRequired: external
+
+# Contraseñas largas antes que raras (NIST 800-63B); el hash es Argon2, el de Keycloak por defecto.
+passwordPolicy: length(12) and maxLength(128) and notUsername and notEmail and passwordHistory(3)
+
+# Tras 10 fallos seguidos la cuenta espera, cada vez más (hasta 15 min); nunca queda bloqueada para siempre.
+bruteForceProtected: true
+permanentLockout: false
+failureFactor: 10
+waitIncrementSeconds: 60
+maxFailureWaitSeconds: 900
+maxDeltaTimeSeconds: 43200
+quickLoginCheckMilliSeconds: 1000
+minimumQuickLoginWaitSeconds: 60
