@@ -1,0 +1,4 @@
+# Descargas (Keycloak, keycloak-config-cli, Mailpit) y datos locales.
+/.cache/
+/.data/
+.env
