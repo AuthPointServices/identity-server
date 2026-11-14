@@ -1,0 +1,49 @@
+# Los clientes OIDC del realm, todos en este archivo: keycloak-config-cli gestiona cada tipo desde un solo lugar.
+realm: $(env:REALM)
+clients:
+  # La Cuenta (accounts-backend). Es un BFF: guarda los tokens en el servidor y el navegador sólo ve su cookie.
+  # Con el token de la persona usa la API de cuenta (perfil, sesiones, factores); su cuenta de servicio sólo lee
+  # eventos, para la actividad reciente.
+  - clientId: accounts
+    name: $(env:BRAND_NAME) · Cuenta
+    enabled: true
+    protocol: openid-connect
+    publicClient: false
+    clientAuthenticatorType: client-secret
+    secret: $(env:ACCOUNTS_CLIENT_SECRET)
+    standardFlowEnabled: true
+    implicitFlowEnabled: false
+    directAccessGrantsEnabled: false
+    serviceAccountsEnabled: true
+    consentRequired: false
+    frontchannelLogout: false
+    rootUrl: $(env:ACCOUNTS_URL)
+    baseUrl: /
+    redirectUris: [/auth/callback]
+    webOrigins: []
+    # Sólo los roles que se le asignan abajo, no todos los de la persona. La API de administración (desde 26.8.2)
+    # exige el scope kc-admin-api: es opcional y la cuenta de servicio lo pide sólo cuando la llama.
+    fullScopeAllowed: false
+    defaultClientScopes: [basic, acr, profile, email, roles]
+    optionalClientScopes: [kc-admin-api]
+    attributes:
+      pkce.code.challenge.method: S256
+      post.logout.redirect.uris: /*
+      backchannel.logout.url: $(env:ACCOUNTS_BACKCHANNEL_URL)
+      backchannel.logout.session.required: "true"
+      backchannel.logout.revoke.offline.tokens: "true"
+
+users:
+  - username: service-account-accounts
+    enabled: true
+    serviceAccountClientId: accounts
+    clientRoles:
+      realm-management: [view-events]
+
+clientScopeMappings:
+  account:
+    - client: accounts
+      roles: [manage-account, view-profile]
+  realm-management:
+    - client: accounts
+      roles: [view-events]
