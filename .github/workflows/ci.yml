@@ -1,0 +1,58 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Levanta el Keycloak fijado contra Postgres, aplica config/ dos veces (la segunda no debe fallar ni cambiar nada)
+# y corre la comprobación.
+jobs:
+  config:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .cache
+          key: downloads-${{ hashFiles('versions.env') }}
+      - name: env
+        run: |
+          sed 's#^PG_ADMIN_DSN=.*#PG_ADMIN_DSN=postgres://postgres:postgres@127.0.0.1:5432/postgres?sslmode=disable#' .env.example > .env
+      - name: keycloak
+        run: |
+          scripts/dev.sh > keycloak.log 2>&1 &
+          for _ in $(seq 1 90); do curl -sf http://localhost:9180/health/ready >/dev/null && exit 0; sleep 2; done
+          tail -50 keycloak.log; exit 1
+      - name: apply
+        run: scripts/apply.sh && scripts/apply.sh
+      - name: check
+        run: scripts/check.sh
+      - name: keycloak log
+        if: failure()
+        run: tail -100 keycloak.log
