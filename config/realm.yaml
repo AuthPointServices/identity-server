@@ -40,3 +40,10 @@ ssoSessionIdleTimeoutRememberMe: 2592000
 ssoSessionMaxLifespanRememberMe: 7776000
 revokeRefreshToken: true
 refreshTokenMaxReuse: 0
+
+# Lo que hace cada cuenta (entradas, cambios, fallos) y cada administrador, 90 días: de aquí sale la actividad
+# reciente de la cuenta y la auditoría.
+eventsEnabled: true
+eventsExpiration: 7776000
+adminEventsEnabled: true
+adminEventsDetailsEnabled: true
