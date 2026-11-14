@@ -55,3 +55,14 @@ webAuthnPolicyPasswordlessRpId: $(env:PASSKEY_RP_ID)
 webAuthnPolicyPasswordlessPasskeysEnabled: true
 webAuthnPolicyRpEntityName: $(env:BRAND_NAME)
 webAuthnPolicyRpId: $(env:PASSKEY_RP_ID)
+
+# El correo de verificar y recuperar sale de aquí, con el nombre de la marca.
+smtpServer:
+  host: $(env:SMTP_HOST)
+  port: $(env:SMTP_PORT)
+  from: $(env:SMTP_FROM)
+  fromDisplayName: $(env:BRAND_NAME)
+  starttls: $(env:SMTP_STARTTLS)
+  auth: $(env:SMTP_AUTH)
+  user: $(env:SMTP_USER)
+  password: $(env:SMTP_PASSWORD)
