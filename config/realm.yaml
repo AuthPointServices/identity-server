@@ -30,3 +30,13 @@ maxFailureWaitSeconds: 900
 maxDeltaTimeSeconds: 43200
 quickLoginCheckMilliSeconds: 1000
 minimumQuickLoginWaitSeconds: 60
+
+# Sesiones como en Google: un día sin uso, o un mes con «Recordarme»; el token de acceso dura 5 min y cada
+# refresh token sirve una sola vez.
+accessTokenLifespan: 300
+ssoSessionIdleTimeout: 86400
+ssoSessionMaxLifespan: 864000
+ssoSessionIdleTimeoutRememberMe: 2592000
+ssoSessionMaxLifespanRememberMe: 7776000
+revokeRefreshToken: true
+refreshTokenMaxReuse: 0
