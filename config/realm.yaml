@@ -66,3 +66,25 @@ smtpServer:
   auth: $(env:SMTP_AUTH)
   user: $(env:SMTP_USER)
   password: $(env:SMTP_PASSWORD)
+
+# Cambiar el correo (verificando el nuevo) y borrar la cuenta se lanzan desde la Cuenta como acciones.
+requiredActions:
+  - alias: UPDATE_EMAIL
+    name: Update Email
+    providerId: UPDATE_EMAIL
+    enabled: true
+    defaultAction: false
+  - alias: delete_account
+    name: Delete Account
+    providerId: delete_account
+    enabled: true
+    defaultAction: false
+
+roles:
+  realm:
+    - name: default-roles-$(env:REALM)
+      composite: true
+      composites:
+        realm: [offline_access, uma_authorization]
+        client:
+          account: [view-profile, manage-account, delete-account]
