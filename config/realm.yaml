@@ -1,0 +1,19 @@
+# El realm de todas las cuentas de la empresa. Las variables salen del entorno; ver .env.example.
+realm: $(env:REALM)
+enabled: true
+displayName: $(env:BRAND_NAME)
+
+# Cualquiera crea su cuenta, entra con el correo y lo verifica antes de usarla.
+registrationAllowed: true
+registrationEmailAsUsername: true
+loginWithEmailAllowed: true
+duplicateEmailsAllowed: false
+editUsernameAllowed: false
+verifyEmail: true
+resetPasswordAllowed: true
+rememberMe: true
+
+internationalizationEnabled: true
+supportedLocales: [es, en]
+defaultLocale: es
+sslRequired: external
