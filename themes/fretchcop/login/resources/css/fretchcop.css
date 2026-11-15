@@ -301,8 +301,8 @@ a:hover {
   --pf-v5-c-button--FontSize: 14px;
   --pf-v5-c-button--FontWeight: 500;
   --pf-v5-c-button--LineHeight: 20px;
-  --pf-v5-c-button--PaddingTop: 9px;
-  --pf-v5-c-button--PaddingBottom: 9px;
+  --pf-v5-c-button--PaddingTop: 10px;
+  --pf-v5-c-button--PaddingBottom: 10px;
 }
 
 .pf-v5-c-button.pf-m-primary {
@@ -351,8 +351,8 @@ a:hover {
   }
 
   .pf-v5-c-button {
-    --pf-v5-c-button--PaddingTop: 11px;
-    --pf-v5-c-button--PaddingBottom: 11px;
+    --pf-v5-c-button--PaddingTop: 12px;
+    --pf-v5-c-button--PaddingBottom: 12px;
   }
 }
 
