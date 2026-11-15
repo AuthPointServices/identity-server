@@ -33,6 +33,14 @@ clients:
       backchannel.logout.session.required: "true"
       backchannel.logout.revoke.offline.tokens: "true"
 
+  # La consola de cuenta de Keycloak no se usa: la Cuenta es accounts-frontend. Los enlaces «a tu cuenta» de Keycloak
+  # van a la nuestra, y la API de cuenta (cliente account) sigue, porque es la que usa accounts-backend.
+  - clientId: account-console
+    enabled: false
+  - clientId: account
+    rootUrl: $(env:ACCOUNTS_URL)
+    baseUrl: /
+
 users:
   - username: service-account-accounts
     enabled: true
