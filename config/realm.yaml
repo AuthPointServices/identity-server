@@ -47,6 +47,9 @@ eventsEnabled: true
 eventsExpiration: 7776000
 adminEventsEnabled: true
 adminEventsDetailsEnabled: true
+# Sin esto los de administración no caducan, y guardan copias del perfil después de borrar la cuenta.
+attributes:
+  adminEventsExpiration: "7776000"
 
 # Passkeys: se ofrecen en el mismo formulario del correo. El RP ID es el dominio de la empresa, así una passkey
 # vale en auth. y en accounts. aunque el producto viva en otro dominio.
