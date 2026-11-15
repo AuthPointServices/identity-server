@@ -33,7 +33,16 @@ cambie ahí se pierde en el próximo `apply.sh`. Los cambios van en `config/`.
 |---|---|
 | `config/realm.yaml` | El realm: registro, contraseñas, bloqueos, sesiones, eventos, passkeys y correo |
 | `config/clients.yaml` | Un cliente OIDC por producto, con sus redirecciones y sus permisos |
+| `themes/fretchcop/login` | Las pantallas de acceso: las plantillas de `keycloak.v2` con el estilo, el logo y los textos de la Cuenta (`accounts-frontend/DESIGN.md`) |
+| `themes/fretchcop/email` | Los correos en español, de tú, con la marca |
 | `versions.env` | Versiones fijadas de Keycloak, keycloak-config-cli y Mailpit, con su SHA-256 |
+
+El tema sólo cambia CSS y textos, no las plantillas, para que una versión nueva de Keycloak no lo rompa. En desarrollo
+`scripts/dev.sh` lo enlaza en Keycloak y un cambio se ve al recargar la página.
+
+Keycloak avisa por correo de los cambios de seguridad (contraseña, dos pasos, passkeys). Los intentos fallidos no se
+avisan uno por uno: el arranque lleva `--spi-events-listener--email--exclude-events=LOGIN_ERROR`. La consola de
+cuenta de Keycloak está apagada; sus enlaces llevan a la Cuenta.
 
 Desde Keycloak 26.8.2 la API de administración sólo acepta tokens con el scope `kc-admin-api`; los clientes que la
 usan lo tienen como opcional y lo piden al sacar el token.
