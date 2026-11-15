@@ -1,0 +1,125 @@
+/* La identidad de la Cuenta (accounts-frontend/DESIGN.md) sobre PatternFly 5: fondo gris frío, tarjeta blanca de
+   12 px sin sombra, un solo azul y la letra del sistema. Sólo variables y unos pocos selectores de keycloak.v2. */
+
+:root {
+  --pf-v5-global--FontFamily--text: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --pf-v5-global--FontFamily--heading: var(--pf-v5-global--FontFamily--text);
+  --pf-v5-global--FontFamily--text--vf: var(--pf-v5-global--FontFamily--text);
+  --pf-v5-global--FontFamily--heading--vf: var(--pf-v5-global--FontFamily--text);
+  --pf-v5-global--BorderRadius--sm: 8px;
+  --pf-v5-global--primary-color--100: #2f5bd3;
+  --pf-v5-global--primary-color--200: #2549b0;
+  --pf-v5-global--link--Color: #2449ad;
+  --pf-v5-global--link--Color--hover: #2549b0;
+  --pf-v5-global--Color--100: #1f2328;
+  --pf-v5-global--Color--200: #57606a;
+
+  --keycloak-card-top-color: transparent;
+  --keycloak-bg-logo-url: none;
+}
+
+.pf-v5-theme-dark {
+  --pf-v5-global--primary-color--100: #86a8ff;
+  --pf-v5-global--primary-color--200: #a3bdff;
+  --pf-v5-global--link--Color: #9db8ff;
+  --pf-v5-global--link--Color--hover: #a3bdff;
+  --pf-v5-global--Color--100: #e8eaed;
+  --pf-v5-global--Color--200: #a3abb5;
+}
+
+.login-pf body {
+  background: #f4f5f7;
+}
+
+.pf-v5-theme-dark body {
+  background: #111316;
+}
+
+/* El botón principal con el azul de la Cuenta: blanco sobre #2f5bd3 (5,9:1); en oscuro, texto oscuro sobre el azul
+   claro (8,1:1). PatternFly lee otras variables en cada tema, así que se fijan en el botón. */
+.pf-v5-c-button.pf-m-primary {
+  --pf-v5-c-button--m-primary--BackgroundColor: #2f5bd3;
+  --pf-v5-c-button--m-primary--hover--BackgroundColor: #2549b0;
+  --pf-v5-c-button--m-primary--focus--BackgroundColor: #2549b0;
+  --pf-v5-c-button--m-primary--active--BackgroundColor: #2549b0;
+  --pf-v5-c-button--m-primary--Color: #fff;
+  --pf-v5-c-button--m-primary--hover--Color: #fff;
+  --pf-v5-c-button--m-primary--focus--Color: #fff;
+  --pf-v5-c-button--m-primary--active--Color: #fff;
+}
+
+.pf-v5-theme-dark .pf-v5-c-button.pf-m-primary {
+  --pf-v5-c-button--m-primary--BackgroundColor: #86a8ff;
+  --pf-v5-c-button--m-primary--hover--BackgroundColor: #a3bdff;
+  --pf-v5-c-button--m-primary--focus--BackgroundColor: #a3bdff;
+  --pf-v5-c-button--m-primary--active--BackgroundColor: #a3bdff;
+  --pf-v5-c-button--m-primary--Color: #0b1a3d;
+  --pf-v5-c-button--m-primary--hover--Color: #0b1a3d;
+  --pf-v5-c-button--m-primary--focus--Color: #0b1a3d;
+  --pf-v5-c-button--m-primary--active--Color: #0b1a3d;
+}
+
+.pf-v5-c-button.pf-m-secondary {
+  --pf-v5-c-button--m-secondary--Color: #2449ad;
+  --pf-v5-c-button--m-secondary--BorderColor: #cdd2d8;
+  --pf-v5-c-button--m-secondary--hover--Color: #2449ad;
+  --pf-v5-c-button--m-secondary--hover--BorderColor: #2f5bd3;
+}
+
+.pf-v5-theme-dark .pf-v5-c-button.pf-m-secondary {
+  --pf-v5-c-button--m-secondary--Color: #9db8ff;
+  --pf-v5-c-button--m-secondary--BorderColor: #3d434b;
+  --pf-v5-c-button--m-secondary--hover--Color: #a3bdff;
+  --pf-v5-c-button--m-secondary--hover--BorderColor: #86a8ff;
+}
+
+.pf-v5-c-login__main {
+  border: 1px solid #e3e6ea;
+  border-radius: 12px;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.pf-v5-theme-dark .pf-v5-c-login__main {
+  border-color: #2d3238;
+  background: #1a1d21;
+}
+
+.pf-v5-c-login__main-header {
+  border-top: 0;
+}
+
+/* La marca: la F azul y el nombre del realm, como la barra de la Cuenta. */
+#kc-header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font: 600 20px/28px var(--pf-v5-global--FontFamily--text);
+  letter-spacing: -0.01em;
+  text-transform: none;
+  /* keycloak.v2 lo pinta blanco con !important (su fondo es oscuro); el de aquí es claro. */
+  color: #1f2328 !important;
+}
+
+.pf-v5-theme-dark #kc-header-wrapper {
+  color: #e8eaed !important;
+}
+
+#kc-header-wrapper::before {
+  content: "";
+  width: 28px;
+  height: 28px;
+  background: url("../img/mark.svg") center / contain no-repeat;
+}
+
+.pf-v5-c-title.pf-m-3xl {
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: rgb(47 91 211 / 0.25);
+}

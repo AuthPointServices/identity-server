@@ -7,6 +7,8 @@ set -a; . ./.env; set +a
 
 scripts/fetch.sh
 scripts/db.sh
+# El tema se lee de themes/ sin copiarlo; start-dev no lo guarda en caché, así un cambio se ve al recargar.
+ln -sfn "$PWD/themes/fretchcop" ".cache/keycloak-$KEYCLOAK_VERSION/themes/fretchcop"
 
 exec ".cache/keycloak-$KEYCLOAK_VERSION/bin/kc.sh" start-dev \
   --http-port="$KC_PORT" \

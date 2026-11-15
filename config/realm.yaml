@@ -13,6 +13,10 @@ verifyEmail: true
 resetPasswordAllowed: true
 rememberMe: true
 
+# Las pantallas de acceso y los correos con la identidad de la Cuenta (themes/fretchcop).
+loginTheme: fretchcop
+emailTheme: fretchcop
+
 internationalizationEnabled: true
 supportedLocales: [es, en]
 defaultLocale: es
