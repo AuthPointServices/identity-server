@@ -44,6 +44,9 @@ ssoSessionIdleTimeoutRememberMe: 2592000
 ssoSessionMaxLifespanRememberMe: 7776000
 revokeRefreshToken: true
 refreshTokenMaxReuse: 0
+# Los enlaces de verificar el correo y crear una contraseña nueva valen 30 min (Keycloak trae 5: poco para quien mira
+# el correo más tarde).
+actionTokenGeneratedByUserLifespan: 1800
 
 # Lo que hace cada cuenta (entradas, cambios, fallos) y cada administrador, 90 días: de aquí sale la actividad
 # reciente de la cuenta y la auditoría.
