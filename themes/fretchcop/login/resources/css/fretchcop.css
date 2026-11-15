@@ -1,125 +1,408 @@
-/* La identidad de la Cuenta (accounts-frontend/DESIGN.md) sobre PatternFly 5: fondo gris frío, tarjeta blanca de
-   12 px sin sombra, un solo azul y la letra del sistema. Sólo variables y unos pocos selectores de keycloak.v2. */
+/* La identidad de la Cuenta (accounts-frontend/DESIGN.md) sobre PatternFly 5 de keycloak.v2: fondo gris frío, tarjeta
+   blanca de 12 px sin sombra, un solo azul, la letra del sistema y campos como los de la Cuenta. Sin logo: la empresa
+   aún no tiene marca, y su nombre va en texto. Sólo variables y selectores de keycloak.v2, no plantillas. */
 
 :root {
-  --pf-v5-global--FontFamily--text: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --pf-v5-global--FontFamily--heading: var(--pf-v5-global--FontFamily--text);
-  --pf-v5-global--FontFamily--text--vf: var(--pf-v5-global--FontFamily--text);
-  --pf-v5-global--FontFamily--heading--vf: var(--pf-v5-global--FontFamily--text);
+  --fc-ground: #f4f5f7;
+  --fc-surface: #ffffff;
+  --fc-hairline: #e3e6ea;
+  --fc-field-edge: #868e96; /* 3,3:1 sobre blanco: el borde de un campo es su forma (WCAG 1.4.11) */
+  --fc-ink: #1f2328;
+  --fc-ink-muted: #57606a;
+  --fc-blue: #2f5bd3;
+  --fc-blue-deep: #2549b0;
+  --fc-blue-ink: #2449ad;
+  --fc-on-blue: #ffffff;
+  --fc-red: #c22a2a;
+  --fc-red-wash: #fbeaea;
+  --fc-green: #1b7343;
+  --fc-green-wash: #e6f3eb;
+  --fc-amber: #8a5200;
+  --fc-amber-wash: #fcf2df;
+  --fc-blue-wash: #eaf0fd;
+  --fc-font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  --pf-v5-global--FontFamily--text: var(--fc-font);
+  --pf-v5-global--FontFamily--heading: var(--fc-font);
+  --pf-v5-global--FontFamily--text--vf: var(--fc-font);
+  --pf-v5-global--FontFamily--heading--vf: var(--fc-font);
   --pf-v5-global--BorderRadius--sm: 8px;
-  --pf-v5-global--primary-color--100: #2f5bd3;
-  --pf-v5-global--primary-color--200: #2549b0;
-  --pf-v5-global--link--Color: #2449ad;
-  --pf-v5-global--link--Color--hover: #2549b0;
-  --pf-v5-global--Color--100: #1f2328;
-  --pf-v5-global--Color--200: #57606a;
+  --pf-v5-global--primary-color--100: var(--fc-blue);
+  --pf-v5-global--primary-color--200: var(--fc-blue-deep);
+  --pf-v5-global--link--Color: var(--fc-blue-ink);
+  --pf-v5-global--link--Color--hover: var(--fc-blue-deep);
+  --pf-v5-global--Color--100: var(--fc-ink);
+  --pf-v5-global--Color--200: var(--fc-ink-muted);
+  --pf-v5-global--danger-color--100: var(--fc-red);
+  --pf-v5-global--success-color--100: var(--fc-green);
+  --pf-v5-global--warning-color--100: var(--fc-amber);
 
   --keycloak-card-top-color: transparent;
   --keycloak-bg-logo-url: none;
 }
 
 .pf-v5-theme-dark {
-  --pf-v5-global--primary-color--100: #86a8ff;
-  --pf-v5-global--primary-color--200: #a3bdff;
-  --pf-v5-global--link--Color: #9db8ff;
-  --pf-v5-global--link--Color--hover: #a3bdff;
-  --pf-v5-global--Color--100: #e8eaed;
-  --pf-v5-global--Color--200: #a3abb5;
+  --fc-ground: #111316;
+  --fc-surface: #1a1d21;
+  --fc-hairline: #2d3238;
+  --fc-field-edge: #6b737d;
+  --fc-ink: #e8eaed;
+  --fc-ink-muted: #a3abb5;
+  --fc-blue: #86a8ff;
+  --fc-blue-deep: #a3bdff;
+  --fc-blue-ink: #9db8ff;
+  --fc-on-blue: #0b1a3d;
+  --fc-red: #ff8a85;
+  --fc-red-wash: #2f1716;
+  --fc-green: #5fd193;
+  --fc-green-wash: #14281d;
+  --fc-amber: #f2b65a;
+  --fc-amber-wash: #2b2112;
+  --fc-blue-wash: #1c2740;
 }
 
-.login-pf body {
-  background: #f4f5f7;
-}
-
+.login-pf body,
 .pf-v5-theme-dark body {
-  background: #111316;
+  background: var(--fc-ground);
+  color: var(--fc-ink);
 }
 
-/* El botón principal con el azul de la Cuenta: blanco sobre #2f5bd3 (5,9:1); en oscuro, texto oscuro sobre el azul
-   claro (8,1:1). PatternFly lee otras variables en cada tema, así que se fijan en el botón. */
-.pf-v5-c-button.pf-m-primary {
-  --pf-v5-c-button--m-primary--BackgroundColor: #2f5bd3;
-  --pf-v5-c-button--m-primary--hover--BackgroundColor: #2549b0;
-  --pf-v5-c-button--m-primary--focus--BackgroundColor: #2549b0;
-  --pf-v5-c-button--m-primary--active--BackgroundColor: #2549b0;
-  --pf-v5-c-button--m-primary--Color: #fff;
-  --pf-v5-c-button--m-primary--hover--Color: #fff;
-  --pf-v5-c-button--m-primary--focus--Color: #fff;
-  --pf-v5-c-button--m-primary--active--Color: #fff;
+::selection {
+  background: color-mix(in oklab, var(--fc-blue) 25%, transparent);
 }
 
-.pf-v5-theme-dark .pf-v5-c-button.pf-m-primary {
-  --pf-v5-c-button--m-primary--BackgroundColor: #86a8ff;
-  --pf-v5-c-button--m-primary--hover--BackgroundColor: #a3bdff;
-  --pf-v5-c-button--m-primary--focus--BackgroundColor: #a3bdff;
-  --pf-v5-c-button--m-primary--active--BackgroundColor: #a3bdff;
-  --pf-v5-c-button--m-primary--Color: #0b1a3d;
-  --pf-v5-c-button--m-primary--hover--Color: #0b1a3d;
-  --pf-v5-c-button--m-primary--focus--Color: #0b1a3d;
-  --pf-v5-c-button--m-primary--active--Color: #0b1a3d;
-}
-
-.pf-v5-c-button.pf-m-secondary {
-  --pf-v5-c-button--m-secondary--Color: #2449ad;
-  --pf-v5-c-button--m-secondary--BorderColor: #cdd2d8;
-  --pf-v5-c-button--m-secondary--hover--Color: #2449ad;
-  --pf-v5-c-button--m-secondary--hover--BorderColor: #2f5bd3;
-}
-
-.pf-v5-theme-dark .pf-v5-c-button.pf-m-secondary {
-  --pf-v5-c-button--m-secondary--Color: #9db8ff;
-  --pf-v5-c-button--m-secondary--BorderColor: #3d434b;
-  --pf-v5-c-button--m-secondary--hover--Color: #a3bdff;
-  --pf-v5-c-button--m-secondary--hover--BorderColor: #86a8ff;
-}
+/* La tarjeta */
 
 .pf-v5-c-login__main {
-  border: 1px solid #e3e6ea;
+  border: 1px solid var(--fc-hairline);
   border-radius: 12px;
+  background: var(--fc-surface);
   box-shadow: none;
   overflow: hidden;
 }
 
-.pf-v5-theme-dark .pf-v5-c-login__main {
-  border-color: #2d3238;
-  background: #1a1d21;
-}
-
+/* El idioma va arriba a la derecha, sobre el título, para que el título tenga todo el ancho. */
 .pf-v5-c-login__main-header {
   border-top: 0;
-}
-
-/* La marca: la F azul y el nombre del realm, como la barra de la Cuenta. */
-#kc-header-wrapper {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  font: 600 20px/28px var(--pf-v5-global--FontFamily--text);
-  letter-spacing: -0.01em;
-  text-transform: none;
-  /* keycloak.v2 lo pinta blanco con !important (su fondo es oscuro); el de aquí es claro. */
-  color: #1f2328 !important;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
 }
 
-.pf-v5-theme-dark #kc-header-wrapper {
-  color: #e8eaed !important;
+.pf-v5-c-login__main-header-utilities {
+  order: -1;
+  align-self: flex-end;
+  margin: 0;
 }
 
-#kc-header-wrapper::before {
-  content: "";
-  width: 28px;
-  height: 28px;
-  background: url("../img/mark.svg") center / contain no-repeat;
+/* Menos aire sobre el nombre de la empresa. */
+.pf-v5-c-login__container {
+  padding-block-start: 48px;
+}
+
+.pf-v5-c-login__header {
+  margin-block-end: 24px;
 }
 
 .pf-v5-c-title.pf-m-3xl {
-  font-size: 28px;
-  line-height: 36px;
-  font-weight: 600;
+  font: 600 28px/36px var(--fc-font);
   letter-spacing: -0.02em;
+  color: var(--fc-ink);
 }
 
-::selection {
-  background: rgb(47 91 211 / 0.25);
+/* El nombre de la empresa, en texto. keycloak.v2 lo pinta blanco con !important (su fondo es oscuro). */
+#kc-header-wrapper {
+  font: 600 20px/28px var(--fc-font);
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--fc-ink) !important;
+}
+
+/* Etiquetas y textos de ayuda */
+
+.pf-v5-c-form__label-text,
+.pf-v5-c-form__label {
+  font: 500 14px/20px var(--fc-font);
+  color: var(--fc-ink);
+}
+
+.pf-v5-c-form__group-label.pf-v5-u-pb-xs {
+  padding-bottom: 6px !important;
+}
+
+.pf-v5-c-form__label-required {
+  color: var(--fc-red);
+}
+
+.pf-v5-c-helper-text__item-text,
+.pf-v5-c-check__label,
+.pf-v5-c-form__helper-text {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* «Mantener la sesión» y «¿Olvidaste…?» bajan a otra línea en el teléfono en vez de partirse. */
+.pf-v5-c-helper-text.pf-v5-u-display-flex {
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding-top: 4px;
+}
+
+.pf-v5-c-helper-text__item-text.pf-m-error,
+.kc-feedback-text {
+  color: var(--fc-red);
+}
+
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Campos: el borde entero en el elemento, no las rayas de PatternFly. */
+
+.pf-v5-c-form-control {
+  --pf-v5-c-form-control--PaddingTop: 7px;
+  --pf-v5-c-form-control--PaddingBottom: 7px;
+  --pf-v5-c-form-control--PaddingLeft: 12px;
+  --pf-v5-c-form-control--PaddingRight: 12px;
+  --pf-v5-c-form-control--FontSize: 16px; /* a 16 px el teléfono no hace zoom */
+  --pf-v5-c-form-control--LineHeight: 24px;
+  --pf-v5-c-form-control--Color: var(--fc-ink);
+  --pf-v5-c-form-control--BackgroundColor: var(--fc-surface);
+  border: 1px solid var(--fc-field-edge);
+  border-radius: 8px;
+  background: var(--fc-surface);
+  transition: border-color 150ms;
+}
+
+.pf-v5-c-form-control::before,
+.pf-v5-c-form-control::after {
+  display: none;
+}
+
+.pf-v5-c-form-control:hover {
+  border-color: var(--fc-ink);
+}
+
+.pf-v5-c-form-control:has(:focus-visible) {
+  border-color: var(--fc-blue);
+  outline: 2px solid var(--fc-blue);
+  outline-offset: 0;
+}
+
+.pf-v5-c-form-control > :is(input, select, textarea):focus-visible {
+  outline: none;
+}
+
+.pf-v5-c-form-control.pf-m-error,
+.pf-v5-c-form-control:has([aria-invalid='true']) {
+  border-color: var(--fc-red);
+}
+
+.pf-v5-c-form-control.pf-m-readonly {
+  background: var(--fc-ground);
+  border-color: var(--fc-hairline);
+}
+
+/* El icono de error de PatternFly sobra: el texto de debajo ya lo dice. */
+.pf-v5-c-form-control__icon.pf-m-status {
+  display: none;
+}
+
+/* Contraseña y su ojo: un solo control con un solo borde. */
+.pf-v5-c-input-group {
+  border: 1px solid var(--fc-field-edge);
+  border-radius: 8px;
+  background: var(--fc-surface);
+  transition: border-color 150ms;
+}
+
+.pf-v5-c-input-group:hover {
+  border-color: var(--fc-ink);
+}
+
+.pf-v5-c-input-group:has(input:focus-visible) {
+  border-color: var(--fc-blue);
+  outline: 2px solid var(--fc-blue);
+  outline-offset: 0;
+}
+
+.pf-v5-c-input-group:has(.pf-m-error, [aria-invalid='true']) {
+  border-color: var(--fc-red);
+}
+
+.pf-v5-c-input-group .pf-v5-c-form-control,
+.pf-v5-c-input-group .pf-v5-c-form-control:has(:focus-visible) {
+  border: 0;
+  outline: 0;
+  background: transparent;
+}
+
+.pf-v5-c-button.pf-m-control {
+  --pf-v5-c-button--m-control--BackgroundColor: transparent;
+  --pf-v5-c-button--m-control--hover--BackgroundColor: transparent;
+  --pf-v5-c-button--m-control--Color: var(--fc-ink-muted);
+  --pf-v5-c-button--m-control--hover--Color: var(--fc-ink);
+  min-width: 44px;
+  border-radius: 0 7px 7px 0;
+}
+
+.pf-v5-c-button.pf-m-control::after,
+.pf-v5-c-input-group__item,
+.pf-v5-c-input-group__item::before,
+.pf-v5-c-input-group__item::after {
+  border: 0 !important;
+}
+
+.pf-v5-c-button.pf-m-control:focus-visible {
+  outline: 2px solid var(--fc-blue);
+  outline-offset: -2px;
+}
+
+/* El idioma, arriba a la derecha: un control discreto, sin caja, que no compite con el formulario. */
+.pf-v5-c-login__main-header-utilities .pf-v5-c-form-control {
+  --pf-v5-c-form-control--PaddingTop: 4px;
+  --pf-v5-c-form-control--PaddingBottom: 4px;
+  --pf-v5-c-form-control--FontSize: 14px;
+  --pf-v5-c-form-control--LineHeight: 20px;
+  --pf-v5-c-form-control--Color: var(--fc-ink-muted);
+  width: auto;
+  border-color: transparent;
+  background: transparent;
+}
+
+.pf-v5-c-login__main-header-utilities .pf-v5-c-form-control:hover {
+  border-color: var(--fc-hairline);
+}
+
+.pf-v5-c-login__main-header-utilities select {
+  border: 0;
+  background: transparent;
+  color: var(--fc-ink-muted);
+}
+
+/* Casillas: 18 px, del azul de la empresa. */
+.pf-v5-c-check {
+  align-items: center;
+  gap: 8px;
+}
+
+.pf-v5-c-check__input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--fc-blue);
+}
+
+/* Botones: 40 px, 44 en pantallas táctiles; etiqueta de 14 px como en la Cuenta. */
+
+.pf-v5-c-button {
+  --pf-v5-c-button--FontSize: 14px;
+  --pf-v5-c-button--FontWeight: 500;
+  --pf-v5-c-button--LineHeight: 20px;
+  --pf-v5-c-button--PaddingTop: 9px;
+  --pf-v5-c-button--PaddingBottom: 9px;
+}
+
+.pf-v5-c-button.pf-m-primary {
+  --pf-v5-c-button--m-primary--BackgroundColor: var(--fc-blue);
+  --pf-v5-c-button--m-primary--hover--BackgroundColor: var(--fc-blue-deep);
+  --pf-v5-c-button--m-primary--focus--BackgroundColor: var(--fc-blue-deep);
+  --pf-v5-c-button--m-primary--active--BackgroundColor: var(--fc-blue-deep);
+  --pf-v5-c-button--m-primary--Color: var(--fc-on-blue);
+  --pf-v5-c-button--m-primary--hover--Color: var(--fc-on-blue);
+  --pf-v5-c-button--m-primary--focus--Color: var(--fc-on-blue);
+  --pf-v5-c-button--m-primary--active--Color: var(--fc-on-blue);
+}
+
+.pf-v5-c-button.pf-m-secondary,
+.pf-v5-c-button.pf-m-tertiary {
+  --pf-v5-c-button--m-secondary--BackgroundColor: var(--fc-surface);
+  --pf-v5-c-button--m-secondary--Color: var(--fc-ink);
+  --pf-v5-c-button--m-secondary--BorderColor: var(--fc-hairline);
+  --pf-v5-c-button--m-secondary--hover--BackgroundColor: var(--fc-ground);
+  --pf-v5-c-button--m-secondary--hover--Color: var(--fc-ink);
+  --pf-v5-c-button--m-secondary--hover--BorderColor: var(--fc-hairline);
+  --pf-v5-c-button--m-tertiary--Color: var(--fc-ink);
+  --pf-v5-c-button--m-tertiary--BorderColor: var(--fc-hairline);
+  --pf-v5-c-button--m-tertiary--hover--Color: var(--fc-ink);
+  --pf-v5-c-button--m-tertiary--hover--BorderColor: var(--fc-hairline);
+}
+
+.pf-v5-c-button.pf-m-secondary::after,
+.pf-v5-c-button.pf-m-tertiary::after {
+  border-width: 1px !important;
+}
+
+.pf-v5-c-button:focus-visible {
+  outline: 2px solid var(--fc-blue);
+  outline-offset: 2px;
+}
+
+.pf-v5-c-form__actions .pf-v5-c-button.pf-m-block + .pf-v5-c-button.pf-m-block {
+  margin-top: 8px;
+}
+
+@media (pointer: coarse) {
+  .pf-v5-c-form-control {
+    --pf-v5-c-form-control--PaddingTop: 9px;
+    --pf-v5-c-form-control--PaddingBottom: 9px;
+  }
+
+  .pf-v5-c-button {
+    --pf-v5-c-button--PaddingTop: 11px;
+    --pf-v5-c-button--PaddingBottom: 11px;
+  }
+}
+
+/* Avisos: el fondo del estado y un borde fino, sin la raya gruesa de PatternFly. */
+
+.pf-v5-c-alert {
+  border-radius: 8px;
+  box-shadow: none;
+  border: 1px solid var(--fc-hairline);
+  background: var(--fc-surface);
+}
+
+.pf-v5-c-alert::before {
+  display: none;
+}
+
+.pf-v5-c-alert.pf-m-danger,
+.pf-v5-c-alert.pf-m-error {
+  background: var(--fc-red-wash);
+  border-color: color-mix(in oklab, var(--fc-red) 30%, transparent);
+}
+
+.pf-v5-c-alert.pf-m-warning {
+  background: var(--fc-amber-wash);
+  border-color: color-mix(in oklab, var(--fc-amber) 30%, transparent);
+}
+
+.pf-v5-c-alert.pf-m-success {
+  background: var(--fc-green-wash);
+  border-color: color-mix(in oklab, var(--fc-green) 30%, transparent);
+}
+
+.pf-v5-c-alert.pf-m-info {
+  background: var(--fc-blue-wash);
+  border-color: color-mix(in oklab, var(--fc-blue) 30%, transparent);
+}
+
+.pf-v5-c-alert__title {
+  font: 500 14px/20px var(--fc-font);
+  color: var(--fc-ink);
+}
+
+/* Separadores y pie */
+
+.pf-v5-c-login__main-footer-band {
+  border-color: var(--fc-hairline);
+  font-size: 14px;
+}
+
+.kc-login-divider::before,
+.kc-login-divider::after {
+  border-color: var(--fc-hairline);
 }
