@@ -49,6 +49,9 @@ refreshTokenMaxReuse: 0
 # reciente de la cuenta y la auditoría.
 eventsEnabled: true
 eventsExpiration: 7776000
+# «email» avisa por correo de los cambios de seguridad (contraseña, dos pasos, passkeys); los fallos de entrada no
+# se avisan uno por uno (KC_SPI_EVENTS_LISTENER__EMAIL__EXCLUDE_EVENTS en el arranque).
+eventsListeners: [jboss-logging, email]
 adminEventsEnabled: true
 adminEventsDetailsEnabled: true
 # Sin esto los de administración no caducan, y guardan copias del perfil después de borrar la cuenta.

@@ -14,4 +14,5 @@ exec ".cache/keycloak-$KEYCLOAK_VERSION/bin/kc.sh" start-dev \
   --http-port="$KC_PORT" \
   --http-management-port="$KC_MANAGEMENT_PORT" \
   --health-enabled=true \
+  --spi-events-listener--email--exclude-events=LOGIN_ERROR \
   --db=postgres --db-url="$KC_DB_URL" --db-username="$KC_DB_USERNAME" --db-password="$KC_DB_PASSWORD"
