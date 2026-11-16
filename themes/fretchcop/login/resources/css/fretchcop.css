@@ -1109,7 +1109,7 @@ body[data-page-id='login-login-verify-email'] .pf-m-danger .fa-exclamation-circl
   border: 1px solid var(--fc-border-strong);
   border-radius: 9999px;
   background: var(--fc-surface);
-  font: 600 13px/1 var(--fc-font);
+  font: 600 14px/1 var(--fc-font);
   font-variant-numeric: tabular-nums;
   color: var(--fc-fg);
 }
@@ -1119,7 +1119,7 @@ body[data-page-id='login-login-verify-email'] .pf-m-danger .fa-exclamation-circl
   content: '';
   position: absolute;
   top: 32px;
-  bottom: -24px;
+  bottom: -20px;
   left: 13.5px;
   width: 1px;
   background: var(--fc-border-strong);
@@ -1191,9 +1191,9 @@ body[data-page-id='login-login-verify-email'] .pf-m-danger .fa-exclamation-circl
   display: inline-block;
   margin-top: 12px;
   padding: 8px 12px;
-  border: 1px solid var(--fc-border);
   border-radius: 12px;
-  background: var(--fc-surface);
+  background: var(--fc-container);
+  user-select: all;
   font: 500 16px/24px var(--fc-font);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.06em;
@@ -1204,14 +1204,22 @@ body[data-page-id='login-login-verify-email'] .pf-m-danger .fa-exclamation-circl
 
 /* Los valores para configurar la app a mano, alineados con el texto del paso. */
 #kc-totp-settings > li > ul:not(#kc-totp-supported-apps) {
-  margin: 8px 0 0;
+  margin: 4px 0 0;
   padding: 0;
   list-style: none;
 }
 
 #kc-totp-settings > li > ul:not(#kc-totp-supported-apps) li {
   margin: 0;
+  font: 400 14px/20px var(--fc-font);
   font-variant-numeric: tabular-nums;
+  color: var(--fc-fg-muted);
+}
+
+/* Sin una palabra sola en la última línea. */
+#kc-totp-settings p,
+.pf-v5-c-list li {
+  text-wrap: pretty;
 }
 
 /* Borrar la cuenta: lo que pasa, en una lista sin viñetas ni márgenes de PatternFly. */
