@@ -876,11 +876,17 @@ body[data-page-id='login-login-reset-password'] #kc-info .pf-v5-u-font-size-sm {
   align-items: flex-start;
   gap: 12px;
   margin: 0 0 24px !important;
-  padding: 12px 16px;
+  padding: 12px 12px 12px 20px;
   border: 1px solid var(--fc-border);
   border-radius: 16px;
   background: var(--fc-surface-2);
   box-shadow: none;
+}
+
+@media (max-width: 599px) {
+  .pf-v5-c-alert {
+    padding-left: 16px;
+  }
 }
 
 .pf-v5-c-alert::before {
@@ -891,6 +897,14 @@ body[data-page-id='login-login-reset-password'] #kc-info .pf-v5-u-font-size-sm {
   margin: 0;
   padding: 0;
   font-size: 0;
+}
+
+/* 18 px, como en la Cuenta; 1 px abajo, centrado con la primera línea. */
+.pf-v5-c-alert__icon > :is(i, span) {
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  mask-size: 18px;
 }
 
 .pf-v5-c-alert__title,
