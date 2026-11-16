@@ -33,16 +33,16 @@ cambie ahí se pierde en el próximo `apply.sh`. Los cambios van en `config/`.
 |---|---|
 | `config/realm.yaml` | El realm: registro, contraseñas, bloqueos, sesiones, eventos, passkeys y correo |
 | `config/clients.yaml` | Un cliente OIDC por producto, con sus redirecciones y sus permisos |
-| `themes/fretchcop/login` | Las pantallas de acceso: las plantillas de `keycloak.v2` con el estilo y los textos de la Cuenta (`accounts-frontend/DESIGN.md`). Una página más de la Cuenta, sin tarjeta: la barra de 64 px con la marca y el idioma, y una columna de 400 px sobre el fondo de la Cuenta; Geist servida desde el tema (OFL, `resources/fonts`) e iconos de Lucide en `resources/img/icons` en lugar de Font Awesome |
+| `themes/fretchcop/login` | Las pantallas de acceso: las plantillas de `keycloak.v2` con el estilo y los textos de la Cuenta (`accounts-frontend/DESIGN.md`). Una tarjeta de 440 px sobre el fondo de la Cuenta, con la marca y el idioma arriba y lo que lleva a otra pantalla al pie (en el teléfono, sin tarjeta); Geist servida desde el tema (OFL, `resources/fonts`) e iconos de Lucide en `resources/img/icons` en lugar de Font Awesome |
 | `themes/fretchcop/email` | Los correos en español, de tú, con la marca |
 | `versions.env` | Versiones fijadas de Keycloak, keycloak-config-cli y Mailpit, con su SHA-256 |
 
-El tema cambia CSS y textos, y sólo una plantilla: `login-config-totp.ftl`, la de activar los dos pasos, porque la de
-serie necesitaba otro marcado. Al actualizar Keycloak, `scripts/check.sh` avisa si la de serie de `keycloak.v2` cambió, y entonces se pasan sus
-cambios a la copia. Lo que
-lleva su marcado se estiliza con Tailwind y los tokens del tema (`themes/fretchcop/login/tailwind.css`); tras cambiar
-una plantilla del tema, `pnpm install` una vez y `pnpm theme` regeneran `resources/css/tailwind.css`, que va en el repo
-y la CI comprueba que esté al día.
+El tema cambia CSS y textos, y copia tres plantillas que necesitaban otro marcado: `template.ftl` (la página),
+`login.ftl` (el enlace de la contraseña en la fila de su etiqueta) y `login-config-totp.ftl` (activar los dos pasos).
+Al actualizar Keycloak, `scripts/check.sh` avisa si alguna de serie de `keycloak.v2` cambió, y entonces se pasan sus
+cambios a la copia. Lo que lleva su marcado se estiliza con Tailwind y los tokens del tema
+(`themes/fretchcop/login/tailwind.css`); tras cambiar una plantilla del tema, `pnpm install` una vez y `pnpm theme`
+regeneran `resources/css/tailwind.css`, que va en el repo y la CI comprueba que esté al día.
 
 Se queda como lo hace Keycloak: el registro no pide contraseña (con `verifyEmail` Keycloak la pide después de verificar el correo) y su
 página lanza un error de script de `keycloak.v2` al no encontrar el campo; no afecta a nada. En desarrollo
