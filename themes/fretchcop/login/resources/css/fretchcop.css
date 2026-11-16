@@ -1261,6 +1261,18 @@ body[data-page-id='login-info'] .pf-v5-c-login__main-body:has(#kc-info-message >
   .pf-v5-c-form__group:has(#rememberMe, a[href*='reset-credentials']) > .pf-v5-c-form__helper-text {
     margin-top: 4px;
   }
+
+  /* Enlaces sueltos: el relleno agranda la zona de toque sin mover el texto. El del QR va en bloque y el margen
+     negativo le devuelve su sitio. */
+  #kc-registration a,
+  #mode-manual,
+  #mode-barcode {
+    padding-block: 13px;
+  }
+
+  #mode-manual {
+    margin-block: -13px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
