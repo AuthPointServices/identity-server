@@ -1064,6 +1064,13 @@ body[data-page-id='login-update-email'] .pf-v5-c-alert.pf-m-warning .pf-v5-c-ale
   }
 }
 
+/* Con táctil, un toque no lo muestra: en iOS, un :hover que lo enseña haría pedir dos toques al botón. */
+@media (hover: none) {
+  .kc-login-tooltip:hover:not(:focus-visible) .kc-tooltip-text {
+    visibility: hidden;
+  }
+}
+
 /* ----------------------------------------------------------------------------------------------------- Pantallas */
 
 /* Verificación en dos pasos: los pasos numerados (el orden importa), las apps en una línea y el código QR sobre
