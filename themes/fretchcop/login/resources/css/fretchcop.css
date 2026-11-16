@@ -1,6 +1,6 @@
-/* Las pantallas de acceso con el mismo mundo que la Cuenta (accounts-frontend/DESIGN.md): fondo gris con tinte azul,
-   una tarjeta de una columna (marca, título y formulario), Geist, los campos y botones de la Cuenta y los iconos de
-   Lucide. Sólo variables y selectores de keycloak.v2: ninguna plantilla, para que una versión nueva de Keycloak no lo
+/* Las pantallas de acceso son una página más de la Cuenta (accounts-frontend/DESIGN.md), sin su menú: la misma barra
+   de 64 px con la marca sobre el mismo fondo, y debajo una columna de formulario, sin tarjeta. Geist, los campos y
+   botones de la Cuenta y los iconos de Lucide. Sólo variables y selectores de keycloak.v2: ninguna plantilla, para que una versión nueva de Keycloak no lo
    rompa.
    Iconos: trazos de Lucide (ISC) en img/icons; letra: Geist (OFL-1.1) en fonts. */
 
@@ -119,32 +119,41 @@ html.login-pf,
   outline-offset: 2px;
 }
 
-/* La tarjeta, anclada arriba: la marca, el título y el primer campo no se mueven entre pantallas ni al salir un
-   error. */
+/* Sin tarjeta: el fondo es el de la Cuenta, así entrar no cambia de sitio, y el formulario va en una columna de 400 px
+   anclada arriba. La marca, el título y el primer campo no se mueven entre pantallas ni al salir un error. */
+html.login-pf,
+.login-pf body,
 .pf-v5-c-login {
+  background: var(--fc-bg);
+}
+
+.pf-v5-c-login {
+  position: relative;
   min-height: 100dvh;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: clamp(48px, 12vh, 120px) 24px 48px;
-  background: var(--fc-bg);
+  padding: calc(64px + clamp(32px, 9vh, 88px)) 24px 64px;
 }
 
+/* Sin posición: la marca y el idioma se colocan respecto de la página, en la barra de arriba. */
 .pf-v5-c-login__container {
-  position: relative;
+  position: static;
   display: block;
-  width: min(480px, 100%);
+  width: min(400px, 100%);
   max-width: none;
   margin: 0;
   padding: 0;
 }
 
-/* La marca, dentro de la tarjeta arriba a la izquierda: «Fretchcop | Cuenta», como en la cabecera de la Cuenta. */
+/* La barra de la Cuenta: 64 px, la marca a 24 px del borde (16 por debajo de 768) y el idioma en el sitio del avatar. */
 .pf-v5-c-login__header {
   position: absolute;
-  z-index: 1;
-  top: 32px;
-  left: 32px;
+  top: 0;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  height: 64px;
   margin: 0;
   padding: 0;
 }
@@ -173,18 +182,16 @@ html.login-pf,
   color: var(--fc-fg-muted);
 }
 
-/* La tarjeta: una columna, con el título bajo la marca (32 + 24 + 40) y el alto que pida su contenido. */
 .pf-v5-c-login__main {
-  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   row-gap: 32px;
   align-items: start;
   margin: 0;
-  padding: 96px 32px 32px;
+  padding: 0;
   border: 0;
-  border-radius: 28px;
-  background: var(--fc-surface);
+  border-radius: 0;
+  background: none;
   box-shadow: none;
 }
 
@@ -215,14 +222,13 @@ html.login-pf,
   text-wrap: balance;
 }
 
-/* El idioma, arriba a la derecha en la línea de la marca: en el HTML va antes del formulario, y aquí el foco
-   del teclado sigue el mismo orden que la vista. El galón queda alineado con el borde de los campos. */
-/* Sin el área de rejilla que le da PatternFly: así se coloca respecto de la tarjeta entera. */
+/* El idioma, en la barra a la derecha: en el HTML va antes del formulario, y así el foco del teclado sigue el mismo
+   orden que la vista. Sin el área de rejilla de PatternFly, se coloca respecto de la página. */
 .pf-v5-c-login__main-header-utilities {
   position: absolute;
   grid-area: auto;
-  top: 24px;
-  right: 20px;
+  top: 12px;
+  right: 16px;
   margin: 0;
 }
 
@@ -284,36 +290,24 @@ html.login-pf,
   display: none;
 }
 
-/* En el teléfono no hay tarjeta: la página entera es la superficie, como en las cuentas de Google y Apple. */
-@media (max-width: 599px) {
-  html.login-pf,
-  .login-pf body,
-  .pf-v5-c-login {
-    background: var(--fc-surface);
-  }
-
-  .pf-v5-c-login {
-    padding: 0;
-  }
-
-  .pf-v5-c-login__main {
-    padding: 80px 24px 24px;
-    border-radius: 0;
-  }
-
+@media (max-width: 767px) {
   .pf-v5-c-login__header {
-    top: 24px;
-    left: 24px;
+    left: 16px;
+  }
+
+  .pf-v5-c-login__main-header-utilities {
+    right: 8px;
+  }
+}
+
+@media (max-width: 599px) {
+  .pf-v5-c-login {
+    padding: 88px 24px 48px;
   }
 
   #kc-page-title {
     font-size: 28px;
     line-height: 36px;
-  }
-
-  .pf-v5-c-login__main-header-utilities {
-    top: 16px;
-    right: 12px;
   }
 }
 
