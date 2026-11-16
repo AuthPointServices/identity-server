@@ -1027,6 +1027,13 @@ body[data-page-id='login-login-reset-password'] #kc-info .pf-v5-u-font-size-sm {
   display: none;
 }
 
+/* Opaco, para que no se lea la frase de debajo, y también con el foco del teclado. Keycloak lo deja al 70 % y sólo al
+   pasar el cursor. */
+.kc-login-tooltip:is(:hover, :focus-visible) .kc-tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
 /* ----------------------------------------------------------------------------------------------------- Pantallas */
 
 /* Verificación en dos pasos: los pasos numerados (el orden importa), las apps en una línea y el código QR sobre
