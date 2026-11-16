@@ -403,10 +403,11 @@ html.login-pf,
   caret-color: var(--fc-accent);
 }
 
-/* Los códigos: cifras del mismo ancho y algo de aire, para leerlos de un vistazo. */
+/* Los códigos: más grandes, con cifras del mismo ancho y aire entre ellas, para copiarlos de la app de un vistazo. */
 .pf-v5-c-form-control input[autocomplete='one-time-code'] {
+  font: 500 18px/24px var(--fc-font) !important;
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.16em;
 }
 
 /* El icono de error de PatternFly sobra: el texto de debajo ya lo dice. */
@@ -1056,41 +1057,63 @@ body[data-page-id='login-login-verify-email'] .pf-m-danger .fa-exclamation-circl
 
 /* ----------------------------------------------------------------------------------------------------- Pantallas */
 
-/* Verificación en dos pasos: los pasos numerados (el orden importa), las apps en una línea y el código QR sobre
-   blanco también en oscuro, que es lo que leen las cámaras. */
+/* Verificación en dos pasos: los pasos en una línea de tiempo (el orden importa), con un círculo por paso unidos por
+   una raya. Cada paso dice qué hacer en 500 y lo de apoyo va debajo en 14/20. Los campos y los botones siguen en la
+   columna del texto: son el último paso, no algo aparte. */
 #kc-totp-settings {
-  counter-reset: fc-step;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  margin: 0 0 32px !important;
+  gap: 28px;
+  margin: 0 0 24px !important;
   padding: 0;
   list-style: none;
+  counter-reset: fc-step;
 }
 
 #kc-totp-settings > li {
   counter-increment: fc-step;
   position: relative;
   margin: 0;
-  padding-left: 40px;
+  padding-left: 44px;
   font: 400 16px/24px var(--fc-font);
   color: var(--fc-fg);
+}
+
+#kc-totp-settings > li > p:first-child {
+  font-weight: 500;
 }
 
 #kc-totp-settings > li::before {
   content: counter(fc-step);
   position: absolute;
-  top: 0;
+  top: -2px;
   left: 0;
   display: grid;
   place-items: center;
-  width: 24px;
-  height: 24px;
+  box-sizing: border-box;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--fc-border-strong);
   border-radius: 9999px;
-  background: var(--fc-container);
+  background: var(--fc-surface);
   font: 600 13px/1 var(--fc-font);
   font-variant-numeric: tabular-nums;
   color: var(--fc-fg);
+}
+
+/* La raya baja del círculo hasta el siguiente, con 6 px de aire en cada punta. */
+#kc-totp-settings > li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 32px;
+  bottom: -24px;
+  left: 13.5px;
+  width: 1px;
+  background: var(--fc-border-strong);
+}
+
+#kc-totp-settings-form {
+  padding-left: 44px;
 }
 
 #kc-totp-settings p {
@@ -1142,11 +1165,11 @@ body[data-page-id='login-login-verify-email'] .pf-m-danger .fa-exclamation-circl
 
 .kc-qr-code img,
 .pf-v5-theme-dark .kc-qr-code img {
-  width: 176px;
-  height: 176px;
+  width: 168px;
+  height: 168px;
   padding: 8px;
   border: 1px solid var(--fc-border);
-  border-radius: 16px;
+  border-radius: 12px;
   background: #ffffff;
   box-shadow: none;
 }
@@ -1155,8 +1178,9 @@ body[data-page-id='login-login-verify-email'] .pf-m-danger .fa-exclamation-circl
   display: inline-block;
   margin-top: 12px;
   padding: 8px 12px;
+  border: 1px solid var(--fc-border);
   border-radius: 12px;
-  background: var(--fc-container);
+  background: var(--fc-surface);
   font: 500 16px/24px var(--fc-font);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.06em;
