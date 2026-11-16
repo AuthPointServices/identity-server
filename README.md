@@ -33,11 +33,13 @@ cambie ahí se pierde en el próximo `apply.sh`. Los cambios van en `config/`.
 |---|---|
 | `config/realm.yaml` | El realm: registro, contraseñas, bloqueos, sesiones, eventos, passkeys y correo |
 | `config/clients.yaml` | Un cliente OIDC por producto, con sus redirecciones y sus permisos |
-| `themes/fretchcop/login` | Las pantallas de acceso: las plantillas de `keycloak.v2` con el estilo, el logo y los textos de la Cuenta (`accounts-frontend/DESIGN.md`) |
+| `themes/fretchcop/login` | Las pantallas de acceso: las plantillas de `keycloak.v2` con el estilo y los textos de la Cuenta (`accounts-frontend/DESIGN.md`). Tarjeta de dos paneles (título a la izquierda, formulario a la derecha) que pasa a una columna bajo 900 px y a página entera en el teléfono; Geist servida desde el tema (OFL, `resources/fonts`) e iconos de Lucide en `resources/img/icons` en lugar de Font Awesome |
 | `themes/fretchcop/email` | Los correos en español, de tú, con la marca |
 | `versions.env` | Versiones fijadas de Keycloak, keycloak-config-cli y Mailpit, con su SHA-256 |
 
-El tema sólo cambia CSS y textos, no las plantillas, para que una versión nueva de Keycloak no lo rompa. En desarrollo
+El tema sólo cambia CSS y textos, no las plantillas, para que una versión nueva de Keycloak no lo rompa. Lo que eso
+deja fuera: el registro no pide contraseña (con `verifyEmail` Keycloak la pide después de verificar el correo) y su
+página lanza un error de script de `keycloak.v2` al no encontrar el campo; no afecta a nada. En desarrollo
 `scripts/dev.sh` lo enlaza en Keycloak y un cambio se ve al recargar la página.
 
 Keycloak avisa por correo de los cambios de seguridad (contraseña, dos pasos, passkeys). Los intentos fallidos no se
