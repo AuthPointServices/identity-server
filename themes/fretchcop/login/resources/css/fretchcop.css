@@ -1210,6 +1210,17 @@ body[data-page-id='login-login-reset-password'] #kc-info .pf-v5-u-font-size-sm {
   text-wrap: pretty;
 }
 
+/* El correo va solo en su línea (el texto lleva un salto antes) y no se parte por el guion. */
+#kc-info-message > .instruction {
+  white-space: pre-line;
+}
+
+/* Verificar el correo: la plantilla deja saltos alrededor de la frase y ahí el salto añadiría una línea vacía. Con
+   las líneas parejas, el correo tampoco se parte. */
+.pf-v5-c-login__main-body > .instruction {
+  text-wrap: balance;
+}
+
 /* En la página de error, el mensaje es lo único que hay que leer: va en el color del texto, no en el de apoyo. */
 #kc-error-message > p {
   color: var(--fc-fg);
