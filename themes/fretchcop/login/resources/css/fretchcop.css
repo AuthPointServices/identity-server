@@ -135,7 +135,7 @@ html.login-pf,
   justify-content: center;
   /* El título a la distancia de la barra que tiene en el panel. Medido en el área visible, no en la pantalla: cada
      pantalla cabe en 1280×720 sin desplazar (un portátil de 1440×900 deja unos 790 px con el navegador). */
-  padding: calc(64px + clamp(24px, 6vh, 72px)) 24px 48px;
+  padding: calc(64px + clamp(24px, 6vh, 72px)) 24px 24px;
 }
 
 /* Sin posición: la marca y el idioma se colocan respecto de la página, en la barra de arriba. */
