@@ -1,7 +1,7 @@
 /* Las pantallas de acceso con el mismo mundo que la Cuenta (accounts-frontend/DESIGN.md): fondo gris con tinte azul,
-   la tarjeta de inicio de sesión en dos paneles de las cuentas de 2025 (marca y título a la izquierda, el formulario a la
-   derecha; en una columna por debajo de 900 px), Geist, los campos y botones de la Cuenta y los iconos de Lucide. Sólo
-   variables y selectores de keycloak.v2: ninguna plantilla, para que una versión nueva de Keycloak no lo rompa.
+   una tarjeta de una columna (marca, título y formulario), Geist, los campos y botones de la Cuenta y los iconos de
+   Lucide. Sólo variables y selectores de keycloak.v2: ninguna plantilla, para que una versión nueva de Keycloak no lo
+   rompa.
    Iconos: trazos de Lucide (ISC) en img/icons; letra: Geist (OFL-1.1) en fonts. */
 
 @font-face {
@@ -131,7 +131,7 @@ html.login-pf,
 .pf-v5-c-login__container {
   position: relative;
   display: block;
-  width: min(1040px, 100%);
+  width: min(480px, 100%);
   max-width: none;
   margin: 0;
   padding: 0;
@@ -141,8 +141,8 @@ html.login-pf,
 .pf-v5-c-login__header {
   position: absolute;
   z-index: 1;
-  top: 40px;
-  left: 40px;
+  top: 32px;
+  left: 32px;
   margin: 0;
   padding: 0;
 }
@@ -171,25 +171,22 @@ html.login-pf,
   color: var(--fc-fg-muted);
 }
 
-/* La tarjeta: dos paneles. Los dos empiezan a la altura del título, bajo la marca (40 + 24 + 40). */
+/* La tarjeta: una columna, con el título bajo la marca (32 + 24 + 40) y el alto que pida su contenido. */
 .pf-v5-c-login__main {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  column-gap: 48px;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 32px;
   align-items: start;
   margin: 0;
-  padding: 104px 40px 40px;
+  padding: 96px 32px 32px;
   border: 0;
   border-radius: 28px;
   background: var(--fc-surface);
   box-shadow: none;
-  min-height: 360px;
 }
 
 .pf-v5-c-login__main-header {
-  grid-column: 1;
-  grid-row: 1 / span 3;
   display: block;
   position: static;
   margin: 0;
@@ -200,7 +197,6 @@ html.login-pf,
 
 .pf-v5-c-login__main-body,
 .pf-v5-c-login__main > .pf-v5-c-login__main-footer {
-  grid-column: 2;
   margin: 0;
   padding: 0;
 }
@@ -219,12 +215,12 @@ html.login-pf,
 
 /* El idioma, arriba a la derecha en la línea de la marca: en el HTML va antes del formulario, y aquí el foco
    del teclado sigue el mismo orden que la vista. El galón queda alineado con el borde de los campos. */
-/* Sin área de rejilla: así se coloca respecto de la tarjeta entera y no de su segunda columna. */
+/* Sin el área de rejilla que le da PatternFly: así se coloca respecto de la tarjeta entera. */
 .pf-v5-c-login__main-header-utilities {
   position: absolute;
   grid-area: auto;
-  top: 32px;
-  right: 28px;
+  top: 24px;
+  right: 20px;
   margin: 0;
 }
 
@@ -282,36 +278,6 @@ html.login-pf,
   display: none;
 }
 
-/* Una columna: la marca, el título y debajo el formulario. */
-@media (max-width: 899px) {
-  .pf-v5-c-login__container {
-    width: min(480px, 100%);
-  }
-
-  .pf-v5-c-login__main {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 32px;
-    padding: 96px 32px 32px;
-  }
-
-  .pf-v5-c-login__header {
-    top: 32px;
-    left: 32px;
-  }
-
-  .pf-v5-c-login__main-header,
-  .pf-v5-c-login__main-body,
-  .pf-v5-c-login__main > .pf-v5-c-login__main-footer {
-    grid-column: 1;
-    grid-row: auto;
-  }
-
-  .pf-v5-c-login__main-header-utilities {
-    top: 24px;
-    right: 20px;
-  }
-}
-
 /* En el teléfono no hay tarjeta: la página entera es la superficie, como en las cuentas de Google y Apple. */
 @media (max-width: 599px) {
   html.login-pf,
@@ -325,12 +291,7 @@ html.login-pf,
     padding: 0;
   }
 
-  .pf-v5-c-login__container {
-    width: 100%;
-  }
-
   .pf-v5-c-login__main {
-    min-height: 0;
     padding: 80px 24px 24px;
     border-radius: 0;
   }
