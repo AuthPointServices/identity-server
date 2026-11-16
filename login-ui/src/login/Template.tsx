@@ -1,6 +1,8 @@
 import { useInitialize } from 'keycloakify/login/Template.useInitialize';
 import type { TemplateProps } from 'keycloakify/login/TemplateProps';
 import { useEffect, type ReactNode } from 'react';
+import fireStill from './assets/fire.webp';
+import { FireField } from './components/FireField';
 import { IconChevronDown } from './components/icons';
 import { BUTTON_SECONDARY, Notice, ServerText } from './components/ui';
 import type { I18n } from './i18n';
@@ -108,15 +110,13 @@ export default function Template(props: LayoutProps) {
 }
 
 /**
- * El panel de la marca, desde 1024 px: el azul de la casa en su tono más hondo, una retícula fina que se desvanece y el
- * nombre grande abajo. Sin ilustraciones ni frases: sólo dice dónde estás.
+ * El panel de la marca, desde 1024 px: el shader de fuego y el nombre grande abajo, en blanco. Debajo del shader va un
+ * fotograma suyo (assets/fire.webp, 50 KB): es lo que se ve sin WebGL (aceleración gráfica apagada) o mientras carga.
  */
 function BrandPanel({ brand }: { brand: string }) {
   return (
-    <aside aria-hidden="true" className="relative hidden overflow-hidden bg-brand-deep lg:block forced-colors:hidden">
-      {/* Un poco más claro arriba a la derecha, donde se ve la retícula; abajo, el tono hondo bajo el nombre. */}
-      <div className="absolute inset-0 bg-[radial-gradient(90%_70%_at_100%_0%,rgb(47_91_211/0.45),transparent_70%)]" />
-      <div className="fc-grid absolute inset-0" />
+    <aside aria-hidden="true" style={{ backgroundImage: `url(${fireStill})` }} className="relative hidden overflow-hidden bg-black bg-cover bg-center lg:block forced-colors:hidden">
+      <FireField className="absolute inset-0" />
       <p className="absolute bottom-14 left-14 text-[clamp(56px,6vw,88px)]/[0.95] font-semibold tracking-[-0.045em] text-white">{brand}</p>
     </aside>
   );

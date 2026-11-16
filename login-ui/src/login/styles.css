@@ -33,9 +33,6 @@
   --color-danger-subtle: light-dark(#fbe4e2, #321918);
   --color-danger-fg: light-dark(#ffffff, #2a0806);
 
-  /* El panel de la marca: el azul de la casa en su tono más hondo (también en oscuro). */
-  --color-brand-deep: light-dark(#0f1f4d, #0b1636);
-
   --duration-quick: 150ms;
 }
 
@@ -80,12 +77,3 @@
   }
 }
 
-/* La retícula del panel de la marca: líneas de 1 px cada 48 px, más visibles arriba a la derecha. */
-@utility fc-grid {
-  background-image:
-    linear-gradient(to right, rgb(255 255 255 / 0.09) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(255 255 255 / 0.09) 1px, transparent 1px);
-  background-size: 48px 48px;
-  background-position: -1px -1px;
-  mask-image: radial-gradient(120% 90% at 100% 0%, black 30%, transparent 75%);
-}

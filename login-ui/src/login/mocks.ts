@@ -11,7 +11,7 @@ const kcContextExtensionPerPage: KcContextExtensionPerPage = {};
 const { getKcContextMock } = createGetKcContextMock({
   kcContextExtension,
   kcContextExtensionPerPage,
-  overrides: { realm: { displayName: 'Fretchcop', internationalizationEnabled: true }, locale: { currentLanguageTag: 'es' } },
+  overrides: { realm: { displayName: 'Seedle', internationalizationEnabled: true }, locale: { currentLanguageTag: 'es' } },
   overridesPerPage: {},
 });
 
