@@ -1084,22 +1084,22 @@ body[data-page-id='login-login-reset-password'] #kc-info .pf-v5-u-font-size-sm {
 }
 
 #kc-deleteaccount-form > p,
-#kc-deleteaccount-form .pf-v5-c-list li,
-.delete-account-text {
+#kc-deleteaccount-form .pf-v5-c-list li {
   margin: 0;
   font: 400 16px/24px var(--fc-font);
   color: var(--fc-fg);
 }
 
+/* «Al borrar tu cuenta:» pegada a su lista (8 px); del aviso a la frase, los 24 px del formulario. */
 #kc-deleteaccount-form .pf-v5-c-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin: 8px 0 24px;
+  margin: -16px 0 0;
 }
 
 #kc-deleteaccount-form .pf-v5-c-alert {
-  margin-bottom: 24px !important;
+  margin: 0 !important;
 }
 
 #kc-deleteaccount-form .pf-v5-c-list li {
@@ -1118,9 +1118,9 @@ body[data-page-id='login-login-reset-password'] #kc-info .pf-v5-u-font-size-sm {
   background: var(--fc-fg-muted);
 }
 
+/* «Si la borras, no se puede recuperar» repite el aviso «No se puede deshacer». */
 .delete-account-text {
-  margin-bottom: 8px;
-  color: var(--fc-fg-muted);
+  display: none;
 }
 
 /* Cerrar sesión, errores y avisos de Keycloak: la frase y su botón o enlace. */
