@@ -38,7 +38,8 @@ cambie ahí se pierde en el próximo `apply.sh`. Los cambios van en `config/`.
 | `versions.env` | Versiones fijadas de Keycloak, keycloak-config-cli y Mailpit, con su SHA-256 |
 
 El tema cambia CSS y textos, y sólo una plantilla: `login-config-totp.ftl`, la de activar los dos pasos, porque la de
-serie necesitaba otro marcado. Al actualizar Keycloak, esa plantilla se compara con la nueva de `keycloak.v2`. Lo que
+serie necesitaba otro marcado. Al actualizar Keycloak, `scripts/check.sh` avisa si la de serie de `keycloak.v2` cambió, y entonces se pasan sus
+cambios a la copia. Lo que
 lleva su marcado se estiliza con Tailwind y los tokens del tema (`themes/fretchcop/login/tailwind.css`); tras cambiar
 una plantilla del tema, `pnpm install` una vez y `pnpm theme` regeneran `resources/css/tailwind.css`, que va en el repo
 y la CI comprueba que esté al día.
