@@ -704,7 +704,8 @@ body:not([data-page-id='login-login-update-password']) .pf-v5-c-form__group:has(
 .pf-v5-c-button:is(.pf-m-primary, .pf-m-secondary, .pf-m-tertiary, .pf-m-link),
 input.pf-v5-c-button,
 #kc-form-options.pf-v5-c-login__main-footer-band-item a,
-#kc-info-message > p > a:only-child,
+body[data-page-id='login-info'] #kc-info-message > p > a:only-child,
+#kc-logout-confirm #kc-info-message > p > a,
 #backToApplication {
   --pf-v5-c-button--BorderRadius: 9999px;
   display: inline-flex;
@@ -729,19 +730,19 @@ input.pf-v5-c-button,
 
 .pf-v5-c-button.pf-m-primary,
 input.pf-v5-c-button.pf-m-primary,
-#kc-info-message > p > a:only-child,
+body[data-page-id='login-info'] #kc-info-message > p > a:only-child,
 #backToApplication {
   background: var(--fc-accent);
   color: var(--fc-accent-fg);
 }
 
-#kc-info-message > p:has(> a:only-child),
+body[data-page-id='login-info'] #kc-info-message > p:has(> a:only-child),
 #kc-error-message > p:has(> #backToApplication) {
   margin-top: 32px;
 }
 
 .pf-v5-c-button.pf-m-primary:hover,
-#kc-info-message > p > a:only-child:hover,
+body[data-page-id='login-info'] #kc-info-message > p > a:only-child:hover,
 #backToApplication:hover {
   background: var(--fc-accent-hover);
   color: var(--fc-accent-fg);
@@ -761,11 +762,13 @@ input.pf-v5-c-button.pf-m-primary,
   color: var(--fc-fg);
 }
 
-/* Cancelar y volver: botones de texto, que no compiten con el principal. */
+/* Cancelar y volver: botones de texto, que no compiten con el principal. En la confirmación de cerrar sesión,
+   «Volver a la aplicación» es el Cancelar. */
 .pf-v5-c-button[name='cancel-aia'],
 .pf-v5-c-form__actions a.pf-v5-c-button.pf-m-secondary,
 .pf-v5-c-button.pf-m-link,
-#kc-form-options.pf-v5-c-login__main-footer-band-item a {
+#kc-form-options.pf-v5-c-login__main-footer-band-item a,
+#kc-logout-confirm #kc-info-message > p > a {
   border-color: transparent;
   background: transparent;
   color: var(--fc-link-ink);
@@ -776,7 +779,8 @@ input.pf-v5-c-button.pf-m-primary,
 .pf-v5-c-button[name='cancel-aia']:hover,
 .pf-v5-c-form__actions a.pf-v5-c-button.pf-m-secondary:hover,
 .pf-v5-c-button.pf-m-link:hover,
-#kc-form-options.pf-v5-c-login__main-footer-band-item a:hover {
+#kc-form-options.pf-v5-c-login__main-footer-band-item a:hover,
+#kc-logout-confirm #kc-info-message > p > a:hover {
   background: color-mix(in oklab, var(--fc-accent) 8%, transparent);
   color: var(--fc-link-ink);
 }
@@ -1266,6 +1270,11 @@ body:is([data-page-id='login-login-verify-email'], [data-page-id='login-login-up
   display: none;
 }
 
+/* «Volver a la aplicación», a 12 px de «Cerrar sesión», como el Cancelar de los formularios. */
+#kc-logout-confirm #kc-info-message > p {
+  margin-top: 12px;
+}
+
 /* Página caducada: la plantilla deja un espacio antes del punto («aquí .»); el enlace lo recupera con el ancho de un
    espacio de Geist. */
 #instruction1 a {
@@ -1347,7 +1356,7 @@ body:is([data-page-id='login-login-verify-email'], [data-page-id='login-login-up
   }
 
   .pf-v5-c-button.pf-m-primary,
-  #kc-info-message > p > a:only-child,
+  body[data-page-id='login-info'] #kc-info-message > p > a:only-child,
   #backToApplication {
     border: 1px solid ButtonText;
   }
