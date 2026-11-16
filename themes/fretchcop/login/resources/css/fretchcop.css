@@ -683,7 +683,9 @@ body:not([data-page-id='login-login-update-password']) .pf-v5-c-form__group:has(
 
 /* ----------------------------------------------------------------------------------------------------- Botones */
 
-/* Una columna de botones a todo el ancho, el principal primero: 48 px, como los campos, y de pastilla. */
+/* Una columna de botones a todo el ancho, el principal primero: 48 px, como los campos, y de pastilla. Una sola salida
+   en un aviso («Continuar», «Volver a la aplicación») es el botón azul de la vista, como el «Volver al inicio» del 404
+   de la Cuenta, a 32 px de la frase. */
 .pf-v5-c-form__actions {
   display: flex;
   flex-direction: column;
@@ -701,7 +703,9 @@ body:not([data-page-id='login-login-update-password']) .pf-v5-c-form__group:has(
 
 .pf-v5-c-button:is(.pf-m-primary, .pf-m-secondary, .pf-m-tertiary, .pf-m-link),
 input.pf-v5-c-button,
-#kc-form-options.pf-v5-c-login__main-footer-band-item a {
+#kc-form-options.pf-v5-c-login__main-footer-band-item a,
+#kc-info-message > p > a:only-child,
+#backToApplication {
   --pf-v5-c-button--BorderRadius: 9999px;
   display: inline-flex;
   align-items: center;
@@ -724,12 +728,21 @@ input.pf-v5-c-button,
 }
 
 .pf-v5-c-button.pf-m-primary,
-input.pf-v5-c-button.pf-m-primary {
+input.pf-v5-c-button.pf-m-primary,
+#kc-info-message > p > a:only-child,
+#backToApplication {
   background: var(--fc-accent);
   color: var(--fc-accent-fg);
 }
 
-.pf-v5-c-button.pf-m-primary:hover {
+#kc-info-message > p:has(> a:only-child),
+#kc-error-message > p:has(> #backToApplication) {
+  margin-top: 32px;
+}
+
+.pf-v5-c-button.pf-m-primary:hover,
+#kc-info-message > p > a:only-child:hover,
+#backToApplication:hover {
   background: var(--fc-accent-hover);
   color: var(--fc-accent-fg);
 }
@@ -1317,7 +1330,9 @@ body[data-page-id='login-login-verify-email'] .pf-v5-c-alert.pf-m-warning {
     background: Highlight;
   }
 
-  .pf-v5-c-button.pf-m-primary {
+  .pf-v5-c-button.pf-m-primary,
+  #kc-info-message > p > a:only-child,
+  #backToApplication {
     border: 1px solid ButtonText;
   }
 
