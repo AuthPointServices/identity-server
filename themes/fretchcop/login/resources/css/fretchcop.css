@@ -406,7 +406,8 @@ html.login-pf,
 /* Los códigos: más grandes, con cifras del mismo ancho y aire entre ellas, para copiarlos de la app de un vistazo. */
 .pf-v5-c-form-control input[autocomplete='one-time-code'] {
   font: 500 18px/24px var(--fc-font) !important;
-  font-variant-numeric: tabular-nums;
+  /* Con !important: el atajo font de arriba lo reinicia. */
+  font-variant-numeric: tabular-nums !important;
   letter-spacing: 0.16em;
 }
 
