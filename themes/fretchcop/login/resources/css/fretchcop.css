@@ -1237,6 +1237,12 @@ body[data-page-id='login-login-verify-email'] .pf-v5-c-alert.pf-m-warning {
   display: none;
 }
 
+/* Página caducada: la plantilla deja un espacio antes del punto («aquí .»); el enlace lo recupera con el ancho de un
+   espacio de Geist. */
+#instruction1 a {
+  margin-right: -0.25em;
+}
+
 /* Las pantallas de Keycloak sin formulario dejan restos de su maqueta antigua. */
 .clearfix {
   display: none;
