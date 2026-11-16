@@ -1096,18 +1096,20 @@ body[data-page-id='login-update-email'] .pf-v5-c-alert.pf-m-warning .pf-v5-c-ale
   line-height: 24px;
 }
 
-/* Las apps son texto, no chips que parezcan botones: separadas por comas y sin partir un nombre. */
+/* Las apps son texto, no chips que parezcan botones: separadas por comas y sin partir un nombre. En 14/20, como la
+   otra línea de apoyo de los pasos, y caben en una línea. */
 #kc-totp-supported-apps {
   display: block;
   margin: 4px 0 0;
   padding: 0;
+  font: 400 14px/20px var(--fc-font);
   list-style: none;
 }
 
 #kc-totp-supported-apps li {
   display: inline;
   margin: 0;
-  font: 400 16px/24px var(--fc-font);
+  font: 400 14px/20px var(--fc-font);
   color: var(--fc-fg-muted);
   white-space: nowrap;
 }
