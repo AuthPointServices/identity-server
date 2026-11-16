@@ -250,9 +250,13 @@ html.login-pf,
   border: 0;
   border-radius: 9999px;
   background: transparent;
+  cursor: pointer;
+}
+
+/* Más específico que la letra de los campos, que si no le gana. */
+.pf-v5-c-login__main-header-utilities .pf-v5-c-form-control > select {
   font: 500 14px/20px var(--fc-font);
   color: var(--fc-fg-muted);
-  cursor: pointer;
 }
 
 .pf-v5-c-login__main-header-utilities select:focus-visible {
