@@ -943,6 +943,21 @@ body[data-page-id='login-update-email'] .pf-v5-c-alert.pf-m-warning .pf-v5-c-ale
   color: var(--fc-fg-muted);
 }
 
+/* Al verificar el correo, el único error que Keycloak pinta es el de esperar para reenviar: no es un fallo y va en
+   neutro, con el icono de información. */
+body[data-page-id='login-login-verify-email'] .pf-v5-c-alert.pf-m-danger {
+  border-color: var(--fc-border);
+  background: var(--fc-surface-2);
+}
+
+body[data-page-id='login-login-verify-email'] .pf-v5-c-alert.pf-m-danger .pf-v5-c-alert__icon {
+  color: var(--fc-fg-muted);
+}
+
+body[data-page-id='login-login-verify-email'] .pf-m-danger .fa-exclamation-circle {
+  --fc-icon: url("../img/icons/info.svg");
+}
+
 /* ----------------------------------------------------------------------------------------------------- Quién entra */
 
 /* Al volver a pedir la contraseña, el correo va en una pastilla con «Usar otra cuenta», como en Google. */
