@@ -612,9 +612,21 @@ ul.pf-v5-c-helper-text__item-text.pf-m-error {
   cursor: pointer;
 }
 
-/* La opción de cerrar las demás sesiones sólo tiene sentido al cambiar la contraseña; Keycloak la pone en todas. */
-body:not([data-page-id='login-login-update-password']) #kc-form-options:has(#logout-sessions) {
+/* La opción de cerrar las demás sesiones sólo tiene sentido al cambiar la contraseña; Keycloak la pone en todas. Se
+   oculta con su grupo, que si no deja un hueco de 24 px. */
+body:not([data-page-id='login-login-update-password']) #kc-form-options:has(#logout-sessions),
+body:not([data-page-id='login-login-update-password']) .pf-v5-c-form__group:has(> #kc-form-options:only-child #logout-sessions) {
   display: none;
+}
+
+/* En la passkey, el formulario oculto que la envía no ocupa sitio ni hueco, y el botón queda a 32 px del título, como
+   el primer campo en las demás pantallas. */
+#register {
+  position: absolute;
+}
+
+#register ~ .pf-v5-c-form__group > .pf-v5-c-form__actions {
+  margin-top: 0;
 }
 
 .pf-v5-c-form__group:has(> #kc-form-options:only-child):not(:has(.pf-v5-c-check:not([hidden]))) {
