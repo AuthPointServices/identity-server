@@ -119,12 +119,14 @@ html.login-pf,
   outline-offset: 2px;
 }
 
+/* La tarjeta, anclada arriba: la marca, el título y el primer campo no se mueven entre pantallas ni al salir un
+   error. */
 .pf-v5-c-login {
   min-height: 100dvh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 48px 24px;
+  padding: clamp(48px, 12vh, 120px) 24px 48px;
   background: var(--fc-bg);
 }
 
@@ -287,7 +289,6 @@ html.login-pf,
   }
 
   .pf-v5-c-login {
-    align-items: flex-start;
     padding: 0;
   }
 
