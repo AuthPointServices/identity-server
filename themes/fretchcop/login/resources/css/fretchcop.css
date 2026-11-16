@@ -1,179 +1,396 @@
-/* La identidad de la Cuenta (accounts-frontend/DESIGN.md) sobre PatternFly 5 de keycloak.v2: fondo gris frío, tarjeta
-   blanca de 12 px sin sombra, un solo azul, la letra del sistema y campos como los de la Cuenta. Sin logo: la empresa
-   aún no tiene marca, y su nombre va en texto. Sólo variables y selectores de keycloak.v2, no plantillas. */
+/* Las pantallas de acceso con el mismo mundo que la Cuenta (accounts-frontend/DESIGN.md): fondo gris con tinte azul,
+   la tarjeta de inicio de sesión en dos paneles de las cuentas de 2025 (marca y título a la izquierda, el formulario a la
+   derecha; en una columna por debajo de 900 px), Geist, los campos y botones de la Cuenta y los iconos de Lucide. Sólo
+   variables y selectores de keycloak.v2: ninguna plantilla, para que una versión nueva de Keycloak no lo rompa.
+   Iconos: trazos de Lucide (ISC) en img/icons; letra: Geist (OFL-1.1) en fonts. */
 
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../fonts/geist-latin-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../fonts/geist-latin-ext-wght-normal.woff2') format('woff2-variations');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Los tokens de la Cuenta (src/app/styles/index.css). */
 :root {
-  --fc-ground: #f4f5f7;
+  --fc-bg: #f0f3f8;
   --fc-surface: #ffffff;
-  --fc-hairline: #e3e6ea;
-  --fc-field-edge: #868e96; /* 3,3:1 sobre blanco: el borde de un campo es su forma (WCAG 1.4.11) */
-  --fc-ink: #1f2328;
-  --fc-ink-muted: #57606a;
-  --fc-blue: #2f5bd3;
-  --fc-blue-deep: #2549b0;
-  --fc-blue-ink: #2449ad;
-  --fc-on-blue: #ffffff;
-  --fc-red: #c22a2a;
-  --fc-red-wash: #fbeaea;
-  --fc-green: #1b7343;
-  --fc-green-wash: #e6f3eb;
-  --fc-amber: #8a5200;
-  --fc-amber-wash: #fcf2df;
-  --fc-blue-wash: #eaf0fd;
-  --fc-font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --fc-surface-2: #f4f6fa;
+  --fc-container: #e8edf5;
+  --fc-border: #e1e6ee;
+  --fc-border-strong: #c9d0db;
+  --fc-input: #80889a;
+  --fc-fg: #1a1d24;
+  --fc-fg-muted: #4f5663;
+  --fc-accent: #2f5bd3;
+  --fc-accent-hover: #2549b0;
+  --fc-accent-fg: #ffffff;
+  --fc-accent-subtle: #dce5fb;
+  --fc-accent-ink: #1a3a8f;
+  --fc-link-ink: #1a3a8f;
+  --fc-ok: #16794a;
+  --fc-ok-subtle: #dff1e7;
+  --fc-ok-ink: #0f5f39;
+  --fc-warn: #8a5200;
+  --fc-warn-subtle: #fbeccf;
+  --fc-danger: #c22a2a;
+  --fc-danger-subtle: #fbe4e2;
+  --fc-danger-fg: #ffffff;
+  --fc-font: 'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fc-quick: 150ms;
+  --fc-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
   --pf-v5-global--FontFamily--text: var(--fc-font);
   --pf-v5-global--FontFamily--heading: var(--fc-font);
   --pf-v5-global--FontFamily--text--vf: var(--fc-font);
   --pf-v5-global--FontFamily--heading--vf: var(--fc-font);
-  --pf-v5-global--BorderRadius--sm: 8px;
-  --pf-v5-global--primary-color--100: var(--fc-blue);
-  --pf-v5-global--primary-color--200: var(--fc-blue-deep);
-  --pf-v5-global--link--Color: var(--fc-blue-ink);
-  --pf-v5-global--link--Color--hover: var(--fc-blue-deep);
-  --pf-v5-global--Color--100: var(--fc-ink);
-  --pf-v5-global--Color--200: var(--fc-ink-muted);
-  --pf-v5-global--danger-color--100: var(--fc-red);
-  --pf-v5-global--success-color--100: var(--fc-green);
-  --pf-v5-global--warning-color--100: var(--fc-amber);
-
+  --pf-v5-global--primary-color--100: var(--fc-accent);
+  --pf-v5-global--primary-color--200: var(--fc-accent-hover);
+  --pf-v5-global--link--Color: var(--fc-link-ink);
+  --pf-v5-global--link--Color--hover: var(--fc-link-ink);
+  --pf-v5-global--Color--100: var(--fc-fg);
+  --pf-v5-global--Color--200: var(--fc-fg-muted);
+  --pf-v5-global--danger-color--100: var(--fc-danger);
+  --pf-v5-global--success-color--100: var(--fc-ok);
+  --pf-v5-global--warning-color--100: var(--fc-warn);
+  --pf-v5-global--BackgroundColor--100: var(--fc-surface);
   --keycloak-card-top-color: transparent;
   --keycloak-bg-logo-url: none;
 }
 
 .pf-v5-theme-dark {
-  --fc-ground: #111316;
-  --fc-surface: #1a1d21;
-  --fc-hairline: #2d3238;
-  --fc-field-edge: #6b737d;
-  --fc-ink: #e8eaed;
-  --fc-ink-muted: #a3abb5;
-  --fc-blue: #86a8ff;
-  --fc-blue-deep: #a3bdff;
-  --fc-blue-ink: #9db8ff;
-  --fc-on-blue: #0b1a3d;
-  --fc-red: #ff8a85;
-  --fc-red-wash: #2f1716;
-  --fc-green: #5fd193;
-  --fc-green-wash: #14281d;
-  --fc-amber: #f2b65a;
-  --fc-amber-wash: #2b2112;
-  --fc-blue-wash: #1c2740;
+  --fc-bg: #0f1115;
+  --fc-surface: #1a1d23;
+  --fc-surface-2: #20242b;
+  --fc-container: #252a32;
+  --fc-border: #2a2f37;
+  --fc-border-strong: #3a414c;
+  --fc-input: #6f7787;
+  --fc-fg: #e7e9ee;
+  --fc-fg-muted: #a5adbb;
+  --fc-accent: #8fb0ff;
+  --fc-accent-hover: #a9c2ff;
+  --fc-accent-fg: #0b1a3d;
+  --fc-accent-subtle: #22325a;
+  --fc-accent-ink: #d6e2ff;
+  --fc-link-ink: #8fb0ff;
+  --fc-ok: #62d39a;
+  --fc-ok-subtle: #15291f;
+  --fc-ok-ink: #8fe0b5;
+  --fc-warn: #f0b85e;
+  --fc-warn-subtle: #2c2312;
+  --fc-danger: #ff8d87;
+  --fc-danger-subtle: #321918;
+  --fc-danger-fg: #2a0806;
+  color-scheme: dark;
 }
 
-.login-pf body,
-.pf-v5-theme-dark body {
-  background: var(--fc-ground);
-  color: var(--fc-ink);
+/* ----------------------------------------------------------------------------------------------------- Página */
+
+html.login-pf,
+.login-pf body {
+  background: var(--fc-bg);
+  color: var(--fc-fg);
+  font-family: var(--fc-font);
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  caret-color: var(--fc-accent);
+  scrollbar-color: var(--fc-border-strong) transparent;
 }
 
 ::selection {
-  background: color-mix(in oklab, var(--fc-blue) 25%, transparent);
+  background: color-mix(in oklab, var(--fc-accent) 25%, transparent);
 }
 
-/* La tarjeta */
+:focus-visible {
+  outline: 2px solid var(--fc-accent);
+  outline-offset: 2px;
+}
 
+.pf-v5-c-login {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  background: var(--fc-bg);
+}
+
+.pf-v5-c-login__container {
+  position: relative;
+  display: block;
+  width: min(1040px, 100%);
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* La marca, dentro de la tarjeta arriba a la izquierda: «Fretchcop | Cuenta», como en la cabecera de la Cuenta. */
+.pf-v5-c-login__header {
+  position: absolute;
+  z-index: 1;
+  top: 40px;
+  left: 40px;
+  margin: 0;
+  padding: 0;
+}
+
+#kc-header-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  font: 600 18px/24px var(--fc-font);
+  letter-spacing: -0.015em;
+  text-transform: none;
+  color: var(--fc-fg) !important;
+}
+
+#kc-header-wrapper .fc-rule {
+  display: block;
+  width: 1px;
+  height: 20px;
+  background: var(--fc-border-strong);
+}
+
+#kc-header-wrapper .fc-section {
+  font-weight: 400;
+  color: var(--fc-fg-muted);
+}
+
+/* La tarjeta: dos paneles. Los dos empiezan a la altura del título, bajo la marca (40 + 24 + 40). */
 .pf-v5-c-login__main {
-  border: 1px solid var(--fc-hairline);
-  border-radius: 12px;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 48px;
+  align-items: start;
+  margin: 0;
+  padding: 104px 40px 40px;
+  border: 0;
+  border-radius: 28px;
   background: var(--fc-surface);
   box-shadow: none;
-  overflow: hidden;
+  min-height: 360px;
 }
 
-/* El idioma va arriba a la derecha, sobre el título, para que el título tenga todo el ancho. */
 .pf-v5-c-login__main-header {
-  border-top: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 8px;
+  grid-column: 1;
+  grid-row: 1 / span 3;
+  display: block;
+  position: static;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
 }
 
+.pf-v5-c-login__main-body,
+.pf-v5-c-login__main > .pf-v5-c-login__main-footer {
+  grid-column: 2;
+  margin: 0;
+  padding: 0;
+}
+
+.pf-v5-c-login__main > .pf-v5-c-login__main-footer:not(:has(*)) {
+  display: none;
+}
+
+#kc-page-title {
+  margin: 0;
+  font: 600 32px/40px var(--fc-font);
+  letter-spacing: -0.025em;
+  color: var(--fc-fg);
+  text-wrap: balance;
+}
+
+/* El idioma, arriba a la derecha en la línea de la marca: en el HTML va antes del formulario, y aquí el foco
+   del teclado sigue el mismo orden que la vista. El galón queda alineado con el borde de los campos. */
+/* Sin área de rejilla: así se coloca respecto de la tarjeta entera y no de su segunda columna. */
 .pf-v5-c-login__main-header-utilities {
-  order: -1;
-  align-self: flex-end;
+  position: absolute;
+  grid-area: auto;
+  top: 32px;
+  right: 28px;
   margin: 0;
 }
 
-/* Menos aire sobre el nombre de la empresa. */
-.pf-v5-c-login__container {
-  padding-block-start: 48px;
+.pf-v5-c-login__main-header-utilities .pf-v5-c-form-control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  width: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  transition: background-color var(--fc-quick);
 }
 
-.pf-v5-c-login__header {
-  margin-block-end: 24px;
+.pf-v5-c-login__main-header-utilities .pf-v5-c-form-control:hover {
+  background: var(--fc-container);
 }
 
-.pf-v5-c-title.pf-m-3xl {
-  font: 600 28px/36px var(--fc-font);
-  letter-spacing: -0.02em;
-  color: var(--fc-ink);
-}
-
-/* El nombre de la empresa, en texto. keycloak.v2 lo pinta blanco con !important (su fondo es oscuro). */
-#kc-header-wrapper {
-  font: 600 20px/28px var(--fc-font);
-  letter-spacing: -0.01em;
-  text-transform: none;
-  color: var(--fc-ink) !important;
-}
-
-/* Etiquetas y textos de ayuda */
-
-.pf-v5-c-form__label-text,
-.pf-v5-c-form__label {
+.pf-v5-c-login__main-header-utilities select {
+  appearance: none;
+  height: 40px;
+  padding: 0 36px 0 12px;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
   font: 500 14px/20px var(--fc-font);
-  color: var(--fc-ink);
+  color: var(--fc-fg-muted);
+  cursor: pointer;
 }
 
-.pf-v5-c-form__group-label.pf-v5-u-pb-xs {
-  padding-bottom: 6px !important;
+.pf-v5-c-login__main-header-utilities select:focus-visible {
+  outline: 2px solid var(--fc-accent);
+  outline-offset: 0;
 }
 
-.pf-v5-c-form__label-required {
-  color: var(--fc-red);
+.pf-v5-c-login__main-header-utilities .pf-v5-c-form-control__utilities {
+  position: absolute;
+  right: 12px;
+  pointer-events: none;
+  padding: 0;
 }
 
-.pf-v5-c-helper-text__item-text,
-.pf-v5-c-check__label,
-.pf-v5-c-form__helper-text {
-  font-size: 14px;
-  line-height: 20px;
+.pf-v5-c-login__main-header-utilities .pf-v5-c-form-control__toggle-icon {
+  display: block;
+  width: 16px;
+  height: 16px;
+  color: var(--fc-fg-muted);
+  background: currentColor;
+  mask: url("../img/icons/chevron-down.svg") center / 16px no-repeat;
 }
 
-/* «Mantener la sesión» y «¿Olvidaste…?» bajan a otra línea en el teléfono en vez de partirse. */
-.pf-v5-c-helper-text.pf-v5-u-display-flex {
-  flex-wrap: wrap;
-  gap: 8px 16px;
-  padding-top: 4px;
+.pf-v5-c-login__main-header-utilities .pf-v5-c-form-control__toggle-icon svg {
+  display: none;
 }
 
-.pf-v5-c-helper-text__item-text.pf-m-error,
-.kc-feedback-text {
-  color: var(--fc-red);
+/* Una columna: la marca, el título y debajo el formulario. */
+@media (max-width: 899px) {
+  .pf-v5-c-login__container {
+    width: min(480px, 100%);
+  }
+
+  .pf-v5-c-login__main {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 32px;
+    padding: 96px 32px 32px;
+  }
+
+  .pf-v5-c-login__header {
+    top: 32px;
+    left: 32px;
+  }
+
+  .pf-v5-c-login__main-header,
+  .pf-v5-c-login__main-body,
+  .pf-v5-c-login__main > .pf-v5-c-login__main-footer {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .pf-v5-c-login__main-header-utilities {
+    top: 24px;
+    right: 20px;
+  }
 }
 
-a:hover {
-  text-decoration: underline;
-  text-underline-offset: 2px;
+/* En el teléfono no hay tarjeta: la página entera es la superficie, como en las cuentas de Google y Apple. */
+@media (max-width: 599px) {
+  html.login-pf,
+  .login-pf body,
+  .pf-v5-c-login {
+    background: var(--fc-surface);
+  }
+
+  .pf-v5-c-login {
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .pf-v5-c-login__container {
+    width: 100%;
+  }
+
+  .pf-v5-c-login__main {
+    min-height: 0;
+    padding: 80px 24px 24px;
+    border-radius: 0;
+  }
+
+  .pf-v5-c-login__header {
+    top: 24px;
+    left: 24px;
+  }
+
+  #kc-page-title {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .pf-v5-c-login__main-header-utilities {
+    top: 16px;
+    right: 12px;
+  }
 }
 
-/* Campos: el borde entero en el elemento, no las rayas de PatternFly. */
+/* ----------------------------------------------------------------------------------------------------- Formulario */
 
+.pf-v5-c-form {
+  --pf-v5-c-form--GridGap: 24px;
+  gap: 24px;
+}
+
+.pf-v5-c-form__group-label.pf-v5-u-pb-xs,
+.pf-v5-c-form__group > .pf-v5-c-form__label {
+  padding: 0 0 8px !important;
+}
+
+.pf-v5-c-form__label,
+.pf-v5-c-form__label-text {
+  font: 500 14px/20px var(--fc-font);
+  color: var(--fc-fg);
+}
+
+/* Todo es obligatorio: el asterisco y «Campos obligatorios» no dicen nada. */
+.pf-v5-c-form__label-required,
+.pf-v5-c-login__main-body > .pf-v5-c-content.subtitle,
+.pf-v5-c-login__main-body > div > .subtitle {
+  display: none;
+}
+
+/* Campos: los de la Cuenta. 48 px, 12 px de radio, borde de campo, 16 px de letra (el teléfono no hace zoom). */
 .pf-v5-c-form-control {
-  --pf-v5-c-form-control--PaddingTop: 7px;
-  --pf-v5-c-form-control--PaddingBottom: 7px;
+  --pf-v5-c-form-control--PaddingTop: 11px;
+  --pf-v5-c-form-control--PaddingBottom: 11px;
   --pf-v5-c-form-control--PaddingLeft: 12px;
   --pf-v5-c-form-control--PaddingRight: 12px;
-  --pf-v5-c-form-control--FontSize: 16px; /* a 16 px el teléfono no hace zoom */
+  --pf-v5-c-form-control--FontSize: 16px;
   --pf-v5-c-form-control--LineHeight: 24px;
-  --pf-v5-c-form-control--Color: var(--fc-ink);
+  --pf-v5-c-form-control--Color: var(--fc-fg);
   --pf-v5-c-form-control--BackgroundColor: var(--fc-surface);
-  border: 1px solid var(--fc-field-edge);
-  border-radius: 8px;
+  border: 1px solid var(--fc-input);
+  border-radius: 12px;
   background: var(--fc-surface);
-  transition: border-color 150ms;
+  font-family: var(--fc-font);
+  transition: border-color var(--fc-quick);
 }
 
 .pf-v5-c-form-control::before,
@@ -181,13 +398,19 @@ a:hover {
   display: none;
 }
 
+.pf-v5-c-form-control > :is(input, select, textarea) {
+  font: 400 16px/24px var(--fc-font);
+  color: var(--fc-fg);
+  background: transparent;
+}
+
 .pf-v5-c-form-control:hover {
-  border-color: var(--fc-ink);
+  border-color: var(--fc-fg);
 }
 
 .pf-v5-c-form-control:has(:focus-visible) {
-  border-color: var(--fc-blue);
-  outline: 2px solid var(--fc-blue);
+  border-color: var(--fc-accent);
+  outline: 2px solid var(--fc-accent);
   outline-offset: 0;
 }
 
@@ -197,212 +420,760 @@ a:hover {
 
 .pf-v5-c-form-control.pf-m-error,
 .pf-v5-c-form-control:has([aria-invalid='true']) {
-  border-color: var(--fc-red);
+  border-color: var(--fc-danger);
 }
 
-.pf-v5-c-form-control.pf-m-readonly {
-  background: var(--fc-ground);
-  border-color: var(--fc-hairline);
+/* Con error, el foco sigue en rojo: un borde rojo con anillo azul se lee como un tercer color. */
+.pf-v5-c-form-control:has([aria-invalid='true']:focus-visible),
+.pf-v5-c-input-group:has([aria-invalid='true']:focus-visible) {
+  border-color: var(--fc-danger);
+  outline-color: var(--fc-danger);
+}
+
+/* El relleno del navegador no pinta el campo de amarillo ni de azul. */
+.pf-v5-c-form-control input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 100px var(--fc-surface) inset;
+  -webkit-text-fill-color: var(--fc-fg);
+  caret-color: var(--fc-accent);
+}
+
+/* Los códigos: cifras del mismo ancho y algo de aire, para leerlos de un vistazo. */
+.pf-v5-c-form-control input[autocomplete='one-time-code'] {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
 }
 
 /* El icono de error de PatternFly sobra: el texto de debajo ya lo dice. */
-.pf-v5-c-form-control__icon.pf-m-status {
+.pf-v5-c-form-control__icon.pf-m-status,
+.pf-v5-c-form-control__utilities:has(.pf-m-status) {
   display: none;
 }
 
-/* Contraseña y su ojo: un solo control con un solo borde. */
+/* Contraseña y su ojo: un solo campo con un solo borde. */
 .pf-v5-c-input-group {
-  border: 1px solid var(--fc-field-edge);
-  border-radius: 8px;
+  border: 1px solid var(--fc-input);
+  border-radius: 12px;
   background: var(--fc-surface);
-  transition: border-color 150ms;
+  transition: border-color var(--fc-quick);
 }
 
 .pf-v5-c-input-group:hover {
-  border-color: var(--fc-ink);
+  border-color: var(--fc-fg);
 }
 
 .pf-v5-c-input-group:has(input:focus-visible) {
-  border-color: var(--fc-blue);
-  outline: 2px solid var(--fc-blue);
+  border-color: var(--fc-accent);
+  outline: 2px solid var(--fc-accent);
   outline-offset: 0;
 }
 
 .pf-v5-c-input-group:has(.pf-m-error, [aria-invalid='true']) {
-  border-color: var(--fc-red);
+  border-color: var(--fc-danger);
 }
 
 .pf-v5-c-input-group .pf-v5-c-form-control,
+.pf-v5-c-input-group .pf-v5-c-form-control:hover,
 .pf-v5-c-input-group .pf-v5-c-form-control:has(:focus-visible) {
   border: 0;
   outline: 0;
   background: transparent;
 }
 
-.pf-v5-c-button.pf-m-control {
-  --pf-v5-c-button--m-control--BackgroundColor: transparent;
-  --pf-v5-c-button--m-control--hover--BackgroundColor: transparent;
-  --pf-v5-c-button--m-control--Color: var(--fc-ink-muted);
-  --pf-v5-c-button--m-control--hover--Color: var(--fc-ink);
-  min-width: 44px;
-  border-radius: 0 7px 7px 0;
-}
-
-.pf-v5-c-button.pf-m-control::after,
 .pf-v5-c-input-group__item,
 .pf-v5-c-input-group__item::before,
-.pf-v5-c-input-group__item::after {
+.pf-v5-c-input-group__item::after,
+.pf-v5-c-button.pf-m-control::after {
   border: 0 !important;
 }
 
+.pf-v5-c-button.pf-m-control {
+  --pf-v5-c-button--m-control--BackgroundColor: transparent;
+  --pf-v5-c-button--m-control--hover--BackgroundColor: transparent;
+  --pf-v5-c-button--m-control--Color: var(--fc-fg-muted);
+  --pf-v5-c-button--m-control--hover--Color: var(--fc-fg);
+  display: grid;
+  place-items: center;
+  width: 46px;
+  min-width: 46px;
+  height: 46px;
+  padding: 0;
+  border-radius: 0 11px 11px 0;
+}
+
 .pf-v5-c-button.pf-m-control:focus-visible {
-  outline: 2px solid var(--fc-blue);
-  outline-offset: -2px;
+  outline: 2px solid var(--fc-accent);
+  outline-offset: -4px;
+  border-radius: 10px;
 }
 
-/* El idioma, arriba a la derecha: un control discreto, sin caja, que no compite con el formulario. */
-.pf-v5-c-login__main-header-utilities .pf-v5-c-form-control {
-  --pf-v5-c-form-control--PaddingTop: 4px;
-  --pf-v5-c-form-control--PaddingBottom: 4px;
-  --pf-v5-c-form-control--FontSize: 14px;
-  --pf-v5-c-form-control--LineHeight: 20px;
-  --pf-v5-c-form-control--Color: var(--fc-ink-muted);
-  width: auto;
-  border-color: transparent;
-  background: transparent;
+/* El ojo y los demás iconos de Font Awesome, con los trazos de Lucide de la Cuenta. */
+.pf-v5-c-button.pf-m-control i,
+.pf-v5-c-alert__icon > :is(i, span),
+#reset-login i {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background: currentColor;
+  mask: var(--fc-icon) center / 20px no-repeat;
 }
 
-.pf-v5-c-login__main-header-utilities .pf-v5-c-form-control:hover {
-  border-color: var(--fc-hairline);
+.pf-v5-c-button.pf-m-control i::before,
+.pf-v5-c-alert__icon > :is(i, span)::before,
+#reset-login i::before {
+  content: none;
 }
 
-.pf-v5-c-login__main-header-utilities select {
-  border: 0;
-  background: transparent;
-  color: var(--fc-ink-muted);
-}
+.fa-eye { --fc-icon: url("../img/icons/eye.svg"); }
+.fa-eye-slash { --fc-icon: url("../img/icons/eye-off.svg"); }
+.fa-sync-alt { --fc-icon: url("../img/icons/rotate-ccw.svg"); }
+.fa-exclamation-circle { --fc-icon: url("../img/icons/circle-alert.svg"); }
+.fa-exclamation-triangle { --fc-icon: url("../img/icons/triangle-alert.svg"); }
+.fa-check-circle { --fc-icon: url("../img/icons/circle-check.svg"); }
+.fa-info-circle { --fc-icon: url("../img/icons/info.svg"); }
 
-/* Casillas: 18 px, del azul de la empresa. */
-.pf-v5-c-check {
-  align-items: center;
-  gap: 8px;
-}
-
-.pf-v5-c-check__input {
-  width: 18px;
-  height: 18px;
-  margin: 0;
-  accent-color: var(--fc-blue);
-}
-
-/* Botones: 40 px, 44 en pantallas táctiles; etiqueta de 14 px como en la Cuenta. */
-
-.pf-v5-c-button {
-  --pf-v5-c-button--FontSize: 14px;
-  --pf-v5-c-button--FontWeight: 500;
-  --pf-v5-c-button--LineHeight: 20px;
-  --pf-v5-c-button--PaddingTop: 10px;
-  --pf-v5-c-button--PaddingBottom: 10px;
-}
-
-.pf-v5-c-button.pf-m-primary {
-  --pf-v5-c-button--m-primary--BackgroundColor: var(--fc-blue);
-  --pf-v5-c-button--m-primary--hover--BackgroundColor: var(--fc-blue-deep);
-  --pf-v5-c-button--m-primary--focus--BackgroundColor: var(--fc-blue-deep);
-  --pf-v5-c-button--m-primary--active--BackgroundColor: var(--fc-blue-deep);
-  --pf-v5-c-button--m-primary--Color: var(--fc-on-blue);
-  --pf-v5-c-button--m-primary--hover--Color: var(--fc-on-blue);
-  --pf-v5-c-button--m-primary--focus--Color: var(--fc-on-blue);
-  --pf-v5-c-button--m-primary--active--Color: var(--fc-on-blue);
-}
-
-.pf-v5-c-button.pf-m-secondary,
-.pf-v5-c-button.pf-m-tertiary {
-  --pf-v5-c-button--m-secondary--BackgroundColor: var(--fc-surface);
-  --pf-v5-c-button--m-secondary--Color: var(--fc-ink);
-  --pf-v5-c-button--m-secondary--BorderColor: var(--fc-hairline);
-  --pf-v5-c-button--m-secondary--hover--BackgroundColor: var(--fc-ground);
-  --pf-v5-c-button--m-secondary--hover--Color: var(--fc-ink);
-  --pf-v5-c-button--m-secondary--hover--BorderColor: var(--fc-hairline);
-  --pf-v5-c-button--m-tertiary--Color: var(--fc-ink);
-  --pf-v5-c-button--m-tertiary--BorderColor: var(--fc-hairline);
-  --pf-v5-c-button--m-tertiary--hover--Color: var(--fc-ink);
-  --pf-v5-c-button--m-tertiary--hover--BorderColor: var(--fc-hairline);
-}
-
-.pf-v5-c-button.pf-m-secondary::after,
-.pf-v5-c-button.pf-m-tertiary::after {
-  border-width: 1px !important;
-}
-
-.pf-v5-c-button:focus-visible {
-  outline: 2px solid var(--fc-blue);
-  outline-offset: 2px;
-}
-
-.pf-v5-c-form__actions .pf-v5-c-button.pf-m-block + .pf-v5-c-button.pf-m-block {
+/* Ayudas y errores bajo el campo. */
+.pf-v5-c-form__helper-text {
   margin-top: 8px;
 }
 
-@media (pointer: coarse) {
-  .pf-v5-c-form-control {
-    --pf-v5-c-form-control--PaddingTop: 9px;
-    --pf-v5-c-form-control--PaddingBottom: 9px;
-  }
-
-  .pf-v5-c-button {
-    --pf-v5-c-button--PaddingTop: 12px;
-    --pf-v5-c-button--PaddingBottom: 12px;
-  }
+.pf-v5-c-form__helper-text:not(:has(*:not(.pf-v5-c-helper-text))),
+.pf-v5-c-helper-text:empty {
+  display: none;
 }
 
-/* Avisos: el fondo del estado y un borde fino, sin la raya gruesa de PatternFly. */
+.pf-v5-c-helper-text__item-text,
+.pf-v5-c-check__label,
+.pf-v5-c-form__helper-text {
+  font: 400 14px/20px var(--fc-font);
+  color: var(--fc-fg-muted);
+}
 
-.pf-v5-c-alert {
-  border-radius: 8px;
-  box-shadow: none;
-  border: 1px solid var(--fc-hairline);
+.pf-v5-c-helper-text__item-text.pf-m-error,
+.pf-v5-c-helper-text__item.pf-m-error .pf-v5-c-helper-text__item-text,
+#input-error-container-username .pf-v5-c-helper-text__item-text,
+[id^='input-error'] .pf-v5-c-helper-text__item-text,
+[id^='input-error'],
+.kc-feedback-text.pf-m-error {
+  color: var(--fc-danger);
+}
+
+[id^='input-error-container'] .pf-v5-c-form__helper-text {
+  margin-top: 8px;
+}
+
+/* El error del campo lleva delante el mismo círculo de alerta que los avisos. */
+.pf-v5-c-helper-text__item.pf-m-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.pf-v5-c-helper-text__item.pf-m-error::before {
+  content: '';
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  background: var(--fc-danger);
+  mask: url("../img/icons/circle-alert.svg") center / 16px no-repeat;
+}
+
+ul.pf-v5-c-helper-text__item-text.pf-m-error {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* «Mantener la sesión iniciada» y «¿Olvidaste tu contraseña?» en una línea; en el teléfono, una debajo de otra. */
+.pf-v5-c-helper-text.pf-v5-u-display-flex {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+}
+
+.pf-v5-c-form__group:has(#rememberMe, a[href*='reset-credentials']) > .pf-v5-c-form__helper-text {
+  margin-top: 16px;
+}
+
+/* Casillas de 20 px, como en las listas de M3: borde de campo, azul al marcar. */
+.pf-v5-c-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.pf-v5-c-check__input {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  border: 2px solid var(--fc-input);
+  border-radius: 6px;
   background: var(--fc-surface);
+  cursor: pointer;
+  transition: background-color var(--fc-quick), border-color var(--fc-quick);
+}
+
+.pf-v5-c-check__input::after {
+  content: '';
+  width: 14px;
+  height: 14px;
+  background: var(--fc-accent-fg);
+  mask: url("../img/icons/check.svg") center / 14px no-repeat;
+  opacity: 0;
+}
+
+.pf-v5-c-check__input:hover {
+  border-color: var(--fc-fg);
+}
+
+.pf-v5-c-check__input:checked {
+  border-color: var(--fc-accent);
+  background: var(--fc-accent);
+}
+
+.pf-v5-c-check__input:checked::after {
+  opacity: 1;
+}
+
+.pf-v5-c-check__input:focus-visible {
+  outline: 2px solid var(--fc-accent);
+  outline-offset: 2px;
+}
+
+.pf-v5-c-check__label {
+  color: var(--fc-fg);
+  cursor: pointer;
+}
+
+/* La opción de cerrar las demás sesiones sólo tiene sentido al cambiar la contraseña; Keycloak la pone en todas. */
+body:not([data-page-id='login-login-update-password']) #kc-form-options:has(#logout-sessions) {
+  display: none;
+}
+
+.pf-v5-c-form__group:has(> #kc-form-options:only-child):not(:has(.pf-v5-c-check:not([hidden]))) {
+  display: contents;
+}
+
+/* Enlaces: tinta azul, sin subrayar hasta pasar por encima. */
+.pf-v5-c-login a:not(.pf-v5-c-button) {
+  font-weight: 500;
+  color: var(--fc-link-ink);
+  text-decoration: none;
+  text-underline-offset: 3px;
+  border-radius: 4px;
+}
+
+.pf-v5-c-login a:not(.pf-v5-c-button):hover {
+  text-decoration: underline;
+}
+
+/* ----------------------------------------------------------------------------------------------------- Botones */
+
+/* Una columna de botones a todo el ancho, el principal primero: 48 px, como los campos, y de pastilla. */
+.pf-v5-c-form__actions {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap !important;
+  gap: 12px;
+  margin: 8px 0 0;
+  padding: 0 !important;
+}
+
+.pf-v5-c-form__actions > *,
+.pf-v5-c-form__actions > form {
+  width: 100%;
+  margin: 0 !important;
+}
+
+.pf-v5-c-button:is(.pf-m-primary, .pf-m-secondary, .pf-m-tertiary, .pf-m-link),
+input.pf-v5-c-button {
+  --pf-v5-c-button--BorderRadius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  margin: 0;
+  padding: 12px 24px;
+  border: 0;
+  border-radius: 9999px;
+  font: 500 16px/24px var(--fc-font);
+  text-align: center;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: background-color var(--fc-quick), color var(--fc-quick), border-color var(--fc-quick);
+}
+
+.pf-v5-c-button:is(.pf-m-primary, .pf-m-secondary, .pf-m-tertiary, .pf-m-link)::after {
+  display: none;
+}
+
+.pf-v5-c-button.pf-m-primary,
+input.pf-v5-c-button.pf-m-primary {
+  background: var(--fc-accent);
+  color: var(--fc-accent-fg);
+}
+
+.pf-v5-c-button.pf-m-primary:hover {
+  background: var(--fc-accent-hover);
+  color: var(--fc-accent-fg);
+}
+
+/* La otra forma de entrar (la passkey): contorno, mismo peso visual que un campo. */
+.pf-v5-c-button:is(.pf-m-secondary, .pf-m-tertiary) {
+  border: 1px solid var(--fc-border-strong);
+  background: var(--fc-surface);
+  color: var(--fc-fg);
+}
+
+.pf-v5-c-button:is(.pf-m-secondary, .pf-m-tertiary):hover {
+  background: var(--fc-surface-2);
+  color: var(--fc-fg);
+}
+
+/* Cancelar y volver: botones de texto, que no compiten con el principal. */
+.pf-v5-c-button[name='cancel-aia'],
+.pf-v5-c-form__actions a.pf-v5-c-button.pf-m-secondary,
+.pf-v5-c-button.pf-m-link {
+  border-color: transparent;
+  background: transparent;
+  color: var(--fc-link-ink);
+}
+
+.pf-v5-c-button[name='cancel-aia']:hover,
+.pf-v5-c-form__actions a.pf-v5-c-button.pf-m-secondary:hover,
+.pf-v5-c-button.pf-m-link:hover {
+  background: var(--fc-accent-subtle);
+  color: var(--fc-accent-ink);
+}
+
+/* Borrar la cuenta: el único botón rojo. */
+body[data-page-id='login-delete-account-confirm'] #kc-submit {
+  background: var(--fc-danger);
+  color: var(--fc-danger-fg);
+}
+
+body[data-page-id='login-delete-account-confirm'] #kc-submit:hover {
+  background: color-mix(in oklab, var(--fc-danger) 88%, var(--fc-fg));
+}
+
+.pf-v5-c-button:focus-visible,
+input.pf-v5-c-button:focus-visible {
+  outline: 2px solid var(--fc-accent);
+  outline-offset: 2px;
+}
+
+/* Enviado, el botón espera sin perder su sitio. */
+.pf-v5-c-button:disabled,
+.pf-v5-c-button[aria-disabled='true'] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* La passkey de la página de entrar, bajo el principal. */
+#authenticateWebAuthnButton {
+  margin-top: 12px !important;
+}
+
+/* «¿No tienes cuenta? Crear una cuenta»: una línea al pie, sin banda ni raya. */
+#kc-info,
+.pf-v5-c-login__main-footer-band {
+  margin: 32px 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: none;
+  font: 400 14px/20px var(--fc-font);
+  color: var(--fc-fg-muted);
+}
+
+#kc-info,
+#kc-info-wrapper,
+#kc-registration-container {
+  justify-content: start;
+  text-align: start;
+}
+
+#kc-info .pf-v5-u-font-size-sm,
+#kc-info .pf-v5-u-color-200 {
+  font-size: 14px !important;
+  color: var(--fc-fg-muted) !important;
+}
+
+/* Al recuperar la contraseña, la explicación va antes del campo, no debajo de los botones. */
+body[data-page-id='login-login-reset-password'] .pf-v5-c-login__main-body {
+  display: flex;
+  flex-direction: column;
+}
+
+body[data-page-id='login-login-reset-password'] .pf-v5-c-login__main-body > .pf-v5-c-login__main-footer {
+  order: -1;
+}
+
+body[data-page-id='login-login-reset-password'] #kc-info {
+  margin: 0 0 24px !important;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+body[data-page-id='login-login-reset-password'] #kc-info .pf-v5-u-font-size-sm {
+  font-size: 16px !important;
+  line-height: 24px;
+}
+
+/* ----------------------------------------------------------------------------------------------------- Avisos */
+
+/* Como los avisos de la Cuenta: el lavado del estado, un borde fino de su color y el icono de Lucide. */
+.pf-v5-c-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0 0 24px !important;
+  padding: 12px 16px;
+  border: 1px solid var(--fc-border);
+  border-radius: 16px;
+  background: var(--fc-surface-2);
+  box-shadow: none;
 }
 
 .pf-v5-c-alert::before {
   display: none;
 }
 
-.pf-v5-c-alert.pf-m-danger,
-.pf-v5-c-alert.pf-m-error {
-  background: var(--fc-red-wash);
-  border-color: color-mix(in oklab, var(--fc-red) 30%, transparent);
+.pf-v5-c-alert__icon {
+  margin: 0;
+  padding: 0;
+  font-size: 0;
 }
+
+.pf-v5-c-alert__title,
+.pf-v5-c-alert .kc-feedback-text {
+  margin: 0;
+  font: 400 14px/20px var(--fc-font);
+  color: var(--fc-fg);
+}
+
+.pf-v5-c-alert:is(.pf-m-danger, .pf-m-error) {
+  border-color: color-mix(in oklab, var(--fc-danger) 30%, transparent);
+  background: var(--fc-danger-subtle);
+}
+
+.pf-v5-c-alert:is(.pf-m-danger, .pf-m-error) .pf-v5-c-alert__icon { color: var(--fc-danger); }
 
 .pf-v5-c-alert.pf-m-warning {
-  background: var(--fc-amber-wash);
-  border-color: color-mix(in oklab, var(--fc-amber) 30%, transparent);
+  border-color: color-mix(in oklab, var(--fc-warn) 30%, transparent);
+  background: var(--fc-warn-subtle);
 }
+
+.pf-v5-c-alert.pf-m-warning .pf-v5-c-alert__icon { color: var(--fc-warn); }
 
 .pf-v5-c-alert.pf-m-success {
-  background: var(--fc-green-wash);
-  border-color: color-mix(in oklab, var(--fc-green) 30%, transparent);
+  border-color: color-mix(in oklab, var(--fc-ok) 30%, transparent);
+  background: var(--fc-ok-subtle);
 }
+
+.pf-v5-c-alert.pf-m-success .pf-v5-c-alert__icon { color: var(--fc-ok); }
 
 .pf-v5-c-alert.pf-m-info {
-  background: var(--fc-blue-wash);
-  border-color: color-mix(in oklab, var(--fc-blue) 30%, transparent);
+  border-color: transparent;
+  background: var(--fc-accent-subtle);
 }
 
-.pf-v5-c-alert__title {
-  font: 500 14px/20px var(--fc-font);
-  color: var(--fc-ink);
+.pf-v5-c-alert.pf-m-info .pf-v5-c-alert__icon,
+.pf-v5-c-alert.pf-m-info .pf-v5-c-alert__title {
+  color: var(--fc-accent-ink);
 }
 
-/* Separadores y pie */
+/* ----------------------------------------------------------------------------------------------------- Quién entra */
 
-.pf-v5-c-login__main-footer-band {
-  border-color: var(--fc-hairline);
+/* Al volver a pedir la contraseña, el correo va en una pastilla con «Usar otra cuenta», como en Google. */
+.pf-v5-c-login__main-body > .pf-v5-c-form:has(#kc-attempted-username) {
+  margin: 0 0 24px !important;
+}
+
+.pf-v5-c-form__group:has(#kc-attempted-username) > .pf-v5-c-form__group-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.pf-v5-c-input-group:has(#kc-attempted-username) {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  height: 40px;
+  padding-left: 4px;
+  border-color: var(--fc-border-strong);
+  border-radius: 9999px;
+}
+
+.pf-v5-c-input-group:has(#kc-attempted-username):hover {
+  border-color: var(--fc-border-strong);
+}
+
+.pf-v5-c-form-control.pf-m-readonly {
+  background: transparent;
+}
+
+#kc-attempted-username {
+  field-sizing: content;
+  min-width: 0;
+  padding: 0 4px 0 12px !important;
+  font: 500 14px/20px var(--fc-font) !important;
+  color: var(--fc-fg) !important;
+  cursor: default;
+}
+
+#reset-login {
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  margin-right: 1px;
+  border-radius: 9999px;
+}
+
+#reset-login:hover {
+  background: var(--fc-container);
+}
+
+#reset-login i {
+  width: 18px;
+  height: 18px;
+  mask-size: 18px;
+}
+
+.kc-login-tooltip .kc-tooltip-text {
+  top: calc(100% + 8px);
+  left: 50%;
+  translate: -50% 0;
+  min-width: 0;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--fc-fg);
+  color: var(--fc-surface);
+  font: 500 13px/18px var(--fc-font);
+  white-space: nowrap;
+  box-shadow: none;
+  transition: opacity var(--fc-quick);
+}
+
+/* ----------------------------------------------------------------------------------------------------- Pantallas */
+
+/* Verificación en dos pasos: los pasos numerados (el orden importa), las apps en una línea y el código QR sobre
+   blanco también en oscuro, que es lo que leen las cámaras. */
+#kc-totp-settings {
+  counter-reset: fc-step;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0 0 32px !important;
+  padding: 0;
+  list-style: none;
+}
+
+#kc-totp-settings > li {
+  counter-increment: fc-step;
+  position: relative;
+  margin: 0;
+  padding-left: 40px;
+  font: 400 16px/24px var(--fc-font);
+  color: var(--fc-fg);
+}
+
+#kc-totp-settings > li::before {
+  content: counter(fc-step);
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  background: var(--fc-container);
+  font: 600 13px/1 var(--fc-font);
+  font-variant-numeric: tabular-nums;
+  color: var(--fc-fg);
+}
+
+#kc-totp-settings p {
+  margin: 0;
+}
+
+#kc-totp-settings p + p {
+  margin-top: 4px;
   font-size: 14px;
+  line-height: 20px;
+  color: var(--fc-fg-muted);
 }
 
-.kc-login-divider::before,
-.kc-login-divider::after {
-  border-color: var(--fc-hairline);
+#kc-totp-supported-apps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+#kc-totp-supported-apps li {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 9999px;
+  background: var(--fc-container);
+  font: 500 14px/20px var(--fc-font);
+  color: var(--fc-fg);
+}
+
+.kc-qr-code {
+  align-items: flex-start !important;
+  gap: 12px;
+  margin: 12px 0 0 !important;
+}
+
+.kc-qr-code img,
+.pf-v5-theme-dark .kc-qr-code img {
+  width: 176px;
+  height: 176px;
+  padding: 8px;
+  border: 1px solid var(--fc-border);
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: none;
+}
+
+#kc-totp-secret-key {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--fc-container);
+  font: 500 16px/24px var(--fc-font);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  color: var(--fc-fg);
+}
+
+/* Los valores para configurar la app a mano, alineados con el texto del paso. */
+#kc-totp-settings > li > ul:not(#kc-totp-supported-apps) {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+#kc-totp-settings > li > ul:not(#kc-totp-supported-apps) li {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Borrar la cuenta: lo que pasa, en una lista sin viñetas ni márgenes de PatternFly. */
+.pf-v5-c-list,
+.pf-v5-c-list li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pf-v5-c-list li + li {
+  margin-top: 0;
+}
+
+#kc-deleteaccount-form > p,
+#kc-deleteaccount-form .pf-v5-c-list li,
+.delete-account-text {
+  margin: 0;
+  font: 400 16px/24px var(--fc-font);
+  color: var(--fc-fg);
+}
+
+#kc-deleteaccount-form .pf-v5-c-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 8px 0 24px;
+}
+
+#kc-deleteaccount-form .pf-v5-c-alert {
+  margin-bottom: 24px !important;
+}
+
+#kc-deleteaccount-form .pf-v5-c-list li {
+  position: relative;
+  padding-left: 20px;
+}
+
+#kc-deleteaccount-form .pf-v5-c-list li::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 4px;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--fc-fg-muted);
+}
+
+.delete-account-text {
+  margin-bottom: 8px;
+  color: var(--fc-fg-muted);
+}
+
+/* Cerrar sesión, errores y avisos de Keycloak: la frase y su botón o enlace. */
+.pf-v5-c-login__main-body .instruction,
+#kc-error-message > p,
+#kc-info-message > p {
+  margin: 0 0 24px;
+  font: 400 16px/24px var(--fc-font);
+  color: var(--fc-fg-muted);
+  text-wrap: pretty;
+}
+
+/* En la página de error, el mensaje es lo único que hay que leer: va en el color del texto, no en el de apoyo. */
+#kc-error-message > p {
+  color: var(--fc-fg);
+}
+
+.pf-v5-c-login__main-body .instruction:empty,
+#kc-info-message:not(:has(*)) {
+  display: none;
+}
+
+#kc-logout-confirm #kc-form-options:not(:has(*:not(div))) {
+  display: none;
+}
+
+/* Las pantallas de Keycloak sin formulario dejan restos de su maqueta antigua. */
+.clearfix {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .pf-v5-c-check__input:checked {
+    background: Highlight;
+  }
+
+  .pf-v5-c-button.pf-m-primary {
+    border: 1px solid ButtonText;
+  }
 }
