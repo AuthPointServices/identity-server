@@ -480,8 +480,7 @@ html.login-pf,
 
 /* El ojo y los demás iconos de Font Awesome, con los trazos de Lucide de la Cuenta. */
 .pf-v5-c-button.pf-m-control i,
-.pf-v5-c-alert__icon > :is(i, span),
-#reset-login i {
+.pf-v5-c-alert__icon > :is(i, span) {
   display: block;
   width: 20px;
   height: 20px;
@@ -490,14 +489,12 @@ html.login-pf,
 }
 
 .pf-v5-c-button.pf-m-control i::before,
-.pf-v5-c-alert__icon > :is(i, span)::before,
-#reset-login i::before {
+.pf-v5-c-alert__icon > :is(i, span)::before {
   content: none;
 }
 
 .fa-eye { --fc-icon: url("../img/icons/eye.svg"); }
 .fa-eye-slash { --fc-icon: url("../img/icons/eye-off.svg"); }
-.fa-sync-alt { --fc-icon: url("../img/icons/rotate-ccw.svg"); }
 .fa-exclamation-circle { --fc-icon: url("../img/icons/circle-alert.svg"); }
 .fa-exclamation-triangle { --fc-icon: url("../img/icons/triangle-alert.svg"); }
 .fa-check-circle { --fc-icon: url("../img/icons/circle-check.svg"); }
@@ -968,7 +965,8 @@ body[data-page-id='login-login-verify-email'] .pf-m-danger .fa-exclamation-circl
 
 /* ----------------------------------------------------------------------------------------------------- Quién entra */
 
-/* Al volver a pedir la contraseña, el correo va en una pastilla con «Usar otra cuenta», como en Google. */
+/* Al volver a pedir la contraseña: el correo con el que entras, como texto, y «Usar otra cuenta» escrito al lado. Sin
+   pastilla ni aviso al pasar el cursor: la salida se lee sin tener que descubrirla. */
 .pf-v5-c-login__main-body > .pf-v5-c-form:has(#kc-attempted-username) {
   margin: 0 0 24px !important;
 }
@@ -981,24 +979,14 @@ body[data-page-id='login-login-verify-email'] .pf-m-danger .fa-exclamation-circl
   clip-path: inset(50%);
 }
 
-.pf-v5-c-input-group:has(#kc-attempted-username) {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  max-width: 100%;
-  height: 40px;
-  padding-left: 4px;
-  border-color: var(--fc-border-strong);
-  border-radius: 9999px;
-}
-
-/* La pastilla mide lo que el correo, no lo que el campo de debajo. */
-.pf-v5-c-input-group:has(#kc-attempted-username) .pf-m-fill {
-  flex: 0 1 auto;
-}
-
+.pf-v5-c-input-group:has(#kc-attempted-username),
 .pf-v5-c-input-group:has(#kc-attempted-username):hover {
-  border-color: var(--fc-border-strong);
+  align-items: center;
+  gap: 16px;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  background: none;
 }
 
 .pf-v5-c-form-control.pf-m-readonly {
@@ -1006,92 +994,64 @@ body[data-page-id='login-login-verify-email'] .pf-m-danger .fa-exclamation-circl
 }
 
 #kc-attempted-username {
-  field-sizing: content;
   min-width: 0;
-  padding: 0 4px 0 12px !important;
-  font: 500 14px/20px var(--fc-font) !important;
+  height: 24px;
+  padding: 0 !important;
+  font: 500 16px/24px var(--fc-font) !important;
   color: var(--fc-fg) !important;
+  text-overflow: ellipsis;
   cursor: default;
 }
 
 #reset-login {
-  width: 36px;
-  min-width: 36px;
-  height: 36px;
-  margin-right: 1px;
-  border-radius: 9999px;
+  width: auto;
+  min-width: 0;
+  height: 32px;
+  margin: 0 -8px 0 0;
+  padding: 0 8px;
+  border-radius: 8px;
+  color: var(--fc-link-ink);
+  white-space: nowrap;
 }
 
 #reset-login:hover {
-  background: var(--fc-container);
+  background: color-mix(in oklab, var(--fc-accent) 8%, transparent);
 }
 
-#reset-login i {
-  width: 18px;
-  height: 18px;
-  mask-size: 18px;
+#reset-login:focus-visible {
+  outline-offset: 0;
 }
 
-/* Alineado a la derecha del botón (centrado se salía del teléfono), por encima del aviso de debajo y sin la flecha
-   de Keycloak, que apunta a la izquierda. */
-.kc-login-tooltip .kc-tooltip-text {
-  z-index: 1;
-  top: calc(100% + 8px);
-  right: 0;
-  left: auto;
-  min-width: 0;
-  padding: 6px 10px;
-  border-radius: 8px;
-  background: var(--fc-fg);
-  color: var(--fc-surface);
-  font: 500 13px/18px var(--fc-font);
-  white-space: nowrap;
-  box-shadow: none;
-  transition: opacity var(--fc-quick);
+/* El correo se puede enfocar (es un campo de sólo lectura): el anillo va en él, no alrededor de la línea entera. */
+.pf-v5-c-input-group:has(#kc-attempted-username:focus-visible) {
+  outline: 0;
 }
 
+#kc-attempted-username:focus-visible {
+  outline: 2px solid var(--fc-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+#reset-login i,
 .kc-login-tooltip .kc-tooltip-text::after {
   display: none;
 }
 
-/* Opaco, para que no se lea la frase de debajo, y también con el foco del teclado. Keycloak lo deja al 70 % y sólo al
-   pasar el cursor. */
-.kc-login-tooltip:is(:hover, :focus-visible) .kc-tooltip-text {
+/* El texto del aviso de Keycloak, a la vista y como etiqueta del botón. */
+.kc-login-tooltip .kc-tooltip-text,
+.kc-login-tooltip:hover .kc-tooltip-text {
+  position: static;
   visibility: visible;
   opacity: 1;
-}
-
-/* Desde 600 px va a la derecha del botón, en su fila, y no tapa la frase de debajo (WCAG 1.4.13). El puente de 8 px
-   deja llevar el cursor hasta el aviso sin que se oculte. */
-@media (min-width: 600px) {
-  .kc-login-tooltip .kc-tooltip-text {
-    top: 50%;
-    right: auto;
-    left: calc(100% + 8px);
-    transform: translateY(-50%);
-  }
-
-  .kc-login-tooltip .kc-tooltip-text::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 100%;
-    bottom: 0;
-    width: 8px;
-  }
-
-  /* Con un correo muy largo y menos de 700 px, la pastilla se acorta para que el aviso quepa a 16 px del borde de la
-     ventana: con la pastilla entera, el aviso acaba en 50vw + 335 px. */
-  .pf-v5-c-input-group:has(#kc-attempted-username) {
-    max-width: min(100%, 100% + 50vw - 351px);
-  }
-}
-
-/* Con táctil, un toque no lo muestra: en iOS, un :hover que lo enseña haría pedir dos toques al botón. */
-@media (hover: none) {
-  .kc-login-tooltip:hover:not(:focus-visible) .kc-tooltip-text {
-    visibility: hidden;
-  }
+  min-width: 0;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font: 500 14px/20px var(--fc-font);
+  transform: none;
+  box-shadow: none;
 }
 
 /* ----------------------------------------------------------------------------------------------------- Pantallas */
@@ -1373,14 +1333,7 @@ body:is([data-page-id='login-login-verify-email'], [data-page-id='login-login-up
 
 /* Con pantalla táctil, lo que se toca mide al menos 44 px de alto. */
 @media (pointer: coarse) {
-  /* La pastilla crece a 48, como un campo, para que quepa el botón de 44. */
-  .pf-v5-c-input-group:has(#kc-attempted-username) {
-    height: 48px;
-  }
-
   #reset-login {
-    width: 44px;
-    min-width: 44px;
     height: 44px;
   }
 
@@ -1446,16 +1399,10 @@ body:is([data-page-id='login-login-verify-email'], [data-page-id='login-login-up
     border: 1px solid ButtonText;
   }
 
-  /* El aviso de «Usar otra cuenta» queda del color del lienzo: el borde lo separa. */
-  .kc-login-tooltip .kc-tooltip-text {
-    border: 1px solid CanvasText;
-  }
-
   /* Los iconos por máscara, la raya de la marca y los puntos de la lista pintan su fondo: sin esto quedan del color
      del lienzo y no se ven. */
   .pf-v5-c-button.pf-m-control i,
   .pf-v5-c-alert__icon > :is(i, span),
-  #reset-login i,
   .pf-v5-c-login__main-header-utilities .pf-v5-c-form-control__toggle-icon,
   .pf-v5-c-helper-text__item.pf-m-error::before,
   #input-error-otp-code::before,
