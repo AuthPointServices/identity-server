@@ -41,9 +41,9 @@ jobs:
         with:
           path: .cache
           key: downloads-${{ hashFiles('versions.env') }}
-      # El CSS de Tailwind va en el repo porque Keycloak lo sirve tal cual: tiene que salir igual de sus plantillas.
-      - name: theme
-        run: corepack enable && pnpm install --frozen-lockfile && pnpm theme && git diff --exit-code themes/
+      # Las pantallas de acceso (login-ui, React con Keycloakify) se empaquetan en un jar con Maven, que trae el runner.
+      - name: login theme
+        run: corepack enable && pnpm --dir login-ui install --frozen-lockfile && pnpm --dir login-ui check && pnpm --dir login-ui build
       - name: env
         run: |
           sed 's#^PG_ADMIN_DSN=.*#PG_ADMIN_DSN=postgres://postgres:postgres@127.0.0.1:5432/postgres?sslmode=disable#' .env.example > .env

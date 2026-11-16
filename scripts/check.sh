@@ -19,7 +19,8 @@ expect "emisor del realm" "$realm" "$issuer"
 challenge=$(python3 -c 'import secrets,hashlib,base64;print(base64.urlsafe_b64encode(hashlib.sha256(secrets.token_bytes(32)).digest()).decode().rstrip("="))')
 login="$realm/protocol/openid-connect/auth?client_id=accounts&response_type=code&scope=openid&redirect_uri=$ACCOUNTS_URL/auth/callback&code_challenge=$challenge&code_challenge_method=S256"
 expect "página de inicio de sesión de la Cuenta" 200 "$(code "$login")"
-expect "la página de entrar usa el tema fretchcop" yes "$(curl -s "$login" | grep -q 'login/fretchcop/css/fretchcop.css' && echo yes || echo no)"
+# La pantalla de acceso es la app de login-ui (Keycloakify): su HTML carga el bundle del tema.
+expect "la página de entrar usa el tema fretchcop" yes "$(curl -s "$login" | grep -q 'login/fretchcop/dist/assets/' && echo yes || echo no)"
 # Sin PKCE, Keycloak devuelve al cliente un error en la redirección en vez de la página de entrar.
 nopkce=$(curl -s -o /dev/null -w '%{redirect_url}' "$realm/protocol/openid-connect/auth?client_id=accounts&response_type=code&scope=openid&redirect_uri=$ACCOUNTS_URL/auth/callback")
 expect "sin PKCE no entra" invalid_request "$(sed -n 's/.*error=\([a-z_]*\).*/\1/p' <<<"$nopkce")"
@@ -31,14 +32,5 @@ expect "la cuenta de servicio no ve usuarios" 403 "$(code -H "Authorization: Bea
 expect "sin kc-admin-api no hay administración" 401 "$(code -H "Authorization: Bearer $(token)" "$admin/events?max=1")"
 
 expect "la consola de cuenta de Keycloak está apagada" 400 "$(code "$realm/protocol/openid-connect/auth?client_id=account-console&response_type=code&scope=openid&redirect_uri=$KC_URL/realms/$REALM/account/")"
-
-# El tema copia tres plantillas de keycloak.v2: si una versión nueva de Keycloak cambia alguna de serie, hay que pasar
-# sus cambios a la copia y poner aquí el sha256 nuevo.
-. ./versions.env
-copied() { python3 -c 'import sys,zipfile,hashlib;print(hashlib.sha256(zipfile.ZipFile(sys.argv[1]).read("theme/keycloak.v2/login/"+sys.argv[2])).hexdigest())' \
-  ".cache/keycloak-$KEYCLOAK_VERSION/lib/lib/main/org.keycloak.keycloak-themes-$KEYCLOAK_VERSION.jar" "$1"; }
-expect "template.ftl de serie, la que copia el tema" 6221a3176c73a3fd67abc97076deb9cef112378ce157735a78bd865800315b37 "$(copied template.ftl)"
-expect "login.ftl de serie, la que copia el tema" c9ec5c28a14aa30f0d6887044f431c2c04cbe1ad7732c1bf4a1c3c89250efe31 "$(copied login.ftl)"
-expect "login-config-totp.ftl de serie, la que copia el tema" 182a0e44f35be72d5cca2446c275c722f4bd60dc0cb21b08314aa9bd5338be1d "$(copied login-config-totp.ftl)"
 
 exit $fail

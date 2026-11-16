@@ -7,8 +7,12 @@ set -a; . ./.env; set +a
 
 scripts/fetch.sh
 scripts/db.sh
-# El tema se lee de themes/ sin copiarlo; start-dev no lo guarda en caché, así un cambio se ve al recargar.
+# Los correos se leen de themes/ sin copiarlos; start-dev no los guarda en caché, así un cambio se ve al recargar.
 ln -sfn "$PWD/themes/fretchcop" ".cache/keycloak-$KEYCLOAK_VERSION/themes/fretchcop"
+# Las pantallas de acceso son el jar de login-ui (React con Keycloakify): tras cambiarlas, construirlo y reiniciar.
+jar=login-ui/dist_keycloak/fretchcop-login.jar
+[[ -f $jar ]] || { echo "Falta $jar: pnpm --dir login-ui install && pnpm --dir login-ui build" >&2; exit 1; }
+cp "$jar" ".cache/keycloak-$KEYCLOAK_VERSION/providers/fretchcop-login.jar"
 
 exec ".cache/keycloak-$KEYCLOAK_VERSION/bin/kc.sh" start-dev \
   --http-port="$KC_PORT" \
