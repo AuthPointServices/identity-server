@@ -1070,154 +1070,9 @@ body[data-page-id='login-login-verify-email'] .pf-m-danger .fa-exclamation-circl
 
 /* ----------------------------------------------------------------------------------------------------- Pantallas */
 
-/* Verificación en dos pasos: los pasos en una línea de tiempo (el orden importa), con un círculo por paso unidos por
-   una raya. Cada paso dice qué hacer en 500 y lo de apoyo va debajo en 14/20. Los campos y los botones siguen en la
-   columna del texto: son el último paso, no algo aparte. */
-#kc-totp-settings {
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-  margin: 0 0 24px !important;
-  padding: 0;
-  list-style: none;
-  counter-reset: fc-step;
-}
-
-#kc-totp-settings > li {
-  counter-increment: fc-step;
-  position: relative;
-  margin: 0;
-  padding-left: 44px;
-  font: 400 16px/24px var(--fc-font);
-  color: var(--fc-fg);
-}
-
-#kc-totp-settings > li > p:first-child {
-  font-weight: 500;
-}
-
-#kc-totp-settings > li::before {
-  content: counter(fc-step);
-  position: absolute;
-  top: -2px;
-  left: 0;
-  display: grid;
-  place-items: center;
-  box-sizing: border-box;
-  width: 28px;
-  height: 28px;
-  border: 1px solid var(--fc-border-strong);
-  border-radius: 9999px;
-  background: var(--fc-surface);
-  font: 600 14px/1 var(--fc-font);
-  font-variant-numeric: tabular-nums;
-  color: var(--fc-fg);
-}
-
-/* La raya baja del círculo hasta el siguiente, con 6 px de aire en cada punta. */
-#kc-totp-settings > li:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  top: 32px;
-  bottom: -20px;
-  left: 13.5px;
-  width: 1px;
-  background: var(--fc-border-strong);
-}
-
-#kc-totp-settings-form {
-  padding-left: 44px;
-}
-
-#kc-totp-settings p {
-  margin: 0;
-}
-
-#kc-totp-settings p + p {
-  margin-top: 4px;
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--fc-fg-muted);
-}
-
-/* «¿Prefieres escanear el código?» del mismo tamaño que «¿No puedes escanear el código?», y a 12 px de la clave,
-   como aquel del código QR. */
-#kc-totp-settings p:has(> a) {
-  margin-top: 12px;
-  font-size: 16px;
-  line-height: 24px;
-}
-
-/* Las apps son texto, no chips que parezcan botones: separadas por comas y sin partir un nombre. En 14/20, como la
-   otra línea de apoyo de los pasos, y caben en una línea. */
-#kc-totp-supported-apps {
-  display: block;
-  margin: 4px 0 0;
-  padding: 0;
-  font: 400 14px/20px var(--fc-font);
-  list-style: none;
-}
-
-#kc-totp-supported-apps li {
-  display: inline;
-  margin: 0;
-  font: 400 14px/20px var(--fc-font);
-  color: var(--fc-fg-muted);
-  white-space: nowrap;
-}
-
-#kc-totp-supported-apps li:not(:last-child)::after {
-  content: ', ';
-}
-
-.kc-qr-code {
-  align-items: flex-start !important;
-  gap: 12px;
-  margin: 12px 0 0 !important;
-}
-
-.kc-qr-code img,
-.pf-v5-theme-dark .kc-qr-code img {
-  width: 168px;
-  height: 168px;
-  padding: 8px;
-  border: 1px solid var(--fc-border);
-  border-radius: 12px;
-  background: #ffffff;
-  box-shadow: none;
-}
-
-#kc-totp-secret-key {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 8px 12px;
-  border-radius: 12px;
-  background: var(--fc-container);
-  user-select: all;
-  font: 500 16px/24px var(--fc-font);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.06em;
-  text-wrap: balance;
-  overflow-wrap: anywhere;
-  color: var(--fc-fg);
-}
-
-/* Los valores para configurar la app a mano, alineados con el texto del paso. */
-#kc-totp-settings > li > ul:not(#kc-totp-supported-apps) {
-  margin: 4px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-#kc-totp-settings > li > ul:not(#kc-totp-supported-apps) li {
-  margin: 0;
-  font: 400 14px/20px var(--fc-font);
-  font-variant-numeric: tabular-nums;
-  color: var(--fc-fg-muted);
-}
+/* Verificación en dos pasos: su plantilla (login-config-totp.ftl) lleva sus estilos con Tailwind. */
 
 /* Sin una palabra sola en la última línea. */
-#kc-totp-settings p,
 .pf-v5-c-list li {
   text-wrap: pretty;
 }
@@ -1411,16 +1266,9 @@ body:is([data-page-id='login-login-verify-email'], [data-page-id='login-login-up
     margin-top: 4px;
   }
 
-  /* Enlaces sueltos: el relleno agranda la zona de toque sin mover el texto. El del QR va en bloque y el margen
-     negativo le devuelve su sitio. */
-  #kc-info a,
-  #mode-manual,
-  #mode-barcode {
+  /* Enlaces sueltos: el relleno agranda la zona de toque sin mover el texto. */
+  #kc-info a {
     padding-block: 13px;
-  }
-
-  #mode-manual {
-    margin-block: -13px;
   }
 }
 

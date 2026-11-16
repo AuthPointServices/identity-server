@@ -37,8 +37,13 @@ cambie ahí se pierde en el próximo `apply.sh`. Los cambios van en `config/`.
 | `themes/fretchcop/email` | Los correos en español, de tú, con la marca |
 | `versions.env` | Versiones fijadas de Keycloak, keycloak-config-cli y Mailpit, con su SHA-256 |
 
-El tema sólo cambia CSS y textos, no las plantillas, para que una versión nueva de Keycloak no lo rompa. Lo que eso
-deja fuera: el registro no pide contraseña (con `verifyEmail` Keycloak la pide después de verificar el correo) y su
+El tema cambia CSS y textos, y sólo una plantilla: `login-config-totp.ftl`, la de activar los dos pasos, porque la de
+serie necesitaba otro marcado. Al actualizar Keycloak, esa plantilla se compara con la nueva de `keycloak.v2`. Lo que
+lleva su marcado se estiliza con Tailwind y los tokens del tema (`themes/fretchcop/login/tailwind.css`); tras cambiar
+una plantilla del tema, `pnpm install` una vez y `pnpm theme` regeneran `resources/css/tailwind.css`, que va en el repo
+y la CI comprueba que esté al día.
+
+Se queda como lo hace Keycloak: el registro no pide contraseña (con `verifyEmail` Keycloak la pide después de verificar el correo) y su
 página lanza un error de script de `keycloak.v2` al no encontrar el campo; no afecta a nada. En desarrollo
 `scripts/dev.sh` lo enlaza en Keycloak y un cambio se ve al recargar la página.
 
