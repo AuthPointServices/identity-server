@@ -1227,6 +1227,18 @@ body[data-page-id='login-info'] .pf-v5-c-login__main-body:has(#kc-info-message >
   display: none;
 }
 
+/* Un enlace abierto en otro navegador: el título y la frase son el mismo mensaje («Para seguir, completa esto»); de
+   la frase se ve sólo lo que hay que hacer. El lector de pantalla la lee entera. */
+#kc-info-message > .instruction:has(> b) {
+  font-size: 0;
+  line-height: 0;
+}
+
+#kc-info-message > .instruction > b {
+  font: 500 16px/24px var(--fc-font);
+  color: var(--fc-fg);
+}
+
 /* En los pasos que Keycloak pide al entrar (verificar el correo, crear la contraseña…), el aviso amarillo repite el
    título. */
 body:is([data-page-id='login-login-verify-email'], [data-page-id='login-login-update-password'],
