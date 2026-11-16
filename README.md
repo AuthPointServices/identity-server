@@ -42,6 +42,9 @@ deja fuera: el registro no pide contraseña (con `verifyEmail` Keycloak la pide 
 página lanza un error de script de `keycloak.v2` al no encontrar el campo; no afecta a nada. En desarrollo
 `scripts/dev.sh` lo enlaza en Keycloak y un cambio se ve al recargar la página.
 
+Al actualizar Keycloak, mira la pantalla de verificar el correo: el CSS anula con `margin-top: -1lh` el salto con el que
+`login-verify-email.ftl` abre la frase, y si la plantilla lo quita el texto sube 24 px.
+
 Keycloak avisa por correo de los cambios de seguridad (contraseña, dos pasos, passkeys). Los intentos fallidos no se
 avisan uno por uno: el arranque lleva `--spi-events-listener--email--exclude-events=LOGIN_ERROR`. La consola de
 cuenta de Keycloak está apagada; sus enlaces llevan a la Cuenta.
