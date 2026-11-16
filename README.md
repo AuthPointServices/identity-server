@@ -33,7 +33,7 @@ cambie ahí se pierde en el próximo `apply.sh`. Los cambios van en `config/`.
 |---|---|
 | `config/realm.yaml` | El realm: registro, contraseñas, bloqueos, sesiones, eventos, passkeys y correo |
 | `config/clients.yaml` | Un cliente OIDC por producto, con sus redirecciones y sus permisos |
-| `themes/fretchcop/login` | Las pantallas de acceso: las plantillas de `keycloak.v2` con el estilo y los textos de la Cuenta (`accounts-frontend/DESIGN.md`). Tarjeta de una columna de 480 px que pasa a página entera en el teléfono; Geist servida desde el tema (OFL, `resources/fonts`) e iconos de Lucide en `resources/img/icons` en lugar de Font Awesome |
+| `themes/fretchcop/login` | Las pantallas de acceso: las plantillas de `keycloak.v2` con el estilo y los textos de la Cuenta (`accounts-frontend/DESIGN.md`). Una página más de la Cuenta, sin tarjeta: la barra de 64 px con la marca y el idioma, y una columna de 400 px sobre el fondo de la Cuenta; Geist servida desde el tema (OFL, `resources/fonts`) e iconos de Lucide en `resources/img/icons` en lugar de Font Awesome |
 | `themes/fretchcop/email` | Los correos en español, de tú, con la marca |
 | `versions.env` | Versiones fijadas de Keycloak, keycloak-config-cli y Mailpit, con su SHA-256 |
 
