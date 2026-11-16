@@ -881,6 +881,7 @@ body[data-page-id='login-login-reset-password'] #kc-info .pf-v5-u-font-size-sm {
   margin: 0;
   font: 400 14px/20px var(--fc-font);
   color: var(--fc-fg);
+  text-wrap: pretty;
 }
 
 .pf-v5-c-alert:is(.pf-m-danger, .pf-m-error) {
@@ -1213,6 +1214,25 @@ body[data-page-id='login-info'] .pf-v5-c-login__main-body:has(#kc-info-message >
   display: none;
 }
 
+/* Verificar el correo: el aviso amarillo repite el título, y «¿No te llegó? Pulsa aquí…» es el pie, como «¿No tienes
+   cuenta?»: en una línea, a 32 px de la frase y sin margen debajo. */
+body[data-page-id='login-login-verify-email'] .pf-v5-c-alert.pf-m-warning {
+  display: none;
+}
+
+.pf-v5-c-login__main-body > .instruction:has(+ .pf-v5-c-login__main-footer > #kc-info) {
+  margin-bottom: 0;
+}
+
+#kc-info .instruction {
+  margin: 0;
+  font: 400 14px/20px var(--fc-font);
+}
+
+#kc-info .instruction br {
+  display: none;
+}
+
 #kc-logout-confirm #kc-form-options:not(:has(*:not(div))) {
   display: none;
 }
@@ -1266,7 +1286,7 @@ body[data-page-id='login-info'] .pf-v5-c-login__main-body:has(#kc-info-message >
 
   /* Enlaces sueltos: el relleno agranda la zona de toque sin mover el texto. El del QR va en bloque y el margen
      negativo le devuelve su sitio. */
-  #kc-registration a,
+  #kc-info a,
   #mode-manual,
   #mode-barcode {
     padding-block: 13px;
