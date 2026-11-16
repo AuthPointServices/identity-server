@@ -923,18 +923,22 @@ body[data-page-id='login-login-reset-password'] #kc-info .pf-v5-u-font-size-sm {
 .pf-v5-c-alert.pf-m-success .pf-v5-c-alert__icon { color: var(--fc-ok); }
 
 /* Las notas informativas («Por seguridad, vuelve a escribir tu contraseña.») son texto de apoyo: el lavado azul es de
-   la sección actual y de los botones tonales de la Cuenta. */
-.pf-v5-c-alert.pf-m-info {
+   la sección actual y de los botones tonales de la Cuenta. El aviso de cambiar el correo al entrar sólo explica qué
+   pasa, y el ámbar es para el riesgo: va igual. */
+.pf-v5-c-alert.pf-m-info,
+body[data-page-id='login-update-email'] .pf-v5-c-alert.pf-m-warning {
   padding: 0;
   border: 0;
   background: none;
 }
 
-.pf-v5-c-alert.pf-m-info .pf-v5-c-alert__icon {
+.pf-v5-c-alert.pf-m-info .pf-v5-c-alert__icon,
+body[data-page-id='login-update-email'] .pf-v5-c-alert.pf-m-warning .pf-v5-c-alert__icon {
   display: none;
 }
 
-.pf-v5-c-alert.pf-m-info .pf-v5-c-alert__title {
+.pf-v5-c-alert.pf-m-info .pf-v5-c-alert__title,
+body[data-page-id='login-update-email'] .pf-v5-c-alert.pf-m-warning .pf-v5-c-alert__title {
   font: 400 16px/24px var(--fc-font);
   color: var(--fc-fg-muted);
 }
