@@ -840,14 +840,21 @@ body[data-page-id='login-login-reset-password'] #kc-info .pf-v5-u-font-size-sm {
 
 .pf-v5-c-alert.pf-m-success .pf-v5-c-alert__icon { color: var(--fc-ok); }
 
+/* Las notas informativas («Por seguridad, vuelve a escribir tu contraseña.») son texto de apoyo: el lavado azul es de
+   la sección actual y de los botones tonales de la Cuenta. */
 .pf-v5-c-alert.pf-m-info {
-  border-color: transparent;
-  background: var(--fc-accent-subtle);
+  padding: 0;
+  border: 0;
+  background: none;
 }
 
-.pf-v5-c-alert.pf-m-info .pf-v5-c-alert__icon,
+.pf-v5-c-alert.pf-m-info .pf-v5-c-alert__icon {
+  display: none;
+}
+
 .pf-v5-c-alert.pf-m-info .pf-v5-c-alert__title {
-  color: var(--fc-accent-ink);
+  font: 400 16px/24px var(--fc-font);
+  color: var(--fc-fg-muted);
 }
 
 /* ----------------------------------------------------------------------------------------------------- Quién entra */
@@ -868,11 +875,17 @@ body[data-page-id='login-login-reset-password'] #kc-info .pf-v5-u-font-size-sm {
 .pf-v5-c-input-group:has(#kc-attempted-username) {
   display: inline-flex;
   align-items: center;
+  width: fit-content;
   max-width: 100%;
   height: 40px;
   padding-left: 4px;
   border-color: var(--fc-border-strong);
   border-radius: 9999px;
+}
+
+/* La pastilla mide lo que el correo, no lo que el campo de debajo. */
+.pf-v5-c-input-group:has(#kc-attempted-username) .pf-m-fill {
+  flex: 0 1 auto;
 }
 
 .pf-v5-c-input-group:has(#kc-attempted-username):hover {
