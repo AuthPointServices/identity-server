@@ -1304,6 +1304,11 @@ body:is([data-page-id='login-login-verify-email'], [data-page-id='login-login-up
   margin-right: -0.25em;
 }
 
+/* Es lo último de la tarjeta: sin margen debajo quedan los 32 px de las demás. */
+#instruction1 {
+  margin-bottom: 0;
+}
+
 /* Las pantallas de Keycloak sin formulario dejan restos de su maqueta antigua. */
 .clearfix {
   display: none;
