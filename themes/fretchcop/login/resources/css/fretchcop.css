@@ -1137,4 +1137,19 @@ body[data-page-id='login-login-reset-password'] #kc-info .pf-v5-u-font-size-sm {
   .pf-v5-c-button.pf-m-primary {
     border: 1px solid ButtonText;
   }
+
+  /* Los iconos por máscara pintan su fondo: sin esto quedan del color del lienzo y no se ven. */
+  .pf-v5-c-button.pf-m-control i,
+  .pf-v5-c-alert__icon > :is(i, span),
+  #reset-login i,
+  .pf-v5-c-login__main-header-utilities .pf-v5-c-form-control__toggle-icon,
+  .pf-v5-c-helper-text__item.pf-m-error::before,
+  .pf-v5-c-check__input::after {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+
+  .pf-v5-c-check__input:checked::after {
+    background: HighlightText;
+  }
 }
