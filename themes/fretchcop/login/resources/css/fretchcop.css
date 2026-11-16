@@ -119,45 +119,18 @@ html.login-pf,
   outline-offset: 2px;
 }
 
-/* Sin tarjeta: el fondo es el de la Cuenta, así entrar no cambia de sitio, y el formulario va en una columna de 400 px
-   anclada arriba. La marca, el título y el primer campo no se mueven entre pantallas ni al salir un error. */
+/* La estructura de la página (la tarjeta, la marca con el idioma y el pie) va en template.ftl con Tailwind. Aquí, el
+   fondo del documento, para que al desplazar no asome otro color, y la marca. */
 html.login-pf,
-.login-pf body,
-.pf-v5-c-login {
+.login-pf body {
   background: var(--fc-bg);
 }
 
-.pf-v5-c-login {
-  position: relative;
-  min-height: 100dvh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  /* El título a la distancia de la barra que tiene en el panel. Medido en el área visible, no en la pantalla: cada
-     pantalla cabe en 1280×720 sin desplazar (un portátil de 1440×900 deja unos 790 px con el navegador). */
-  padding: calc(64px + clamp(24px, 6vh, 72px)) 24px 24px;
-}
-
-/* Sin posición: la marca y el idioma se colocan respecto de la página, en la barra de arriba. */
-.pf-v5-c-login__container {
-  position: static;
-  display: block;
-  width: min(400px, 100%);
-  max-width: none;
-  margin: 0;
-  padding: 0;
-}
-
-/* La barra de la Cuenta: 64 px, la marca a 24 px del borde (16 por debajo de 768) y el idioma en el sitio del avatar. */
-.pf-v5-c-login__header {
-  position: absolute;
-  top: 0;
-  left: 24px;
-  display: flex;
-  align-items: center;
-  height: 64px;
-  margin: 0;
-  padding: 0;
+@media (max-width: 599px) {
+  html.login-pf,
+  .login-pf body {
+    background: var(--fc-surface);
+  }
 }
 
 #kc-header-wrapper {
@@ -184,140 +157,23 @@ html.login-pf,
   color: var(--fc-fg-muted);
 }
 
-.pf-v5-c-login__main {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  row-gap: 32px;
-  align-items: start;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: none;
-  box-shadow: none;
-}
-
-.pf-v5-c-login__main-header {
-  display: block;
-  position: static;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: none;
-}
-
+/* Sin el relleno ni la rejilla que PatternFly da al cuerpo y al pie. */
 .pf-v5-c-login__main-body,
-.pf-v5-c-login__main > .pf-v5-c-login__main-footer {
-  margin: 0;
-  padding: 0;
-}
-
-.pf-v5-c-login__main > .pf-v5-c-login__main-footer:not(:has(*)) {
-  display: none;
-}
-
-#kc-page-title {
-  margin: 0;
-  font: 600 32px/40px var(--fc-font);
-  letter-spacing: -0.025em;
-  color: var(--fc-fg);
-  text-wrap: balance;
-}
-
-/* El idioma, en la barra a la derecha: en el HTML va antes del formulario, y así el foco del teclado sigue el mismo
-   orden que la vista. Sin el área de rejilla de PatternFly, se coloca respecto de la página. */
-.pf-v5-c-login__main-header-utilities {
-  position: absolute;
-  grid-area: auto;
-  top: 12px;
-  right: 16px;
-  margin: 0;
-}
-
-.pf-v5-c-login__main-header-utilities .pf-v5-c-form-control {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  height: 40px;
-  width: auto;
-  padding: 0;
-  border: 0;
-  border-radius: 9999px;
-  background: transparent;
-  transition: background-color var(--fc-quick);
-}
-
-.pf-v5-c-login__main-header-utilities .pf-v5-c-form-control:hover {
-  background: var(--fc-container);
-}
-
-.pf-v5-c-login__main-header-utilities select {
-  appearance: none;
-  height: 40px;
-  padding: 0 36px 0 12px;
-  border: 0;
-  border-radius: 9999px;
-  background: transparent;
-  cursor: pointer;
-}
-
-/* Más específico que la letra de los campos, que si no le gana. */
-.pf-v5-c-login__main-header-utilities .pf-v5-c-form-control > select {
-  font: 500 14px/20px var(--fc-font);
-  color: var(--fc-fg-muted);
-}
-
-.pf-v5-c-login__main-header-utilities select:focus-visible {
-  outline: 2px solid var(--fc-accent);
-  outline-offset: 0;
-}
-
-.pf-v5-c-login__main-header-utilities .pf-v5-c-form-control__utilities {
-  position: absolute;
-  right: 12px;
-  pointer-events: none;
-  padding: 0;
-}
-
-.pf-v5-c-login__main-header-utilities .pf-v5-c-form-control__toggle-icon {
+.pf-v5-c-login__main-footer {
   display: block;
-  width: 16px;
-  height: 16px;
-  color: var(--fc-fg-muted);
-  background: currentColor;
-  mask: url("../img/icons/chevron-down.svg") center / 16px no-repeat;
+  margin: 0;
+  padding: 0;
 }
 
-.pf-v5-c-login__main-header-utilities .pf-v5-c-form-control__toggle-icon svg {
+.pf-v5-c-login__main-footer:not(:has(*)) {
   display: none;
-}
-
-@media (max-width: 767px) {
-  .pf-v5-c-login__header {
-    left: 16px;
-  }
-
-  .pf-v5-c-login__main-header-utilities {
-    right: 8px;
-  }
-}
-
-@media (max-width: 599px) {
-  .pf-v5-c-login {
-    padding: 88px 24px 48px;
-  }
-
-  #kc-page-title {
-    font-size: 28px;
-    line-height: 36px;
-  }
 }
 
 /* ----------------------------------------------------------------------------------------------------- Formulario */
 
 .pf-v5-c-form {
-  --pf-v5-c-form--GridGap: 24px;
-  gap: 24px;
+  --pf-v5-c-form--GridGap: 20px;
+  gap: 20px;
 }
 
 .pf-v5-c-form__group-label.pf-v5-u-pb-xs,
@@ -663,8 +519,9 @@ body:not([data-page-id='login-login-update-password']) .pf-v5-c-form__group:has(
   display: contents;
 }
 
-/* Enlaces: tinta azul, sin subrayar hasta pasar por encima. */
-.pf-v5-c-login a:not(.pf-v5-c-button) {
+/* Enlaces: tinta azul, sin subrayar hasta pasar por encima. Con :where, para no ganar a las utilidades de las
+   plantillas propias. */
+a:where(:not(.pf-v5-c-button)) {
   font-weight: 500;
   color: var(--fc-link-ink);
   text-decoration: none;
@@ -672,7 +529,7 @@ body:not([data-page-id='login-login-update-password']) .pf-v5-c-form__group:has(
   border-radius: 4px;
 }
 
-.pf-v5-c-login a:not(.pf-v5-c-button):hover {
+a:where(:not(.pf-v5-c-button)):hover {
   text-decoration: underline;
 }
 
@@ -818,22 +675,35 @@ input.pf-v5-c-button:focus-visible {
   margin-top: 12px !important;
 }
 
-/* «¿No tienes cuenta? Crear una cuenta»: una línea al pie, sin banda ni raya. */
-#kc-info,
-.pf-v5-c-login__main-footer-band {
-  margin: 32px 0 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
+/* «¿No tienes cuenta? Crear una cuenta» y el reenvío del correo: al pie de la tarjeta, centrados y tras una raya que
+   llega a sus bordes (32 px; 24 en el teléfono, donde no hay tarjeta). */
+#kc-info {
+  margin: 24px -32px 0;
+  padding: 20px 32px 0;
+  border-top: 1px solid var(--fc-border);
   background: none;
   font: 400 14px/20px var(--fc-font);
   color: var(--fc-fg-muted);
+  text-align: center;
 }
 
-#kc-info,
+@media (max-width: 599px) {
+  #kc-info {
+    margin-inline: -24px;
+    padding-inline: 24px;
+  }
+}
+
 #kc-info-wrapper,
 #kc-registration-container {
-  justify-content: start;
-  text-align: start;
+  justify-content: center;
+  text-align: center;
+}
+
+#kc-info .instruction {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
 }
 
 #kc-info .pf-v5-u-font-size-sm,
@@ -854,9 +724,16 @@ body[data-page-id='login-login-reset-password'] .pf-v5-c-login__main-body > .pf-
 
 /* A 8 px del título, como la descripción de una página de la Cuenta, y a 32 del campo. */
 body[data-page-id='login-login-reset-password'] #kc-info {
-  margin: -24px 0 32px !important;
+  margin: -16px 0 24px;
+  padding: 0;
+  border: 0;
   font-size: 16px;
   line-height: 24px;
+  text-align: start;
+}
+
+body[data-page-id='login-login-reset-password'] #kc-info-wrapper {
+  text-align: start;
 }
 
 body[data-page-id='login-login-reset-password'] #kc-info .pf-v5-u-font-size-sm {
@@ -865,6 +742,12 @@ body[data-page-id='login-login-reset-password'] #kc-info .pf-v5-u-font-size-sm {
 }
 
 /* ----------------------------------------------------------------------------------------------------- Avisos */
+
+/* Un aviso informativo al principio («Por seguridad, vuelve a escribir tu contraseña.») hace de descripción: a 8 px
+   del título. */
+.pf-v5-c-login__main-body > .pf-v5-c-alert.pf-m-info:first-child {
+  margin-top: -16px !important;
+}
 
 /* Como los avisos de la Cuenta: el lavado del estado, un borde fino de su color y el icono de Lucide. */
 .pf-v5-c-alert {
@@ -966,108 +849,6 @@ body[data-page-id='login-login-verify-email'] .pf-v5-c-alert.pf-m-danger .pf-v5-
 
 body[data-page-id='login-login-verify-email'] .pf-m-danger .fa-exclamation-circle {
   --fc-icon: url("../img/icons/info.svg");
-}
-
-/* ----------------------------------------------------------------------------------------------------- Quién entra */
-
-/* Al volver a pedir la contraseña: el correo con el que entras, como texto, y «Cambiar de cuenta» escrito al lado. Sin
-   pastilla ni aviso al pasar el cursor: la salida se lee sin tener que descubrirla. */
-.pf-v5-c-login__main-body > .pf-v5-c-form:has(#kc-attempted-username) {
-  margin: 0 0 16px !important;
-}
-
-/* «Por seguridad, vuelve a escribir tu contraseña.» hace de descripción: a 8 px del título y antes del correo. */
-.pf-v5-c-login__main-body:has(#kc-attempted-username) {
-  display: flex;
-  flex-direction: column;
-}
-
-.pf-v5-c-login__main-body:has(#kc-attempted-username) > .pf-m-info {
-  order: -1;
-  margin: -24px 0 32px !important;
-}
-
-.pf-v5-c-form__group:has(#kc-attempted-username) > .pf-v5-c-form__group-label {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-}
-
-.pf-v5-c-input-group:has(#kc-attempted-username),
-.pf-v5-c-input-group:has(#kc-attempted-username):hover {
-  align-items: center;
-  gap: 16px;
-  height: auto;
-  border: 0;
-  border-radius: 0;
-  background: none;
-}
-
-.pf-v5-c-form-control.pf-m-readonly {
-  background: transparent;
-}
-
-#kc-attempted-username {
-  min-width: 0;
-  height: 24px;
-  padding: 0 !important;
-  font: 500 16px/24px var(--fc-font) !important;
-  color: var(--fc-fg) !important;
-  text-overflow: ellipsis;
-  cursor: default;
-}
-
-#reset-login {
-  width: auto;
-  min-width: 0;
-  height: 32px;
-  margin: 0 -8px 0 0;
-  padding: 0 8px;
-  border-radius: 8px;
-  color: var(--fc-link-ink);
-  white-space: nowrap;
-}
-
-#reset-login:hover {
-  background: color-mix(in oklab, var(--fc-accent) 8%, transparent);
-}
-
-#reset-login:focus-visible {
-  outline-offset: 0;
-}
-
-/* El correo se puede enfocar (es un campo de sólo lectura): el anillo va en él, no alrededor de la línea entera. */
-.pf-v5-c-input-group:has(#kc-attempted-username:focus-visible) {
-  outline: 0;
-}
-
-#kc-attempted-username:focus-visible {
-  outline: 2px solid var(--fc-accent);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-
-#reset-login i,
-.kc-login-tooltip .kc-tooltip-text::after {
-  display: none;
-}
-
-/* El texto del aviso de Keycloak, a la vista y como etiqueta del botón. */
-.kc-login-tooltip .kc-tooltip-text,
-.kc-login-tooltip:hover .kc-tooltip-text {
-  position: static;
-  visibility: visible;
-  opacity: 1;
-  min-width: 0;
-  padding: 0;
-  border-radius: 0;
-  background: none;
-  color: inherit;
-  font: 500 14px/20px var(--fc-font);
-  transform: none;
-  box-shadow: none;
 }
 
 /* ----------------------------------------------------------------------------------------------------- Pantallas */
@@ -1235,37 +1016,10 @@ body:is([data-page-id='login-login-verify-email'], [data-page-id='login-login-up
 
 /* Con pantalla táctil, lo que se toca mide al menos 44 px de alto. */
 @media (pointer: coarse) {
-  #reset-login {
-    height: 44px;
-  }
-
-  /* El idioma sube 2 px para seguir centrado con la marca. */
-  .pf-v5-c-login__main-header-utilities {
-    margin-top: -2px;
-  }
-
-  .pf-v5-c-login__main-header-utilities :is(.pf-v5-c-form-control, select) {
-    height: 44px;
-  }
-
-  label.pf-v5-c-check,
-  .pf-v5-c-login a[href*='reset-credentials'] {
+  label.pf-v5-c-check {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
-  }
-
-  /* Los 44 px ya traen su aire: con menos margen alrededor, los textos quedan donde estaban. */
-  .pf-v5-c-helper-text.pf-v5-u-display-flex {
-    row-gap: 0;
-  }
-
-  .pf-v5-c-form__group:has(#rememberMe, a[href*='reset-credentials']) {
-    margin-bottom: -12px;
-  }
-
-  .pf-v5-c-form__group:has(#rememberMe, a[href*='reset-credentials']) > .pf-v5-c-form__helper-text {
-    margin-top: 4px;
   }
 
   /* Enlaces sueltos: el relleno agranda la zona de toque sin mover el texto. */
@@ -1284,12 +1038,6 @@ body:is([data-page-id='login-login-verify-email'], [data-page-id='login-login-up
 }
 
 @media (forced-colors: active) {
-  /* «Cambiar de cuenta» es un botón sin borde: en el color de los enlaces, para que no se lea como el correo. */
-  #reset-login,
-  #reset-login .kc-tooltip-text {
-    color: LinkText;
-  }
-
   .pf-v5-c-check__input:checked {
     background: Highlight;
   }
@@ -1304,7 +1052,6 @@ body:is([data-page-id='login-login-verify-email'], [data-page-id='login-login-up
      del lienzo y no se ven. */
   .pf-v5-c-button.pf-m-control i,
   .pf-v5-c-alert__icon > :is(i, span),
-  .pf-v5-c-login__main-header-utilities .pf-v5-c-form-control__toggle-icon,
   .pf-v5-c-helper-text__item.pf-m-error::before,
   #input-error-otp-code::before,
   #input-error-otp-label::before,
