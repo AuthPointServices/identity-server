@@ -33,23 +33,24 @@ cambie ahí se pierde en el próximo `apply.sh`. Los cambios van en `config/`.
 |---|---|
 | `config/realm.yaml` | El realm: registro, contraseñas, bloqueos, sesiones, eventos, passkeys y correo |
 | `config/clients.yaml` | Un cliente OIDC por producto, con sus redirecciones y sus permisos |
-| `themes/fretchcop/login` | Las pantallas de acceso: las plantillas de `keycloak.v2` con el estilo y los textos de la Cuenta (`accounts-frontend/DESIGN.md`). Una tarjeta de 440 px sobre el fondo de la Cuenta, con la marca y el idioma arriba y lo que lleva a otra pantalla al pie (en el teléfono, sin tarjeta); Geist servida desde el tema (OFL, `resources/fonts`) e iconos de Lucide en `resources/img/icons` en lugar de Font Awesome |
+| `login-ui/` | Las pantallas de acceso, hechas por nosotros en React, TypeScript y Tailwind con [Keycloakify](https://www.keycloakify.dev): una página propia por pantalla (`src/login/pages`), los tokens y la letra de la Cuenta y los textos de tú (`src/login/i18n.ts`). Keycloakify las empaqueta en `dist_keycloak/fretchcop-login.jar`, el tema `fretchcop` de Keycloak |
 | `themes/fretchcop/email` | Los correos en español, de tú, con la marca |
 | `versions.env` | Versiones fijadas de Keycloak, keycloak-config-cli y Mailpit, con su SHA-256 |
 
-El tema cambia CSS y textos, y copia tres plantillas que necesitaban otro marcado: `template.ftl` (la página),
-`login.ftl` (el enlace de la contraseña en la fila de su etiqueta) y `login-config-totp.ftl` (activar los dos pasos).
-Al actualizar Keycloak, `scripts/check.sh` avisa si alguna de serie de `keycloak.v2` cambió, y entonces se pasan sus
-cambios a la copia. Lo que lleva su marcado se estiliza con Tailwind y los tokens del tema
-(`themes/fretchcop/login/tailwind.css`); tras cambiar una plantilla del tema, `pnpm install` una vez y `pnpm theme`
-regeneran `resources/css/tailwind.css`, que va en el repo y la CI comprueba que esté al día.
+Ninguna plantilla de Keycloak ni PatternFly: Keycloak sigue mostrando el acceso (lo exigen las passkeys, los dos pasos
+y la protección contra fuerza bruta), pero lo que pinta es nuestra app. Para trabajar en ella:
 
-Se queda como lo hace Keycloak: el registro no pide contraseña (con `verifyEmail` Keycloak la pide después de verificar el correo) y su
-página lanza un error de script de `keycloak.v2` al no encontrar el campo; no afecta a nada. En desarrollo
-`scripts/dev.sh` lo enlaza en Keycloak y un cambio se ve al recargar la página.
+```
+pnpm --dir login-ui install
+pnpm --dir login-ui dev        # http://localhost:5173/?mock=<pantalla>, con datos simulados (src/login/mocks.ts)
+pnpm --dir login-ui check      # tipos y lint
+pnpm --dir login-ui build      # el jar; hace falta Maven (mvn) en el PATH
+```
 
-Al actualizar Keycloak, mira la pantalla de verificar el correo: el CSS anula con `margin-top: -1lh` el salto con el que
-`login-verify-email.ftl` abre la frase, y si la plantilla lo quita el texto sube 24 px.
+`scripts/dev.sh` copia el jar en Keycloak al arrancar: tras cambiar una pantalla, construirlo y reiniciar Keycloak. Los
+botones de Google, GitHub, Facebook, Microsoft y Apple salen solos cuando el proveedor se configura en el realm; hoy no
+hay ninguno, y en la vista previa se ven con `?mock=login-tres` o `?mock=login-cinco`. El registro no pide contraseña:
+con `verifyEmail`, Keycloak la pide después de verificar el correo.
 
 Keycloak avisa por correo de los cambios de seguridad (contraseña, dos pasos, passkeys). Los intentos fallidos no se
 avisan uno por uno: el arranque lleva `--spi-events-listener--email--exclude-events=LOGIN_ERROR`. La consola de
