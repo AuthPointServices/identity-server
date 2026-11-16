@@ -1227,12 +1227,16 @@ body[data-page-id='login-info'] .pf-v5-c-login__main-body:has(#kc-info-message >
   display: none;
 }
 
-/* Verificar el correo: el aviso amarillo repite el título, y «¿No te llegó? Pulsa aquí…» es el pie, como «¿No tienes
-   cuenta?»: en una línea, a 32 px de la frase y sin margen debajo. */
-body[data-page-id='login-login-verify-email'] .pf-v5-c-alert.pf-m-warning {
+/* En los pasos que Keycloak pide al entrar (verificar el correo, crear la contraseña…), el aviso amarillo repite el
+   título. */
+body:is([data-page-id='login-login-verify-email'], [data-page-id='login-login-update-password'],
+  [data-page-id='login-login-config-totp'], [data-page-id='login-login-update-profile'],
+  [data-page-id='login-update-email']) .pf-v5-c-alert.pf-m-warning {
   display: none;
 }
 
+/* Verificar el correo: «¿No te llegó? Pulsa aquí…» es el pie, como «¿No tienes cuenta?»: en una línea, a 32 px de la
+   frase y sin margen debajo. */
 .pf-v5-c-login__main-body > .instruction:has(+ .pf-v5-c-login__main-footer > #kc-info) {
   margin-bottom: 0;
 }
