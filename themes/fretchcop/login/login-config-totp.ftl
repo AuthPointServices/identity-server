@@ -1,5 +1,5 @@
 <#--
-  Copia de login-config-totp.ftl de keycloak.v2 (Keycloak 26.8.2).
+  Copia de login-config-totp.ftl de keycloak.v2 (Keycloak 26.8.2; scripts/check.sh avisa si la de serie cambia).
   Cambia lo de encima del formulario: el código QR con una frase al lado, o la clave a mano, sin pasos numerados. El
   nombre del dispositivo sólo se pide cuando Keycloak lo exige (ya hay otro), porque es entonces cuando sirve para
   elegir. Y las etiquetas, que en la de serie apuntan a un id que no existe, nombran sus campos.

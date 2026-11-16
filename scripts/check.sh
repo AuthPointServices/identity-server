@@ -32,4 +32,11 @@ expect "sin kc-admin-api no hay administración" 401 "$(code -H "Authorization: 
 
 expect "la consola de cuenta de Keycloak está apagada" 400 "$(code "$realm/protocol/openid-connect/auth?client_id=account-console&response_type=code&scope=openid&redirect_uri=$KC_URL/realms/$REALM/account/")"
 
+# El tema copia login-config-totp.ftl de keycloak.v2: si una versión nueva de Keycloak cambia la de serie, hay que
+# pasar sus cambios a la copia y poner aquí el sha256 nuevo.
+. ./versions.env
+totp_ftl=$(python3 -c 'import sys,zipfile,hashlib;print(hashlib.sha256(zipfile.ZipFile(sys.argv[1]).read("theme/keycloak.v2/login/login-config-totp.ftl")).hexdigest())' \
+  ".cache/keycloak-$KEYCLOAK_VERSION/lib/lib/main/org.keycloak.keycloak-themes-$KEYCLOAK_VERSION.jar")
+expect "login-config-totp.ftl de serie, la que copia el tema" 182a0e44f35be72d5cca2446c275c722f4bd60dc0cb21b08314aa9bd5338be1d "$totp_ftl"
+
 exit $fail
