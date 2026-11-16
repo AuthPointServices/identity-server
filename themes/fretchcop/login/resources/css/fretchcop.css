@@ -758,12 +758,14 @@ input.pf-v5-c-button.pf-m-primary {
   color: var(--fc-link-ink);
 }
 
+/* Al pasar por encima, la capa de estado de M3 (el azul al 8 %), no el lavado de los botones tonales. La tinta del
+   enlace no cambia. */
 .pf-v5-c-button[name='cancel-aia']:hover,
 .pf-v5-c-form__actions a.pf-v5-c-button.pf-m-secondary:hover,
 .pf-v5-c-button.pf-m-link:hover,
 #kc-form-options.pf-v5-c-login__main-footer-band-item a:hover {
-  background: var(--fc-accent-subtle);
-  color: var(--fc-accent-ink);
+  background: color-mix(in oklab, var(--fc-accent) 8%, transparent);
+  color: var(--fc-link-ink);
 }
 
 /* En el registro, «Volver a iniciar sesión» es un enlace suelto: aquí va como en recuperar la contraseña, a 12 px del
