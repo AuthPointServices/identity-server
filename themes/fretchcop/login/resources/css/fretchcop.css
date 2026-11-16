@@ -1244,10 +1244,9 @@ body[data-page-id='login-info'] .pf-v5-c-login__main-body:has(#kc-info-message >
 }
 
 /* En los pasos que Keycloak pide al entrar (verificar el correo, crear la contraseña…), el aviso amarillo repite el
-   título. */
+   título. En cambiar el correo explica qué pasa, y se queda. */
 body:is([data-page-id='login-login-verify-email'], [data-page-id='login-login-update-password'],
-  [data-page-id='login-login-config-totp'], [data-page-id='login-login-update-profile'],
-  [data-page-id='login-update-email']) .pf-v5-c-alert.pf-m-warning {
+  [data-page-id='login-login-config-totp'], [data-page-id='login-login-update-profile']) .pf-v5-c-alert.pf-m-warning {
   display: none;
 }
 
