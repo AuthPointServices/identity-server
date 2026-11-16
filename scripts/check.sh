@@ -32,12 +32,13 @@ expect "sin kc-admin-api no hay administración" 401 "$(code -H "Authorization: 
 
 expect "la consola de cuenta de Keycloak está apagada" 400 "$(code "$realm/protocol/openid-connect/auth?client_id=account-console&response_type=code&scope=openid&redirect_uri=$KC_URL/realms/$REALM/account/")"
 
-# El tema copia dos plantillas de keycloak.v2: si una versión nueva de Keycloak cambia alguna de serie, hay que pasar
+# El tema copia tres plantillas de keycloak.v2: si una versión nueva de Keycloak cambia alguna de serie, hay que pasar
 # sus cambios a la copia y poner aquí el sha256 nuevo.
 . ./versions.env
 copied() { python3 -c 'import sys,zipfile,hashlib;print(hashlib.sha256(zipfile.ZipFile(sys.argv[1]).read("theme/keycloak.v2/login/"+sys.argv[2])).hexdigest())' \
   ".cache/keycloak-$KEYCLOAK_VERSION/lib/lib/main/org.keycloak.keycloak-themes-$KEYCLOAK_VERSION.jar" "$1"; }
 expect "template.ftl de serie, la que copia el tema" 6221a3176c73a3fd67abc97076deb9cef112378ce157735a78bd865800315b37 "$(copied template.ftl)"
+expect "login.ftl de serie, la que copia el tema" c9ec5c28a14aa30f0d6887044f431c2c04cbe1ad7732c1bf4a1c3c89250efe31 "$(copied login.ftl)"
 expect "login-config-totp.ftl de serie, la que copia el tema" 182a0e44f35be72d5cca2446c275c722f4bd60dc0cb21b08314aa9bd5338be1d "$(copied login-config-totp.ftl)"
 
 exit $fail

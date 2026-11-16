@@ -423,16 +423,6 @@ ul.pf-v5-c-helper-text__item-text.pf-m-error {
   list-style: none;
 }
 
-/* «Mantener la sesión iniciada» y «¿Olvidaste tu contraseña?» en una línea; en el teléfono, una debajo de otra. */
-.pf-v5-c-helper-text.pf-v5-u-display-flex {
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 16px;
-}
-
-.pf-v5-c-form__group:has(#rememberMe, a[href*='reset-credentials']) > .pf-v5-c-form__helper-text {
-  margin-top: 16px;
-}
 
 /* Casillas de 20 px, como en las listas de M3: borde de campo, azul al marcar, centradas con su texto (PatternFly las
    pega arriba y las baja 2 px). */
