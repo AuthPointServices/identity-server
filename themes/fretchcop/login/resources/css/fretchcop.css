@@ -665,7 +665,8 @@ body:not([data-page-id='login-login-update-password']) .pf-v5-c-form__group:has(
 }
 
 .pf-v5-c-button:is(.pf-m-primary, .pf-m-secondary, .pf-m-tertiary, .pf-m-link),
-input.pf-v5-c-button {
+input.pf-v5-c-button,
+#kc-form-options.pf-v5-c-login__main-footer-band-item a {
   --pf-v5-c-button--BorderRadius: 9999px;
   display: inline-flex;
   align-items: center;
@@ -715,7 +716,8 @@ input.pf-v5-c-button.pf-m-primary {
 /* Cancelar y volver: botones de texto, que no compiten con el principal. */
 .pf-v5-c-button[name='cancel-aia'],
 .pf-v5-c-form__actions a.pf-v5-c-button.pf-m-secondary,
-.pf-v5-c-button.pf-m-link {
+.pf-v5-c-button.pf-m-link,
+#kc-form-options.pf-v5-c-login__main-footer-band-item a {
   border-color: transparent;
   background: transparent;
   color: var(--fc-link-ink);
@@ -723,9 +725,20 @@ input.pf-v5-c-button.pf-m-primary {
 
 .pf-v5-c-button[name='cancel-aia']:hover,
 .pf-v5-c-form__actions a.pf-v5-c-button.pf-m-secondary:hover,
-.pf-v5-c-button.pf-m-link:hover {
+.pf-v5-c-button.pf-m-link:hover,
+#kc-form-options.pf-v5-c-login__main-footer-band-item a:hover {
   background: var(--fc-accent-subtle);
   color: var(--fc-accent-ink);
+}
+
+/* En el registro, «Volver a iniciar sesión» es un enlace suelto: aquí va como en recuperar la contraseña, a 12 px del
+   principal. */
+#kc-form-options.pf-v5-c-login__main-footer-band-item {
+  margin-top: -12px;
+}
+
+#kc-form-options.pf-v5-c-login__main-footer-band-item a {
+  display: flex;
 }
 
 /* Borrar la cuenta: el único botón rojo. */
