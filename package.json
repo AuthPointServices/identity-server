@@ -1,0 +1,12 @@
+{
+  "name": "identity-server",
+  "private": true,
+  "packageManager": "pnpm@12.6.0",
+  "scripts": {
+    "theme": "tailwindcss -i themes/fretchcop/login/tailwind.css -o themes/fretchcop/login/resources/css/tailwind.css --minify"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "4.3.1",
+    "tailwindcss": "4.3.1"
+  }
+}

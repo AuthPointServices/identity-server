@@ -1,0 +1,30 @@
+/* Las utilidades de Tailwind para las plantillas propias del tema, con el vocabulario del panel (bg-surface,
+   text-fg-muted, rounded-xl…) sobre los tokens de resources/css/fretchcop.css, que ya cambian con el modo oscuro.
+   Se compila con `pnpm theme` en resources/css/tailwind.css, que va en el repo porque Keycloak lo sirve tal cual.
+   Sin preflight: la base la pone PatternFly. Y sin capa: las reglas de PatternFly no van en capas y, si las
+   utilidades fueran en una, perderían contra cualquier selector suyo. */
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css';
+
+@source './*.ftl';
+
+@theme inline {
+  --font-sans: var(--fc-font);
+
+  --color-bg: var(--fc-bg);
+  --color-surface: var(--fc-surface);
+  --color-surface-2: var(--fc-surface-2);
+  --color-container: var(--fc-container);
+  --color-border: var(--fc-border);
+  --color-border-strong: var(--fc-border-strong);
+  --color-input: var(--fc-input);
+  --color-fg: var(--fc-fg);
+  --color-fg-muted: var(--fc-fg-muted);
+  --color-accent: var(--fc-accent);
+  --color-accent-subtle: var(--fc-accent-subtle);
+  --color-accent-ink: var(--fc-accent-ink);
+  --color-link-ink: var(--fc-link-ink);
+  --color-danger: var(--fc-danger);
+
+  --duration-quick: var(--fc-quick);
+}

@@ -41,6 +41,9 @@ jobs:
         with:
           path: .cache
           key: downloads-${{ hashFiles('versions.env') }}
+      # El CSS de Tailwind va en el repo porque Keycloak lo sirve tal cual: tiene que salir igual de sus plantillas.
+      - name: theme
+        run: corepack enable && pnpm install --frozen-lockfile && pnpm theme && git diff --exit-code themes/
       - name: env
         run: |
           sed 's#^PG_ADMIN_DSN=.*#PG_ADMIN_DSN=postgres://postgres:postgres@127.0.0.1:5432/postgres?sslmode=disable#' .env.example > .env

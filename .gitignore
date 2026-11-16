@@ -2,3 +2,4 @@
 /.cache/
 /.data/
 .env
+/node_modules/
