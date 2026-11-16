@@ -1205,6 +1205,11 @@ body[data-page-id='login-login-reset-password'] #kc-info .pf-v5-u-font-size-sm {
   display: none;
 }
 
+/* Tras cerrar la sesión, la frase repite el título y no hay enlace: queda sólo el título. */
+body[data-page-id='login-info'] .pf-v5-c-login__main-body:has(#kc-info-message > .instruction:only-child) {
+  display: none;
+}
+
 #kc-logout-confirm #kc-form-options:not(:has(*:not(div))) {
   display: none;
 }
