@@ -51,7 +51,7 @@
                  si no se puede escanear, en la línea del borde de abajo del código. -->
             <#-- Si al lado no le quedan 160 px (en 320), la frase baja bajo el código en vez de desbordar. -->
             <div class="mb-8 flex flex-wrap items-stretch gap-5">
-                <img id="kc-totp-secret-qr-code" src="data:image/png;base64, ${totp.totpSecretQrCode}" alt="${msg("fcTotpScanWith")}"
+                <img id="kc-totp-secret-qr-code" src="data:image/png;base64, ${totp.totpSecretQrCode}" alt="${msg("fcTotpQrAlt")}"
                      class="box-content size-[123px] shrink-0 rounded-xl border border-border bg-white p-2 [image-rendering:pixelated]">
                 <div class="flex min-w-40 flex-1 flex-col justify-between gap-3 text-sm/5 text-pretty text-fg">
                     <@scanWith/>
@@ -70,7 +70,8 @@
                 <div class="${properties.kcInputClass!} <#if messagesPerField.existsError('totp')>pf-m-error</#if>">
                     <input type="text" required id="totp" name="totp" autocomplete="one-time-code"
                            aria-invalid="<#if messagesPerField.existsError('totp')>true</#if>"
-                           <#if messagesPerField.existsError('totp')>aria-describedby="input-error-otp-code"</#if>
+                           <#-- Tras un error, el foco vuelve al campo: el aviso de una página recién cargada no se anuncia solo. -->
+                           <#if messagesPerField.existsError('totp')>aria-describedby="input-error-otp-code" autofocus</#if>
                            inputmode="numeric"
                     />
 
