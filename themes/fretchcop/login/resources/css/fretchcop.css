@@ -698,8 +698,10 @@ input.pf-v5-c-button.pf-m-primary {
   color: var(--fc-accent-fg);
 }
 
-/* La otra forma de entrar (la passkey): contorno, mismo peso visual que un campo. */
+/* La otra forma de entrar (la passkey): contorno, mismo peso visual que un campo. Con 11 px por arriba y por abajo, el
+   borde no lo hace más alto que el principal. */
 .pf-v5-c-button:is(.pf-m-secondary, .pf-m-tertiary) {
+  padding-block: 11px;
   border: 1px solid var(--fc-border-strong);
   background: var(--fc-surface);
   color: var(--fc-fg);
