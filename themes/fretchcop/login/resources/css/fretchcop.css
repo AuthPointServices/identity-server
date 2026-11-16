@@ -966,7 +966,7 @@ body[data-page-id='login-login-verify-email'] .pf-m-danger .fa-exclamation-circl
 
 /* ----------------------------------------------------------------------------------------------------- Quién entra */
 
-/* Al volver a pedir la contraseña: el correo con el que entras, como texto, y «Usar otra cuenta» escrito al lado. Sin
+/* Al volver a pedir la contraseña: el correo con el que entras, como texto, y «Cambiar de cuenta» escrito al lado. Sin
    pastilla ni aviso al pasar el cursor: la salida se lee sin tener que descubrirla. */
 .pf-v5-c-login__main-body > .pf-v5-c-form:has(#kc-attempted-username) {
   margin: 0 0 24px !important;
@@ -1413,6 +1413,12 @@ body:is([data-page-id='login-login-verify-email'], [data-page-id='login-login-up
 }
 
 @media (forced-colors: active) {
+  /* «Cambiar de cuenta» es un botón sin borde: en el color de los enlaces, para que no se lea como el correo. */
+  #reset-login,
+  #reset-login .kc-tooltip-text {
+    color: LinkText;
+  }
+
   .pf-v5-c-check__input:checked {
     background: Highlight;
   }
