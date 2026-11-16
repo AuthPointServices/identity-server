@@ -1038,6 +1038,32 @@ body[data-page-id='login-update-email'] .pf-v5-c-alert.pf-m-warning .pf-v5-c-ale
   opacity: 1;
 }
 
+/* Desde 600 px va a la derecha del botón, en su fila, y no tapa la frase de debajo (WCAG 1.4.13). El puente de 8 px
+   deja llevar el cursor hasta el aviso sin que se oculte. */
+@media (min-width: 600px) {
+  .kc-login-tooltip .kc-tooltip-text {
+    top: 50%;
+    right: auto;
+    left: calc(100% + 8px);
+    transform: translateY(-50%);
+  }
+
+  .kc-login-tooltip .kc-tooltip-text::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 100%;
+    bottom: 0;
+    width: 8px;
+  }
+
+  /* Con un correo muy largo y menos de 700 px, la pastilla se acorta para que el aviso quepa a 16 px del borde de la
+     ventana: con la pastilla entera, el aviso acaba en 50vw + 335 px. */
+  .pf-v5-c-input-group:has(#kc-attempted-username) {
+    max-width: min(100%, 100% + 50vw - 351px);
+  }
+}
+
 /* ----------------------------------------------------------------------------------------------------- Pantallas */
 
 /* Verificación en dos pasos: los pasos numerados (el orden importa), las apps en una línea y el código QR sobre
@@ -1388,6 +1414,11 @@ body:is([data-page-id='login-login-verify-email'], [data-page-id='login-login-up
   body[data-page-id='login-info'] #kc-info-message > p > a:only-child,
   #backToApplication {
     border: 1px solid ButtonText;
+  }
+
+  /* El aviso de «Usar otra cuenta» queda del color del lienzo: el borde lo separa. */
+  .kc-login-tooltip .kc-tooltip-text {
+    border: 1px solid CanvasText;
   }
 
   /* Los iconos por máscara, la raya de la marca y los puntos de la lista pintan su fondo: sin esto quedan del color
