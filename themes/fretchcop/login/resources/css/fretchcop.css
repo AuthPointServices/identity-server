@@ -1179,6 +1179,12 @@ body[data-page-id='login-login-reset-password'] #kc-info .pf-v5-u-font-size-sm {
   color: var(--fc-fg);
 }
 
+/* Sin nada detrás, la frase no deja hueco al pie de la tarjeta. */
+#kc-error-message > p:last-child,
+#kc-info-message > p:last-child {
+  margin-bottom: 0;
+}
+
 .pf-v5-c-login__main-body .instruction:empty,
 #kc-info-message:not(:has(*)) {
   display: none;
