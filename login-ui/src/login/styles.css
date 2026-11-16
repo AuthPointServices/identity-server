@@ -1,0 +1,106 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/geist';
+
+/* Los tokens del panel de la Cuenta (accounts-frontend/src/app/styles/index.css): mismos nombres y valores. El modo
+   oscuro sigue al sistema, como el resto de pantallas de acceso. */
+@theme {
+  --font-sans: 'Geist Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --color-bg: #f0f3f8;
+  --color-surface: #ffffff;
+  --color-surface-2: #f4f6fa;
+  --color-container: #e8edf5;
+  --color-border: #e1e6ee;
+  --color-border-strong: #c9d0db;
+  /* El borde de un campo es su forma: 3,6:1 sobre blanco (WCAG 1.4.11). */
+  --color-input: #80889a;
+  --color-fg: #1a1d24;
+  --color-fg-muted: #4f5663;
+  --color-accent: #2f5bd3;
+  --color-accent-hover: #2549b0;
+  --color-accent-fg: #ffffff;
+  --color-accent-subtle: #dce5fb;
+  --color-accent-ink: #1a3a8f;
+  --color-link-ink: #1a3a8f;
+  --color-ok: #16794a;
+  --color-ok-subtle: #dff1e7;
+  --color-ok-ink: #0f5f39;
+  --color-warn: #8a5200;
+  --color-warn-subtle: #fbeccf;
+  --color-danger: #c22a2a;
+  --color-danger-subtle: #fbe4e2;
+  --color-danger-fg: #ffffff;
+
+  --duration-quick: 150ms;
+}
+
+@layer base {
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-bg: #0f1115;
+      --color-surface: #1a1d23;
+      --color-surface-2: #20242b;
+      --color-container: #252a32;
+      --color-border: #2a2f37;
+      --color-border-strong: #3a414c;
+      --color-input: #6f7787;
+      --color-fg: #e7e9ee;
+      --color-fg-muted: #a5adbb;
+      --color-accent: #8fb0ff;
+      --color-accent-hover: #a9c2ff;
+      --color-accent-fg: #0b1a3d;
+      --color-accent-subtle: #22325a;
+      --color-accent-ink: #d6e2ff;
+      --color-link-ink: #8fb0ff;
+      --color-ok: #62d39a;
+      --color-ok-subtle: #15291f;
+      --color-ok-ink: #8fe0b5;
+      --color-warn: #f0b85e;
+      --color-warn-subtle: #2c2312;
+      --color-danger: #ff8d87;
+      --color-danger-subtle: #321918;
+      --color-danger-fg: #2a0806;
+    }
+  }
+
+  html {
+    @apply bg-bg font-sans text-fg antialiased;
+    color-scheme: light dark;
+    font-feature-settings: 'ss01', 'cv11';
+    caret-color: var(--color-accent);
+  }
+
+  /* En el teléfono no hay tarjeta: el fondo es la superficie, también al desplazar. */
+  @media (max-width: 639px) {
+    html {
+      @apply bg-surface;
+    }
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-accent) 25%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  a {
+    @apply font-medium text-link-ink underline-offset-4 hover:underline;
+  }
+
+  /* El relleno del navegador no pinta el campo de amarillo ni de azul. */
+  input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 100px var(--color-surface) inset;
+    -webkit-text-fill-color: var(--color-fg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
