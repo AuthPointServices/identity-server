@@ -850,8 +850,9 @@ body[data-page-id='login-login-reset-password'] .pf-v5-c-login__main-body > .pf-
   order: -1;
 }
 
+/* A 8 px del título, como la descripción de una página de la Cuenta, y a 32 del campo. */
 body[data-page-id='login-login-reset-password'] #kc-info {
-  margin: 0 0 24px !important;
+  margin: -24px 0 32px !important;
   font-size: 16px;
   line-height: 24px;
 }
@@ -970,7 +971,18 @@ body[data-page-id='login-login-verify-email'] .pf-m-danger .fa-exclamation-circl
 /* Al volver a pedir la contraseña: el correo con el que entras, como texto, y «Cambiar de cuenta» escrito al lado. Sin
    pastilla ni aviso al pasar el cursor: la salida se lee sin tener que descubrirla. */
 .pf-v5-c-login__main-body > .pf-v5-c-form:has(#kc-attempted-username) {
-  margin: 0 0 24px !important;
+  margin: 0 0 16px !important;
+}
+
+/* «Por seguridad, vuelve a escribir tu contraseña.» hace de descripción: a 8 px del título y antes del correo. */
+.pf-v5-c-login__main-body:has(#kc-attempted-username) {
+  display: flex;
+  flex-direction: column;
+}
+
+.pf-v5-c-login__main-body:has(#kc-attempted-username) > .pf-m-info {
+  order: -1;
+  margin: -24px 0 32px !important;
 }
 
 .pf-v5-c-form__group:has(#kc-attempted-username) > .pf-v5-c-form__group-label {
