@@ -133,7 +133,8 @@ html.login-pf,
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: calc(64px + clamp(32px, 9vh, 88px)) 24px 64px;
+  /* El título a la distancia de la barra que tiene en el panel; abajo, lo justo para que dos pasos quepa en 900 px. */
+  padding: calc(64px + clamp(24px, 6vh, 72px)) 24px 48px;
 }
 
 /* Sin posición: la marca y el idioma se colocan respecto de la página, en la barra de arriba. */
