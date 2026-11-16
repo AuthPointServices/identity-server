@@ -1228,10 +1228,11 @@ body[data-page-id='login-update-email'] .pf-v5-c-alert.pf-m-warning .pf-v5-c-ale
   white-space: pre-line;
 }
 
-/* Verificar el correo: la plantilla deja saltos alrededor de la frase y ahí el salto añadiría una línea vacía. Con
-   las líneas parejas, el correo tampoco se parte. */
-.pf-v5-c-login__main-body > .instruction {
-  text-wrap: balance;
+/* Verificar el correo: el texto lleva los mismos saltos, pero la plantilla abre la frase con otro, que sería una
+   línea vacía. El margen negativo la anula. */
+body[data-page-id='login-login-verify-email'] .pf-v5-c-login__main-body > .instruction {
+  margin-top: -1lh;
+  white-space: pre-line;
 }
 
 /* En la página de error, el mensaje es lo único que hay que leer: va en el color del texto, no en el de apoyo. */
