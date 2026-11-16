@@ -568,7 +568,8 @@ ul.pf-v5-c-helper-text__item-text.pf-m-error {
   margin-top: 16px;
 }
 
-/* Casillas de 20 px, como en las listas de M3: borde de campo, azul al marcar. */
+/* Casillas de 20 px, como en las listas de M3: borde de campo, azul al marcar, centradas con su texto (PatternFly las
+   pega arriba y las baja 2 px). */
 .pf-v5-c-check {
   display: inline-flex;
   align-items: center;
@@ -587,6 +588,7 @@ div.pf-v5-c-check {
   display: grid;
   place-items: center;
   flex-shrink: 0;
+  align-self: center;
   width: 20px;
   height: 20px;
   margin: 0;
@@ -594,6 +596,7 @@ div.pf-v5-c-check {
   border-radius: 6px;
   background: var(--fc-surface);
   cursor: pointer;
+  transform: none;
   transition: background-color var(--fc-quick), border-color var(--fc-quick);
 }
 
@@ -1188,6 +1191,49 @@ body[data-page-id='login-login-reset-password'] #kc-info .pf-v5-u-font-size-sm {
 /* Las pantallas de Keycloak sin formulario dejan restos de su maqueta antigua. */
 .clearfix {
   display: none;
+}
+
+/* Con pantalla táctil, lo que se toca mide al menos 44 px de alto. */
+@media (pointer: coarse) {
+  /* La pastilla crece a 48, como un campo, para que quepa el botón de 44. */
+  .pf-v5-c-input-group:has(#kc-attempted-username) {
+    height: 48px;
+  }
+
+  #reset-login {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+  }
+
+  /* El idioma sube 2 px para seguir centrado con la marca. */
+  .pf-v5-c-login__main-header-utilities {
+    margin-top: -2px;
+  }
+
+  .pf-v5-c-login__main-header-utilities :is(.pf-v5-c-form-control, select) {
+    height: 44px;
+  }
+
+  label.pf-v5-c-check,
+  .pf-v5-c-login a[href*='reset-credentials'] {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* Los 44 px ya traen su aire: con menos margen alrededor, los textos quedan donde estaban. */
+  .pf-v5-c-helper-text.pf-v5-u-display-flex {
+    row-gap: 0;
+  }
+
+  .pf-v5-c-form__group:has(#rememberMe, a[href*='reset-credentials']) {
+    margin-bottom: -12px;
+  }
+
+  .pf-v5-c-form__group:has(#rememberMe, a[href*='reset-credentials']) > .pf-v5-c-form__helper-text {
+    margin-top: 4px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
