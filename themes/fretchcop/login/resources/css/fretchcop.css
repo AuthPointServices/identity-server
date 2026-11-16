@@ -1063,25 +1063,24 @@ body[data-page-id='login-login-reset-password'] #kc-info .pf-v5-u-font-size-sm {
   line-height: 24px;
 }
 
+/* Las apps son texto, no chips que parezcan botones: separadas por comas y sin partir un nombre. */
 #kc-totp-supported-apps {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 12px 0 0;
+  display: block;
+  margin: 4px 0 0;
   padding: 0;
   list-style: none;
 }
 
 #kc-totp-supported-apps li {
+  display: inline;
   margin: 0;
-  display: inline-flex;
-  align-items: center;
-  height: 28px;
-  padding: 0 12px;
-  border-radius: 9999px;
-  background: var(--fc-container);
-  font: 500 14px/20px var(--fc-font);
-  color: var(--fc-fg);
+  font: 400 16px/24px var(--fc-font);
+  color: var(--fc-fg-muted);
+  white-space: nowrap;
+}
+
+#kc-totp-supported-apps li:not(:last-child)::after {
+  content: ', ';
 }
 
 .kc-qr-code {
