@@ -438,6 +438,12 @@ html.login-pf,
   border-color: var(--fc-danger);
 }
 
+/* El error que pone el navegador (la política de la contraseña) va fuera del campo: también lo pinta de rojo. */
+.pf-v5-c-form__group:has([id^='input-error-container'] .pf-m-error) .pf-v5-c-input-group {
+  border-color: var(--fc-danger);
+  outline-color: var(--fc-danger);
+}
+
 .pf-v5-c-input-group .pf-v5-c-form-control,
 .pf-v5-c-input-group .pf-v5-c-form-control:hover,
 .pf-v5-c-input-group .pf-v5-c-form-control:has(:focus-visible) {
