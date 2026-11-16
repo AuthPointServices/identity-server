@@ -330,11 +330,17 @@ html.login-pf,
   color: var(--fc-fg);
 }
 
-/* Todo es obligatorio: el asterisco y «Campos obligatorios» no dicen nada. */
+/* Todo es obligatorio: el asterisco y «Campos obligatorios» no dicen nada (ni el margen de su caja, que queda vacía). */
 .pf-v5-c-form__label-required,
 .pf-v5-c-login__main-body > .pf-v5-c-content.subtitle,
-.pf-v5-c-login__main-body > div > .subtitle {
+.pf-v5-c-login__main-body > div > .subtitle,
+.pf-v5-c-login__main-body > div:has(> .subtitle:only-child) {
   display: none;
+}
+
+/* En el registro, el botón queda a 32 px del último campo, como en los demás formularios. */
+#kc-register-form > #kc-form-buttons {
+  margin-top: 8px;
 }
 
 /* Campos: los de la Cuenta. 48 px, 12 px de radio, borde de campo, 16 px de letra (el teléfono no hace zoom). */
@@ -563,6 +569,11 @@ ul.pf-v5-c-helper-text__item-text.pf-m-error {
   gap: 12px;
   margin: 0;
   cursor: pointer;
+}
+
+/* La caja de fuera, en bloque: en línea suma 4 px de interlineado bajo la casilla. */
+div.pf-v5-c-check {
+  display: flex;
 }
 
 .pf-v5-c-check__input {
