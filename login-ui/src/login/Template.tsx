@@ -12,10 +12,9 @@ export type LayoutProps = TemplateProps<KcContext, I18n> & {
 };
 
 /**
- * La página de acceso: una tarjeta de 440 px con la marca y el idioma arriba, el título, el contenido y, al pie tras
- * una raya, lo que lleva a otra pantalla. Anclada arriba (más cerca cuanto más baja es la ventana) para que la marca y
- * el título no se muevan entre pantallas ni al salir un error. En una ventana de menos de 760 px de alto (un portátil
- * con el navegador) todo se aprieta un poco para no desplazar. En el teléfono no hay tarjeta.
+ * La página de acceso, a pantalla partida: a la izquierda la marca, el formulario en una columna de 400 px y el idioma;
+ * a la derecha, desde 1024 px, el panel de la marca. El formulario va anclado arriba, para que el título no se mueva al
+ * salir un error. En el teléfono sólo queda la columna del formulario.
  */
 export default function Template(props: LayoutProps) {
   const { kcContext, i18n, headerNode, subtitle, children, socialProvidersNode, infoNode, documentTitle } = props;
@@ -43,10 +42,11 @@ export default function Template(props: LayoutProps) {
   const infoAsSubtitle = showMessage && message.type === 'info' && !subtitle;
 
   return (
-    <div className="flex min-h-dvh justify-center px-6 pt-[clamp(16px,calc(14vh-56px),104px)] pb-6 max-sm:p-0 [@media(max-height:760px)]:pt-4 [@media(max-height:760px)]:pb-4">
-      <main className="h-fit w-full max-w-[440px] rounded-2xl border border-border bg-surface p-8 [@media(max-height:760px)]:py-6 shadow-[0_1px_2px_rgb(16_24_40/0.04),0_16px_40px_-16px_rgb(16_24_40/0.14)] max-sm:max-w-none max-sm:rounded-none max-sm:border-0 max-sm:px-6 max-sm:pt-3 max-sm:shadow-none">
-        <header className="flex h-10 items-center justify-between gap-4">
-          <p className="text-lg/6 font-semibold tracking-[-0.015em] text-fg">{brand}</p>
+    <div className="grid min-h-dvh bg-surface lg:grid-cols-[minmax(560px,5fr)_minmax(0,6fr)]">
+      <div className="flex min-w-0 flex-col px-6 pt-5 pb-6 sm:px-12 sm:pt-8 lg:px-16">
+        <header className="flex h-10 items-center justify-between gap-4 lg:justify-end">
+          {/* Desde 1024 px el nombre ya está en el panel: aquí sólo en la columna sola. */}
+          <p className="text-lg/6 font-semibold tracking-[-0.02em] text-fg lg:hidden">{brand}</p>
           {enabledLanguages.length > 1 && (
             <div className="relative -mr-2 flex items-center">
               <select
@@ -67,40 +67,57 @@ export default function Template(props: LayoutProps) {
           )}
         </header>
 
-        <h1 className="mt-6 text-2xl/8 [@media(max-height:760px)]:mt-4 font-semibold tracking-[-0.02em] text-balance text-fg">{headerNode}</h1>
-        {(subtitle || infoAsSubtitle) && (
-          <p className="mt-2 text-[15px]/[22px] text-pretty text-fg-muted">{infoAsSubtitle ? <ServerText html={message.summary} /> : subtitle}</p>
-        )}
-
-        <div className="mt-6 flex flex-col gap-5">
-          {showMessage && !infoAsSubtitle && <Notice type={message.type} html={message.summary} />}
-
-          {/* Quien entra, cuando Keycloak ya lo sabe (al volver a pedir la contraseña, en los dos pasos…). */}
-          {auth?.showUsername && !auth.showResetCredentials && (
-            <div className="flex min-h-12 items-center justify-between gap-3 rounded-xl border border-border bg-surface-2 py-1.5 pr-1.5 pl-4">
-              <span className="min-w-0 truncate text-[15px]/[22px] font-medium text-fg">{auth.attemptedUsername}</span>
-              <a href={url.loginRestartFlowUrl} className="shrink-0 rounded-lg px-3 py-2 text-sm/5 no-underline! hover:bg-accent/8 pointer-coarse:py-3">
-                {msg('restartLoginTooltip')}
-              </a>
-            </div>
+        <main className="mx-auto flex w-full max-w-[400px] flex-1 flex-col pt-[clamp(32px,calc(18vh-48px),136px)] pb-10 max-sm:pt-8">
+          <h1 className="text-[30px]/[38px] font-semibold tracking-[-0.025em] text-balance text-fg max-sm:text-[26px]/[34px]">{headerNode}</h1>
+          {(subtitle || infoAsSubtitle) && (
+            <p className="mt-2 text-base/6 text-pretty text-fg-muted">{infoAsSubtitle ? <ServerText html={message.summary} /> : subtitle}</p>
           )}
 
-          {children}
+          <div className="mt-8 flex flex-col gap-5 max-sm:mt-6">
+            {showMessage && !infoAsSubtitle && <Notice type={message.type} html={message.summary} />}
 
-          {auth?.showTryAnotherWayLink && (
-            <form id="kc-select-try-another-way-form" action={url.loginAction} method="post">
-              <input type="hidden" name="tryAnotherWay" value="on" />
-              <button type="submit" className={BUTTON_SECONDARY}>{msg('doTryAnotherWay')}</button>
-            </form>
-          )}
+            {/* Quien entra, cuando Keycloak ya lo sabe (al volver a pedir la contraseña, en los dos pasos…). */}
+            {auth?.showUsername && !auth.showResetCredentials && (
+              <div className="flex min-h-12 items-center justify-between gap-3 rounded-xl border border-border bg-surface-2 py-1.5 pr-1.5 pl-4">
+                <span className="min-w-0 truncate text-[15px]/[22px] font-medium text-fg">{auth.attemptedUsername}</span>
+                <a href={url.loginRestartFlowUrl} className="shrink-0 rounded-lg px-3 py-2 text-sm/5 no-underline! hover:bg-accent/8 pointer-coarse:py-3">
+                  {msg('restartLoginTooltip')}
+                </a>
+              </div>
+            )}
 
-          {socialProvidersNode}
-        </div>
+            {children}
 
-        {displayInfo && infoNode && (
-          <div className="-mx-8 mt-8 border-t border-border px-8 pt-6 text-center text-sm/5 text-fg-muted max-sm:-mx-6 max-sm:px-6">{infoNode}</div>
-        )}
-      </main>
+            {auth?.showTryAnotherWayLink && (
+              <form id="kc-select-try-another-way-form" action={url.loginAction} method="post">
+                <input type="hidden" name="tryAnotherWay" value="on" />
+                <button type="submit" className={BUTTON_SECONDARY}>{msg('doTryAnotherWay')}</button>
+              </form>
+            )}
+
+            {socialProvidersNode}
+          </div>
+
+          {displayInfo && infoNode && <div className="mt-8 text-sm/5 text-fg-muted">{infoNode}</div>}
+        </main>
+      </div>
+
+      <BrandPanel brand={brand} />
     </div>
+  );
+}
+
+/**
+ * El panel de la marca, desde 1024 px: el azul de la casa en su tono más hondo, una retícula fina que se desvanece y el
+ * nombre grande abajo. Sin ilustraciones ni frases: sólo dice dónde estás.
+ */
+function BrandPanel({ brand }: { brand: string }) {
+  return (
+    <aside aria-hidden="true" className="relative hidden overflow-hidden bg-brand-deep lg:block forced-colors:hidden">
+      {/* Un poco más claro arriba a la derecha, donde se ve la retícula; abajo, el tono hondo bajo el nombre. */}
+      <div className="absolute inset-0 bg-[radial-gradient(90%_70%_at_100%_0%,rgb(47_91_211/0.45),transparent_70%)]" />
+      <div className="fc-grid absolute inset-0" />
+      <p className="absolute bottom-14 left-14 text-[clamp(56px,6vw,88px)]/[0.95] font-semibold tracking-[-0.045em] text-white">{brand}</p>
+    </aside>
   );
 }

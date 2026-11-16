@@ -5,7 +5,6 @@ import { classes } from './classes';
 import { useI18n } from './i18n';
 import type { KcContext } from './KcContext';
 import Template from './Template';
-import './styles.css';
 
 const LoginPage = lazy(() => import('./pages/Login'));
 const RegisterPage = lazy(() => import('./pages/Register'));

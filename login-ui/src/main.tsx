@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { KcPage } from './kc.gen';
+import './login/styles.css';
 
 // En desarrollo, sin Keycloak: ?mock=<nombre> pinta esa pantalla con datos simulados (login/mocks.ts).
 if (import.meta.env.DEV && !window.kcContext) {
