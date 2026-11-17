@@ -64,6 +64,7 @@ export const mocks: Record<string, Mock> = {
   'correo-cinco': { pageId: 'login-username.ftl', overrides: { social: { providers: [google, github, facebook, microsoft, apple] }, enableWebAuthnConditionalUI: true } },
   contrasena: { pageId: 'login-password.ftl', overrides: { ...enDosPasos, enableWebAuthnConditionalUI: true } },
   'contrasena-error': { pageId: 'login-password.ftl', overrides: { ...enDosPasos, ...errors({ password: 'La contraseña no es correcta.' }) } },
+  'contrasena-bloqueo': { pageId: 'login-password.ftl', overrides: { ...enDosPasos, ...errors({ username: 'Hubo demasiados intentos con esta cuenta. Espera unos minutos y vuelve a probar.' }) } },
   'contrasena-reauth': { pageId: 'login-password.ftl', overrides: { ...enDosPasos, message: { type: 'info', summary: 'Por seguridad, vuelve a escribir tu contraseña.' } } },
   login: { pageId: 'login.ftl' },
   'login-error': { pageId: 'login.ftl', overrides: { login: { username: 'ana@example.test' }, ...errors({ username: 'Correo o contraseña incorrectos.' }) } },

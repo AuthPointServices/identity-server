@@ -16,7 +16,8 @@ export default function LoginPassword({ kcContext, i18n }: { kcContext: Extract<
   const { msg, msgStr } = i18n;
   const [submitting, setSubmitting] = useState(false);
   useScript({ webAuthnButtonId: PASSKEY_BUTTON, kcContext, i18n });
-  const error = messagesPerField.existsError('password') ? messagesPerField.get('password') : message?.type === 'error' ? message.summary : undefined;
+  // El bloqueo por demasiados intentos llega en el campo del correo, que esta página no tiene: también va aquí.
+  const error = messagesPerField.existsError('password', 'username') ? messagesPerField.getFirstError('password', 'username') : message?.type === 'error' ? message.summary : undefined;
 
   return (
     <Template
