@@ -97,6 +97,13 @@ requiredActions:
     providerId: delete_account
     enabled: true
     defaultAction: false
+  # Activar los dos pasos por correo (providers/ConfigureEmailCode.java): la Cuenta lo lanza con
+  # kc_action=fc-configure-email-code.
+  - alias: fc-configure-email-code
+    name: Configure email codes
+    providerId: fc-configure-email-code
+    enabled: true
+    defaultAction: false
 
 # Entrar como en Adobe: primero el correo y después cómo entra esa cuenta (contraseña, o la passkey que el navegador ya
 # ofrece al escribir el correo). Es el «browser» de Keycloak con el paso del correo (providers/EmailFirstForm.java, su
@@ -129,7 +136,7 @@ authenticationFlows:
         authenticatorFlow: true
         userSetupAllowed: false
   - alias: identifier first - forms
-    description: The email, then the password (skipped after a passkey), then two-step verification if set up
+    description: The email, then the password or an email code (skipped after a passkey), then two-step verification if set up
     providerId: basic-flow
     topLevel: false
     builtIn: false
@@ -140,18 +147,36 @@ authenticationFlows:
         priority: 10
         authenticatorFlow: false
         userSetupAllowed: false
-      - authenticator: auth-password-form
+      - flowAlias: identifier first - password or code
         requirement: REQUIRED
         priority: 20
-        authenticatorFlow: false
+        authenticatorFlow: true
         userSetupAllowed: false
       - flowAlias: identifier first - conditional 2fa
         requirement: CONDITIONAL
         priority: 30
         authenticatorFlow: true
         userSetupAllowed: false
+  # Como en Adobe: la contraseña o un código por correo (providers/EmailCodeLoginForm.java). Quien tiene contraseña la ve
+  # primero y elige el código desde su página; quien no tiene, recibe el código directamente.
+  - alias: identifier first - password or code
+    description: The password, or a one-time code sent to the email
+    providerId: basic-flow
+    topLevel: false
+    builtIn: false
+    authenticationExecutions:
+      - authenticator: auth-password-form
+        requirement: ALTERNATIVE
+        priority: 10
+        authenticatorFlow: false
+        userSetupAllowed: false
+      - authenticator: fc-email-code
+        requirement: ALTERNATIVE
+        priority: 20
+        authenticatorFlow: false
+        userSetupAllowed: false
   - alias: identifier first - conditional 2fa
-    description: The code from the app, unless the account has none or entered with a passkey
+    description: The code from the app or the email, unless the account has none or entered with a passkey
     providerId: basic-flow
     topLevel: false
     builtIn: false
@@ -171,6 +196,12 @@ authenticationFlows:
       - authenticator: auth-otp-form
         requirement: ALTERNATIVE
         priority: 30
+        authenticatorFlow: false
+        userSetupAllowed: false
+      # El código por correo como segundo paso, para quien lo activó (providers/EmailCodeSecondFactor.java).
+      - authenticator: fc-email-code-2fa
+        requirement: ALTERNATIVE
+        priority: 40
         authenticatorFlow: false
         userSetupAllowed: false
   - alias: reset credentials verify email

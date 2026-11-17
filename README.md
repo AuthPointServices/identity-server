@@ -35,7 +35,7 @@ cambie ahí se pierde en el próximo `apply.sh`. Los cambios van en `config/`.
 | `config/clients.yaml` | Un cliente OIDC por producto, con sus redirecciones y sus permisos |
 | `login-ui/` | Las pantallas de acceso, hechas por nosotros en React, TypeScript y Tailwind con [Keycloakify](https://www.keycloakify.dev): una página propia por pantalla (`src/login/pages`), los tokens y la letra de la Cuenta y los textos de tú (`src/login/i18n.ts`). Keycloakify las empaqueta en `dist_keycloak/fretchcop-login.jar`, el tema `fretchcop` de Keycloak |
 | `themes/fretchcop/email` | Los correos en español, de tú, con la marca |
-| `providers/` | Pasos de flujo propios en Java, compilados por `scripts/dev.sh` contra el Keycloak fijado: el paso del correo de entrar (`EmailFirstForm`) y que abrir el enlace de recuperar la contraseña verifique el correo |
+| `providers/` | Pasos de flujo propios en Java, compilados por `scripts/dev.sh` contra el Keycloak fijado: el paso del correo de entrar (`EmailFirstForm`), el código por correo (`EmailCode*`, `ConfigureEmailCode`) y que abrir el enlace de recuperar la contraseña verifique el correo |
 | `versions.env` | Versiones fijadas de Keycloak, keycloak-config-cli y Mailpit, con su SHA-256 |
 
 Ninguna plantilla de Keycloak ni PatternFly: Keycloak sigue mostrando el acceso (lo exigen las passkeys, los dos pasos
@@ -59,10 +59,22 @@ con `verifyEmail`, Keycloak la pide después de verificar el correo (así nadie 
 un correo ajeno). Quien no abre ese enlace sale con «¿Olvidaste tu contraseña?» y un solo correo: abrir el enlace de
 recuperar también verifica el correo (`providers/`, en el flujo `reset credentials verify email`).
 
-Entrar va en dos pasos, como en Adobe: primero el correo y luego la contraseña (o la passkey, que el navegador ofrece
-al tocar el correo). El flujo es `browser identifier first` (`config/realm.yaml`). Si el correo no tiene cuenta, lo
-dice y ofrece crearla con él; si la cuenta no tiene contraseña, `EmailFirstForm` se queda en el correo y dice cómo
-entra: con su proveedor (Google…) o eligiendo la contraseña.
+Entrar va en dos pasos, como en Adobe: primero el correo y luego la contraseña, un código por correo o la passkey (que
+el navegador también ofrece al tocar el correo). El flujo es `browser identifier first` (`config/realm.yaml`). Si el
+correo no tiene cuenta, lo dice y ofrece crearla con él; si la cuenta no tiene contraseña, va directo al código, y si
+entra con un proveedor (Google…), `EmailFirstForm` lo dice y ofrece su botón o el código.
+
+El código por correo es nuestro (Keycloak no trae uno): 6 cifras, vale 10 minutos y 5 intentos, y se reenvía cada
+30 segundos como mucho. Sólo se guarda su hash, atado a la sesión y al uso, así que el de entrar no sirve para los dos
+pasos. Escribirlo bien verifica el correo. Sirve para tres cosas:
+
+- entrar (`fc-email-code`, alternativa a la contraseña);
+- los dos pasos (`fc-email-code-2fa`, alternativa a la app de códigos), si la persona lo activó; quien entró con un
+  código no lo vuelve a recibir;
+- activarlo: la acción `fc-configure-email-code` (`kc_action=fc-configure-email-code`) manda un código y, al
+  escribirlo, guarda la credencial.
+
+La página es `src/login/pages/EmailCode.tsx` y el correo, `themes/fretchcop/email/{html,text}/fc-email-code.ftl`.
 
 Keycloak avisa por correo de los cambios de seguridad (contraseña, dos pasos, passkeys). Los intentos fallidos no se
 avisan uno por uno: el arranque lleva `--spi-events-listener--email--exclude-events=LOGIN_ERROR`. La consola de

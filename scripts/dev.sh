@@ -16,7 +16,7 @@ cp "$jar" ".cache/keycloak-$KEYCLOAK_VERSION/providers/fretchcop-login.jar"
 # Los pasos de flujo propios (providers/) se compilan en cada arranque contra el Keycloak fijado: sin Maven.
 build=.cache/providers-build
 rm -rf "$build" && mkdir -p "$build"
-javac --release 21 -cp ".cache/keycloak-$KEYCLOAK_VERSION/lib/lib/main/*" -d "$build" $(find providers/src/main/java -name '*.java')
+javac --release 21 -cp ".cache/keycloak-$KEYCLOAK_VERSION/lib/lib/main/*:.cache/keycloak-$KEYCLOAK_VERSION/lib/lib/boot/*" -d "$build" $(find providers/src/main/java -name '*.java')
 cp -r providers/src/main/resources/. "$build"
 jar --create --file ".cache/keycloak-$KEYCLOAK_VERSION/providers/fretchcop-providers.jar" -C "$build" .
 

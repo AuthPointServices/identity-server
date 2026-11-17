@@ -29,17 +29,17 @@ import org.keycloak.sessions.AuthenticationSessionModel;
 
 /**
  * El primer paso de entrar, como en Adobe: sólo el correo. Es el «Username Form» de Keycloak 26.8.2 (que es final y no
- * se puede extender: aquí va su misma lógica) más una comprobación: si la cuenta no tiene contraseña ni passkey, no
- * sigue a pedir una contraseña que no existe (Keycloak mostraría «se requiere configuración de credencial»). Se queda en
- * el correo y dice cómo entra esa cuenta: con su proveedor (Google…), o eligiendo la contraseña con el enlace de
- * recuperar (lo que tienen quienes se registraron y no abrieron el enlace).
+ * se puede extender: aquí va su misma lógica) más una comprobación: si la cuenta no tiene contraseña ni passkey pero sí
+ * un proveedor (Google…), se queda en el correo y lo dice, con su botón; seguir (FIELD_PROCEED) le manda un código por
+ * correo. Sin contraseña ni proveedor (quien se registró y no abrió el enlace) sigue directamente al código.
  */
 public final class EmailFirstForm extends UsernamePasswordForm {
 
     public static final String PROVIDER_ID = "email-first-form";
     /** Los mensajes de la página del correo (src/login/i18n.ts de login-ui). */
     public static final String USES_PROVIDER = "fcAccountUsesProvider";
-    public static final String NO_PASSWORD = "fcAccountNoPassword";
+    /** Seguir pese al aviso del proveedor: entrar con un código por correo. */
+    public static final String FIELD_PROCEED = "fcProceed";
 
     public EmailFirstForm(KeycloakSession session) {
         super(session);
@@ -62,15 +62,16 @@ public final class EmailFirstForm extends UsernamePasswordForm {
         UserModel user = context.getUser();
         boolean password = user.credentialManager().isConfiguredFor(PasswordCredentialModel.TYPE);
         boolean passkey = user.credentialManager().isConfiguredFor(WebAuthnCredentialModel.TYPE_PASSWORDLESS);
-        if (password || passkey) return true;
+        // Con contraseña o passkey, sin nada (irá al código por correo) o porque pidió seguir pese al aviso: sigue.
+        List<IdentityProviderModel> linked = linkedProviders(context);
+        if (password || passkey || linked.isEmpty() || formData.containsKey(FIELD_PROCEED)) return true;
 
-        // Sin forma de entrar con el correo: se queda en este paso, con el correo puesto, y dice qué hacer.
-        // El nombre que se ve en su botón: el que se le puso o, sin él, el del tipo de proveedor («Google»).
-        List<String> providers = linkedProviders(context).stream().map(p -> KeycloakModelUtils.getIdentityProviderDisplayName(context.getSession(), p)).collect(Collectors.toList());
+        // Entra con su proveedor: se queda en este paso, con el correo puesto, y lo dice. El nombre es el de su botón:
+        // el que se le puso o, sin él, el del tipo de proveedor («Google»).
+        List<String> providers = linked.stream().map(p -> KeycloakModelUtils.getIdentityProviderDisplayName(context.getSession(), p)).collect(Collectors.toList());
         context.clearUser();
         LoginFormsProvider form = context.form().setFormData(formData);
-        if (providers.isEmpty()) form.setInfo(NO_PASSWORD);
-        else form.setInfo(USES_PROVIDER, String.join(", ", providers));
+        form.setInfo(USES_PROVIDER, String.join(", ", providers));
         if (isConditionalPasskeysEnabled(null)) webauthnAuth.fillContextForm(context);
         context.challenge(form.createLoginUsername());
         return false;
