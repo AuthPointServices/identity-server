@@ -6,6 +6,8 @@ import type { KcContext } from './KcContext';
 import Template from './Template';
 
 import LoginPage from './pages/Login';
+import LoginUsernamePage from './pages/LoginUsername';
+import LoginPasswordPage from './pages/LoginPassword';
 import RegisterPage from './pages/Register';
 import LoginResetPasswordPage from './pages/LoginResetPassword';
 import LoginUpdatePasswordPage from './pages/LoginUpdatePassword';
@@ -38,6 +40,10 @@ export default function KcPage({ kcContext }: { kcContext: KcContext }) {
         switch (kcContext.pageId) {
           case 'login.ftl':
             return <LoginPage kcContext={kcContext} i18n={i18n} />;
+          case 'login-username.ftl':
+            return <LoginUsernamePage kcContext={kcContext} i18n={i18n} />;
+          case 'login-password.ftl':
+            return <LoginPasswordPage kcContext={kcContext} i18n={i18n} />;
           case 'register.ftl':
             return <RegisterPage kcContext={kcContext} i18n={i18n} />;
           case 'login-reset-password.ftl':

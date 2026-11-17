@@ -26,7 +26,7 @@ export default function WebauthnRegister({ kcContext, i18n }: { kcContext: Extra
           <input key={n} type="hidden" id={n} name={n} />
         ))}
       </form>
-      <div className="mt-1 flex flex-col gap-2">
+      <div className="mt-3 flex flex-col gap-2">
         <button id={REGISTER_BUTTON} type="button" className={BUTTON_PRIMARY}>
           <IconFingerprint />
           {msg('doRegisterSecurityKey')}

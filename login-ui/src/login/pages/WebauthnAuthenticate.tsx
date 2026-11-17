@@ -41,7 +41,7 @@ export default function WebauthnAuthenticate({ kcContext, i18n }: { kcContext: E
           ))}
         </ul>
       )}
-      <button id={AUTH_BUTTON} type="button" autoFocus className={`${BUTTON_PRIMARY} mt-1`}>
+      <button id={AUTH_BUTTON} type="button" autoFocus className={`${BUTTON_PRIMARY} mt-3`}>
         <IconFingerprint />
         {msg('webauthn-doAuthenticate')}
       </button>

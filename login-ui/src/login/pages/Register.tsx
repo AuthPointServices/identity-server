@@ -7,6 +7,9 @@ import type { KcContext } from '../KcContext';
 import Template from '../Template';
 import { RESET_EMAIL_KEY } from './LoginResetPassword';
 
+/** El correo que alguien escribió al entrar y no tenía cuenta, para no volver a escribirlo aquí (lo guarda LoginUsername). */
+export const REGISTER_EMAIL_KEY = 'fc-register-email';
+
 /**
  * Crear la cuenta: los campos del perfil del realm. Con verificación de correo la contraseña llega después, y la frase
  * bajo el título lo dice. Si el correo ya tiene cuenta, debajo va crear una contraseña nueva: es la salida también para
@@ -17,6 +20,12 @@ export default function Register({ kcContext, i18n }: { kcContext: Extract<KcCon
   const { msg, msgStr, advancedMsg } = i18n;
   const invisibleRecaptcha = recaptchaRequired && !recaptchaVisible && recaptchaAction !== undefined;
   const emailTaken = messagesPerField.get('email') === msgStr('emailExistsMessage');
+  let carried: string | null = null;
+  try {
+    carried = sessionStorage.getItem(REGISTER_EMAIL_KEY);
+  } catch {
+    // Sin almacenamiento: se escribe a mano.
+  }
   const rememberEmail = () => {
     try {
       sessionStorage.setItem(RESET_EMAIL_KEY, (document.getElementById('email') as HTMLInputElement | null)?.value ?? '');
@@ -49,6 +58,7 @@ export default function Register({ kcContext, i18n }: { kcContext: Extract<KcCon
           kcContext={kcContext}
           i18n={i18n}
           hints={emailTaken ? { email: <span>{msg('fcEmailTaken')} <a href={url.loginResetCredentialsUrl} onClick={rememberEmail}>{msg('fcEmailTakenAction')}</a></span> } : {}}
+          initial={carried ? { email: carried } : undefined}
         />
         {termsAcceptanceRequired && (
           <div className="flex flex-col gap-2">
@@ -60,7 +70,7 @@ export default function Register({ kcContext, i18n }: { kcContext: Extract<KcCon
         {recaptchaRequired && !invisibleRecaptcha && <div className="g-recaptcha" data-size="compact" data-sitekey={recaptchaSiteKey} data-action={recaptchaAction} />}
         {invisibleRecaptcha ? (
           // El reCAPTCHA invisible se engancha a la clase y los data- del botón.
-          <button type="submit" className={`${BUTTON_PRIMARY} g-recaptcha mt-1`} data-sitekey={recaptchaSiteKey} data-callback="onSubmitRecaptcha" data-action={recaptchaAction}>
+          <button type="submit" className={`${BUTTON_PRIMARY} g-recaptcha mt-3`} data-sitekey={recaptchaSiteKey} data-callback="onSubmitRecaptcha" data-action={recaptchaAction}>
             {msg('doRegister')}
           </button>
         ) : (

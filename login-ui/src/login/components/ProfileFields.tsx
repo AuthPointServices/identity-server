@@ -1,6 +1,6 @@
 import type { KcClsx } from 'keycloakify/login/lib/kcClsx';
 import { getKcClsx } from 'keycloakify/login/lib/kcClsx';
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { useUserProfileForm } from 'keycloakify/login/lib/useUserProfileForm';
 import UserProfileFormFields from 'keycloakify/login/UserProfileFormFields';
 import { classes } from '../classes';
@@ -28,12 +28,20 @@ const TEXT_TYPES: Record<string, string> = {
  * Los campos del perfil que pide Keycloak (correo, nombre, apellidos y, al registrarse, la contraseña), con la lógica
  * de Keycloakify: validación al salir del campo y errores del servidor. Si el realm declara algún tipo que no es de
  * texto, el formulario entero lo pinta Keycloakify con las clases del tema, para no romper nada. `hints` pone una ayuda
- * propia bajo un campo, en lugar de la del realm.
+ * propia bajo un campo, en lugar de la del realm, e `initial` rellena los que llegan vacíos.
  */
-export function ProfileFields({ kcContext, i18n, hints = {} }: { kcContext: ProfileContext; i18n: I18n; hints?: Partial<Record<string, ReactNode>> }) {
+export function ProfileFields({ kcContext, i18n, hints = {}, initial }: { kcContext: ProfileContext; i18n: I18n; hints?: Partial<Record<string, ReactNode>>; initial?: Partial<Record<string, string>> }) {
   const { advancedMsg, advancedMsgStr, msgStr } = i18n;
   const { formState, dispatchFormAction } = useUserProfileForm({ kcContext, i18n, doMakeUserConfirmPassword: true });
   const states = formState.formFieldStates.filter(({ attribute }) => attribute.annotations.inputType !== 'hidden');
+  // Valores que trae otra pantalla (el correo escrito al entrar): sólo en los campos que llegan vacíos, una vez.
+  useEffect(() => {
+    for (const [name, value] of Object.entries(initial ?? {})) {
+      const field = formState.formFieldStates.find((f) => f.attribute.name === name);
+      if (value && field && !field.valueOrValues) dispatchFormAction({ action: 'update', name, valueOrValues: value });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- sólo al montar
+  }, []);
   const ours = (name: string, type: string | undefined, multivalued: boolean | undefined) =>
     !multivalued && (name === 'password' || name === 'password-confirm' || type === undefined || type in TEXT_TYPES);
 

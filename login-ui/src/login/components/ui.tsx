@@ -88,7 +88,8 @@ function RevealButton({ inputId, labels }: { inputId: string; labels: { show: st
 /** Una casilla de 18 px con su texto, toda la fila se toca (44 px en táctil). */
 export function Checkbox({ id, label, ...input }: Omit<InputHTMLAttributes<HTMLInputElement>, 'id' | 'type'> & { id: string; label: ReactNode }) {
   return (
-    <label htmlFor={id} className="flex w-fit cursor-pointer items-center gap-2.5 text-sm/5 text-fg pointer-coarse:min-h-11">
+    // La etiqueta entera es el objetivo (marca la casilla al tocarla): 24 px de alto, 44 en pantallas táctiles.
+    <label htmlFor={id} className="flex min-h-6 w-fit cursor-pointer items-center gap-2.5 text-sm/5 text-fg pointer-coarse:min-h-11">
       <input id={id} name={input.name ?? id} type="checkbox" className="size-[18px] shrink-0 cursor-pointer rounded-[5px] accent-accent" {...input} />
       {label}
     </label>

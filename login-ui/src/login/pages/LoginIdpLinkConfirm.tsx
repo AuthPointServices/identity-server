@@ -9,7 +9,7 @@ export default function LoginIdpLinkConfirm({ kcContext, i18n }: { kcContext: Ex
   const { msg, msgStr } = i18n;
   return (
     <Template kcContext={kcContext} i18n={i18n} doUseDefaultCss={false} headerNode={msg('confirmLinkIdpTitle')} documentTitle={msgStr('confirmLinkIdpTitle')}>
-      <form id="kc-register-form" action={url.loginAction} method="post" className="mt-1 flex flex-col gap-2">
+      <form id="kc-register-form" action={url.loginAction} method="post" className="mt-3 flex flex-col gap-2">
         <button id="linkAccount" type="submit" name="submitAction" value="linkAccount" className={BUTTON_PRIMARY}>{msg('confirmLinkIdpContinue', idpAlias)}</button>
         <button id="updateProfile" type="submit" name="submitAction" value="updateProfile" className={BUTTON_SECONDARY}>{msg('confirmLinkIdpReviewProfile')}</button>
       </form>

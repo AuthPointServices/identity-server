@@ -28,7 +28,7 @@ export default function LoginResetPassword({ kcContext, i18n }: { kcContext: Ext
       subtitle={realm.duplicateEmailsAllowed ? msg('emailInstructionUsername') : msg('emailInstruction')}
       displayMessage={!messagesPerField.existsError('username')}
       displayInfo
-      infoNode={<a href={url.loginUrl}>{msg('backToLogin')}</a>}
+      infoNode={<a href={url.loginUrl} className="inline-flex min-h-6 items-center">{msg('backToLogin')}</a>}
     >
       <form id="kc-reset-password-form" action={url.loginAction} method="post" className="flex flex-col gap-5">
         <Field

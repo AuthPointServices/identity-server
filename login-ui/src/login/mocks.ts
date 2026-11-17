@@ -52,7 +52,19 @@ const registerRealm = {
   },
 } as const;
 
+// El acceso en dos pasos: la cuenta que ya escribió el correo, y los dos proveedores del realm.
+const enDosPasos = { auth: { showUsername: true, attemptedUsername: 'ana@example.test' } };
+const realmSocial = { social: { providers: [google, facebook] }, enableWebAuthnConditionalUI: true };
+
 export const mocks: Record<string, Mock> = {
+  correo: { pageId: 'login-username.ftl', overrides: realmSocial },
+  'correo-desconocido': { pageId: 'login-username.ftl', overrides: { ...realmSocial, login: { username: 'nadie@example.test' }, ...errors({ username: 'No hay ninguna cuenta con este correo.' }) } },
+  'correo-proveedor': { pageId: 'login-username.ftl', overrides: { ...realmSocial, login: { username: 'ana@gmail.com' }, message: { type: 'info', summary: 'Esta cuenta entra con Google.' } } },
+  'correo-sin-contrasena': { pageId: 'login-username.ftl', overrides: { ...realmSocial, login: { username: 'ana@example.test' }, message: { type: 'info', summary: 'Esta cuenta aún no tiene contraseña.' } } },
+  'correo-cinco': { pageId: 'login-username.ftl', overrides: { social: { providers: [google, github, facebook, microsoft, apple] }, enableWebAuthnConditionalUI: true } },
+  contrasena: { pageId: 'login-password.ftl', overrides: { ...enDosPasos, enableWebAuthnConditionalUI: true } },
+  'contrasena-error': { pageId: 'login-password.ftl', overrides: { ...enDosPasos, ...errors({ password: 'La contraseña no es correcta.' }) } },
+  'contrasena-reauth': { pageId: 'login-password.ftl', overrides: { ...enDosPasos, message: { type: 'info', summary: 'Por seguridad, vuelve a escribir tu contraseña.' } } },
   login: { pageId: 'login.ftl' },
   'login-error': { pageId: 'login.ftl', overrides: { login: { username: 'ana@example.test' }, ...errors({ username: 'Correo o contraseña incorrectos.' }) } },
   'login-google': { pageId: 'login.ftl', overrides: { social: { providers: [google] } } },
