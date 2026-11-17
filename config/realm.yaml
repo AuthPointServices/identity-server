@@ -104,6 +104,12 @@ requiredActions:
     providerId: fc-configure-email-code
     enabled: true
     defaultAction: false
+  # Generar los códigos de recuperación (Keycloak de serie): la Cuenta lo lanza con kc_action=CONFIGURE_RECOVERY_AUTHN_CODES.
+  - alias: CONFIGURE_RECOVERY_AUTHN_CODES
+    name: Recovery Authentication Codes
+    providerId: CONFIGURE_RECOVERY_AUTHN_CODES
+    enabled: true
+    defaultAction: false
 
 # Entrar como en Adobe: primero el correo y después cómo entra esa cuenta (contraseña, o la passkey que el navegador ya
 # ofrece al escribir el correo). Es el «browser» de Keycloak con el paso del correo (providers/EmailFirstForm.java, su
@@ -202,6 +208,12 @@ authenticationFlows:
       - authenticator: fc-email-code-2fa
         requirement: ALTERNATIVE
         priority: 40
+        authenticatorFlow: false
+        userSetupAllowed: false
+      # Un código de recuperación, por si pierdes la app y el correo. Keycloak de serie.
+      - authenticator: auth-recovery-authn-code-form
+        requirement: ALTERNATIVE
+        priority: 50
         authenticatorFlow: false
         userSetupAllowed: false
   - alias: reset credentials verify email

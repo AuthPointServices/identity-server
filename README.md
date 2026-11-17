@@ -77,6 +77,11 @@ pasos. Escribirlo bien verifica el correo. Sirve para tres cosas:
 
 La página es `src/login/pages/EmailCode.tsx` y el correo, `themes/fretchcop/email/{html,text}/fc-email-code.ftl`.
 
+Si se pierden la app y el correo, quedan los códigos de recuperación de Keycloak: 12, de un solo uso, que la Cuenta genera
+con `kc_action=CONFIGURE_RECOVERY_AUTHN_CODES` y que el segundo paso acepta como alternativa. Las pantallas son
+`src/login/pages/LoginRecoveryAuthnCode{Config,Input}.tsx`. Ojo: con sólo los códigos, Keycloak pide uno en cada
+inicio de sesión, así que la Cuenta los quita al desactivar los dos pasos.
+
 Keycloak avisa por correo de los cambios de seguridad (contraseña, dos pasos, passkeys). Los intentos fallidos no se
 avisan uno por uno: el arranque lleva `--spi-events-listener--email--exclude-events=LOGIN_ERROR`. La consola de
 cuenta de Keycloak está apagada; sus enlaces llevan a la Cuenta.

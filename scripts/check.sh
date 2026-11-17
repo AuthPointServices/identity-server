@@ -44,7 +44,7 @@ first=$(curl -sf -H "Authorization: Bearer $boot" "$admin" | python3 -c 'import 
 first=$(curl -sf -H "Authorization: Bearer $boot" "$admin/authentication/flows/$first/executions" \
   | python3 -c 'import sys,json;print(" ".join(e.get("providerId","") for e in json.load(sys.stdin) if e.get("providerId")))')
 expect "entrar pide primero el correo y luego la contraseña o un código por correo" yes "$([[ $first == *"email-first-form auth-password-form fc-email-code "* ]] && echo yes || echo no)"
-expect "los dos pasos aceptan la app o un código por correo" yes "$([[ $first == *"auth-otp-form fc-email-code-2fa"* ]] && echo yes || echo no)"
+expect "los dos pasos aceptan la app, un código por correo o uno de recuperación" yes "$([[ $first == *"auth-otp-form fc-email-code-2fa auth-recovery-authn-code-form"* ]] && echo yes || echo no)"
 expect "abrir el enlace de recuperar verifica el correo" yes "$([[ $steps == *"reset-credential-email reset-link-verifies-email "* ]] && echo yes || echo no)"
 
 # Los proveedores de acceso salen de config/realm.yaml: encendidos los que tienen CLIENT_ID en .env.
