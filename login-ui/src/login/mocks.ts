@@ -6,7 +6,7 @@ import type { KcContext, KcContextExtension, KcContextExtensionPerPage } from '.
 /* Contextos simulados para ver cada pantalla y estado sin Keycloak (`pnpm dev`, ?mock=<nombre>). Sólo en desarrollo:
    main.tsx los importa bajo import.meta.env.DEV. */
 const kcContextExtension: KcContextExtension = { themeName: themeNames[0] ?? 'fretchcop', properties: { ...kcEnvDefaults } };
-const kcContextExtensionPerPage: KcContextExtensionPerPage = {};
+const kcContextExtensionPerPage: KcContextExtensionPerPage = { 'register.ftl': { url: { loginResetCredentialsUrl: '#reset' } } };
 
 const { getKcContextMock } = createGetKcContextMock({
   kcContextExtension,
@@ -40,6 +40,8 @@ const registerRealm = {
   passwordRequired: false,
   profile: {
     attributesByName: {
+      // Keycloakify trae «username» en su perfil de ejemplo; en el realm el correo es el usuario y no existe.
+      username: { annotations: { inputType: 'hidden' } },
       email: { name: 'email', displayName: '${email}', required: true, readOnly: false, validators: {}, annotations: {}, autocomplete: 'email' },
       firstName: { name: 'firstName', displayName: '${firstName}', required: true, readOnly: false, validators: {}, annotations: {}, autocomplete: 'given-name' },
       lastName: { name: 'lastName', displayName: '${lastName}', required: true, readOnly: false, validators: {}, annotations: {}, autocomplete: 'family-name' },

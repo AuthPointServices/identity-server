@@ -1,5 +1,6 @@
 import type { KcClsx } from 'keycloakify/login/lib/kcClsx';
 import { getKcClsx } from 'keycloakify/login/lib/kcClsx';
+import type { ReactNode } from 'react';
 import { useUserProfileForm } from 'keycloakify/login/lib/useUserProfileForm';
 import UserProfileFormFields from 'keycloakify/login/UserProfileFormFields';
 import { classes } from '../classes';
@@ -26,9 +27,10 @@ const TEXT_TYPES: Record<string, string> = {
 /**
  * Los campos del perfil que pide Keycloak (correo, nombre, apellidos y, al registrarse, la contraseña), con la lógica
  * de Keycloakify: validación al salir del campo y errores del servidor. Si el realm declara algún tipo que no es de
- * texto, el formulario entero lo pinta Keycloakify con las clases del tema, para no romper nada.
+ * texto, el formulario entero lo pinta Keycloakify con las clases del tema, para no romper nada. `hints` pone una ayuda
+ * propia bajo un campo, en lugar de la del realm.
  */
-export function ProfileFields({ kcContext, i18n }: { kcContext: ProfileContext; i18n: I18n }) {
+export function ProfileFields({ kcContext, i18n, hints = {} }: { kcContext: ProfileContext; i18n: I18n; hints?: Partial<Record<string, ReactNode>> }) {
   const { advancedMsg, advancedMsgStr, msgStr } = i18n;
   const { formState, dispatchFormAction } = useUserProfileForm({ kcContext, i18n, doMakeUserConfirmPassword: true });
   const states = formState.formFieldStates.filter(({ attribute }) => attribute.annotations.inputType !== 'hidden');
@@ -59,7 +61,7 @@ export function ProfileFields({ kcContext, i18n }: { kcContext: ProfileContext; 
             readOnly={a.readOnly}
             placeholder={a.annotations.inputTypePlaceholder ? advancedMsgStr(a.annotations.inputTypePlaceholder) : undefined}
             error={displayableErrors[0]?.errorMessageStr}
-            hint={after ?? before ? advancedMsg((after ?? before) as string) : undefined}
+            hint={hints[a.name] ?? (after ?? before ? advancedMsg((after ?? before) as string) : undefined)}
             reveal={isPassword ? { show: msgStr('showPassword'), hide: msgStr('hidePassword') } : undefined}
             spellCheck={a.name === 'email' ? false : undefined}
           />

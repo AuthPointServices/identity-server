@@ -4,10 +4,19 @@ import type { I18n } from '../i18n';
 import type { KcContext } from '../KcContext';
 import Template from '../Template';
 
+/** El correo con el que alguien intentó registrarse, para no volver a escribirlo aquí (lo guarda Register). */
+export const RESET_EMAIL_KEY = 'fc-reset-email';
+
 /** ¿Olvidaste tu contraseña?: el correo, y Keycloak envía el enlace. */
 export default function LoginResetPassword({ kcContext, i18n }: { kcContext: Extract<KcContext, { pageId: 'login-reset-password.ftl' }>; i18n: I18n }) {
   const { url, realm, auth, messagesPerField } = kcContext;
   const { msg, msgStr } = i18n;
+  let remembered: string | null = null;
+  try {
+    remembered = sessionStorage.getItem(RESET_EMAIL_KEY);
+  } catch {
+    // Sin almacenamiento (el navegador lo bloquea): se escribe a mano.
+  }
   const label = !realm.loginWithEmailAllowed ? msg('username') : !realm.registrationEmailAsUsername ? msg('usernameOrEmail') : msg('email');
   return (
     <Template
@@ -29,7 +38,7 @@ export default function LoginResetPassword({ kcContext, i18n }: { kcContext: Ext
           autoFocus
           autoComplete="username"
           spellCheck={false}
-          defaultValue={auth.attemptedUsername ?? ''}
+          defaultValue={auth.attemptedUsername ?? remembered ?? ''}
           error={messagesPerField.existsError('username') ? messagesPerField.get('username') : undefined}
         />
         <Actions submit={msg('doSubmit')} />

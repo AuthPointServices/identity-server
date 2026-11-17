@@ -5,12 +5,25 @@ import { BUTTON_PRIMARY, Checkbox, ServerText } from '../components/ui';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../KcContext';
 import Template from '../Template';
+import { RESET_EMAIL_KEY } from './LoginResetPassword';
 
-/** Crear la cuenta: los campos del perfil del realm. Con verificación de correo, la contraseña llega después. */
+/**
+ * Crear la cuenta: los campos del perfil del realm. Con verificación de correo la contraseña llega después, y la frase
+ * bajo el título lo dice. Si el correo ya tiene cuenta, debajo va crear una contraseña nueva: es la salida también para
+ * quien se registró y no abrió el enlace, porque abrir el de recuperar verifica el correo (providers/ de identity-server).
+ */
 export default function Register({ kcContext, i18n }: { kcContext: Extract<KcContext, { pageId: 'register.ftl' }>; i18n: I18n }) {
-  const { messageHeader, url, messagesPerField, recaptchaRequired, recaptchaVisible, recaptchaSiteKey, recaptchaAction, termsAcceptanceRequired } = kcContext;
+  const { messageHeader, url, messagesPerField, passwordRequired, recaptchaRequired, recaptchaVisible, recaptchaSiteKey, recaptchaAction, termsAcceptanceRequired } = kcContext;
   const { msg, msgStr, advancedMsg } = i18n;
   const invisibleRecaptcha = recaptchaRequired && !recaptchaVisible && recaptchaAction !== undefined;
+  const emailTaken = messagesPerField.get('email') === msgStr('emailExistsMessage');
+  const rememberEmail = () => {
+    try {
+      sessionStorage.setItem(RESET_EMAIL_KEY, (document.getElementById('email') as HTMLInputElement | null)?.value ?? '');
+    } catch {
+      // Sin almacenamiento: en la otra pantalla se escribe a mano.
+    }
+  };
 
   // reCAPTCHA invisible: su script llama a esta función al terminar.
   useLayoutEffect(() => {
@@ -26,12 +39,17 @@ export default function Register({ kcContext, i18n }: { kcContext: Extract<KcCon
       doUseDefaultCss={false}
       headerNode={messageHeader !== undefined ? advancedMsg(messageHeader) : msg('registerTitle')}
       documentTitle={msgStr('registerTitle')}
+      subtitle={passwordRequired ? undefined : msg('fcRegisterPasswordLater')}
       displayMessage={messagesPerField.exists('global')}
       displayInfo
       infoNode={<span>{msg('fcHaveAccount')} <a href={url.loginUrl}>{msg('doLogIn')}</a></span>}
     >
       <form id="kc-register-form" action={url.registrationAction} method="post" noValidate className="flex flex-col gap-5">
-        <ProfileFields kcContext={kcContext} i18n={i18n} />
+        <ProfileFields
+          kcContext={kcContext}
+          i18n={i18n}
+          hints={emailTaken ? { email: <span>{msg('fcEmailTaken')} <a href={url.loginResetCredentialsUrl} onClick={rememberEmail}>{msg('fcEmailTakenAction')}</a></span> } : {}}
+        />
         {termsAcceptanceRequired && (
           <div className="flex flex-col gap-2">
             <p className="text-sm/5 text-fg-muted">{msg('termsText')}</p>

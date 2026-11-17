@@ -6,7 +6,9 @@ export type KcContextExtension = {
   properties: Record<KcEnvName, string>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export type KcContextExtensionPerPage = {};
+// Keycloak manda las mismas URLs a todas las páginas; Keycloakify declara en cada una sólo las que usa la suya.
+export type KcContextExtensionPerPage = {
+  'register.ftl': { url: { loginResetCredentialsUrl: string } };
+};
 
 export type KcContext = ExtendKcContext<KcContextExtension, KcContextExtensionPerPage>;
