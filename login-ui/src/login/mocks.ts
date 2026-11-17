@@ -6,7 +6,12 @@ import type { KcContext, KcContextExtension, KcContextExtensionPerPage } from '.
 /* Contextos simulados para ver cada pantalla y estado sin Keycloak (`pnpm dev`, ?mock=<nombre>). Sólo en desarrollo:
    main.tsx los importa bajo import.meta.env.DEV. */
 const kcContextExtension: KcContextExtension = { themeName: themeNames[0] ?? 'fretchcop', properties: { ...kcEnvDefaults, FC_ACCOUNT_URL: '#cuenta' } };
-const kcContextExtensionPerPage: KcContextExtensionPerPage = { 'register.ftl': { url: { loginResetCredentialsUrl: '#reset' } }, 'login-config-totp.ftl': { totp: { username: 'ana@example.test' } } };
+const kcContextExtensionPerPage: KcContextExtensionPerPage = {
+  'register.ftl': { url: { loginResetCredentialsUrl: '#reset' } },
+  'login-config-totp.ftl': { totp: { username: 'ana@example.test' } },
+  'login-password.ftl': { auth: { authenticationSelections: [] } },
+  'fc-email-code.ftl': { fcEmailCode: { mode: 'login', email: 'ana@example.test', minutes: 10, resendIn: 0, active: true } },
+};
 
 const { getKcContextMock } = createGetKcContextMock({
   kcContextExtension,
@@ -54,16 +59,24 @@ const registerRealm = {
 
 // El acceso en dos pasos: la cuenta que ya escribió el correo, y los dos proveedores del realm.
 const enDosPasos = { auth: { showUsername: true, attemptedUsername: 'ana@example.test' } };
+// Las formas de entrar que Keycloak ofrece en el paso de la contraseña (AuthenticationSelectionOption).
+const opcionContrasena = { authExecId: 'pw', displayName: 'password-display-name', helpText: 'password-help-text' };
+const opcionCodigo = { authExecId: 'code', displayName: 'fc-email-code-display-name', helpText: 'fc-email-code-help-text' };
 const realmSocial = { social: { providers: [google, facebook] }, enableWebAuthnConditionalUI: true };
 
 export const mocks: Record<string, Mock> = {
   correo: { pageId: 'login-username.ftl', overrides: realmSocial },
   'correo-desconocido': { pageId: 'login-username.ftl', overrides: { ...realmSocial, login: { username: 'nadie@example.test' }, ...errors({ username: 'No hay ninguna cuenta con este correo.' }) } },
   'correo-proveedor': { pageId: 'login-username.ftl', overrides: { ...realmSocial, login: { username: 'ana@gmail.com' }, message: { type: 'info', summary: 'Esta cuenta entra con Google.' } } },
-  'correo-sin-contrasena': { pageId: 'login-username.ftl', overrides: { ...realmSocial, login: { username: 'ana@example.test' }, message: { type: 'info', summary: 'Esta cuenta aún no tiene contraseña.' } } },
   'correo-cinco': { pageId: 'login-username.ftl', overrides: { social: { providers: [google, github, facebook, microsoft, apple] }, enableWebAuthnConditionalUI: true } },
   contrasena: { pageId: 'login-password.ftl', overrides: { ...enDosPasos, enableWebAuthnConditionalUI: true } },
   'contrasena-error': { pageId: 'login-password.ftl', overrides: { ...enDosPasos, ...errors({ password: 'La contraseña no es correcta.' }) } },
+  'contrasena-codigo': { pageId: 'login-password.ftl', overrides: { ...enDosPasos, enableWebAuthnConditionalUI: true, auth: { ...enDosPasos.auth, authenticationSelections: [opcionContrasena, opcionCodigo] } } },
+  codigo: { pageId: 'fc-email-code.ftl', overrides: { ...enDosPasos, auth: { ...enDosPasos.auth, authenticationSelections: [opcionContrasena, opcionCodigo] }, fcEmailCode: { mode: 'login', email: 'ana@example.test', minutes: 10, resendIn: 0, active: true } } },
+  'codigo-espera': { pageId: 'fc-email-code.ftl', overrides: { ...enDosPasos, message: { type: 'success', summary: 'Te enviamos otro código.' }, fcEmailCode: { mode: 'login', email: 'ana@gmail.com', minutes: 10, resendIn: 27, active: true } } },
+  'codigo-error': { pageId: 'fc-email-code.ftl', overrides: { ...enDosPasos, ...errors({ code: 'El código no es correcto. Revisa el último correo que te enviamos.' }), fcEmailCode: { mode: 'login', email: 'ana@example.test', minutes: 10, resendIn: 0, active: true } } },
+  'codigo-segundo': { pageId: 'fc-email-code.ftl', overrides: { ...enDosPasos, fcEmailCode: { mode: 'second', email: 'ana@example.test', minutes: 10, resendIn: 12, active: true } } },
+  'codigo-activar': { pageId: 'fc-email-code.ftl', overrides: { isAppInitiatedAction: true, fcEmailCode: { mode: 'setup', email: 'ana@example.test', minutes: 10, resendIn: 0, active: true } } },
   'contrasena-bloqueo': { pageId: 'login-password.ftl', overrides: { ...enDosPasos, ...errors({ username: 'Hubo demasiados intentos con esta cuenta. Espera unos minutos y vuelve a probar.' }) } },
   'contrasena-reauth': { pageId: 'login-password.ftl', overrides: { ...enDosPasos, message: { type: 'info', summary: 'Por seguridad, vuelve a escribir tu contraseña.' } } },
   login: { pageId: 'login.ftl' },

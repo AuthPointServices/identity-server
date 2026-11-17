@@ -13,6 +13,8 @@ export type LayoutProps = TemplateProps<KcContext, I18n> & {
   subtitle?: ReactNode;
   /** La ilustración de una pantalla de estado (components/Art): centrada, entre el texto y los botones. */
   art?: ReactNode;
+  /** Sin «Prueba otra forma»: la página ya ofrece cada otra forma con su nombre. */
+  tryAnotherWay?: boolean;
 };
 
 /**
@@ -21,7 +23,7 @@ export type LayoutProps = TemplateProps<KcContext, I18n> & {
  * salir un error. En el teléfono sólo queda la columna del formulario.
  */
 export default function Template(props: LayoutProps) {
-  const { kcContext, i18n, headerNode, subtitle, art, children, socialProvidersNode, infoNode, documentTitle } = props;
+  const { kcContext, i18n, headerNode, subtitle, art, tryAnotherWay = true, children, socialProvidersNode, infoNode, documentTitle } = props;
   const { displayInfo = false, displayMessage = true } = props;
   const { realm, auth, url, message, isAppInitiatedAction } = kcContext;
   const { msg, msgStr, currentLanguage, enabledLanguages } = i18n;
@@ -95,7 +97,7 @@ export default function Template(props: LayoutProps) {
 
             {children}
 
-            {auth?.showTryAnotherWayLink && (
+            {tryAnotherWay && auth?.showTryAnotherWayLink && (
               <form id="kc-select-try-another-way-form" action={url.loginAction} method="post">
                 <input type="hidden" name="tryAnotherWay" value="on" />
                 <button type="submit" className={BUTTON_SECONDARY}>{msg('doTryAnotherWay')}</button>

@@ -8,6 +8,7 @@ import Template from './Template';
 import LoginPage from './pages/Login';
 import LoginUsernamePage from './pages/LoginUsername';
 import LoginPasswordPage from './pages/LoginPassword';
+import EmailCodePage from './pages/EmailCode';
 import RegisterPage from './pages/Register';
 import LoginResetPasswordPage from './pages/LoginResetPassword';
 import LoginUpdatePasswordPage from './pages/LoginUpdatePassword';
@@ -44,6 +45,8 @@ export default function KcPage({ kcContext }: { kcContext: KcContext }) {
             return <LoginUsernamePage kcContext={kcContext} i18n={i18n} />;
           case 'login-password.ftl':
             return <LoginPasswordPage kcContext={kcContext} i18n={i18n} />;
+          case 'fc-email-code.ftl':
+            return <EmailCodePage kcContext={kcContext} i18n={i18n} />;
           case 'register.ftl':
             return <RegisterPage kcContext={kcContext} i18n={i18n} />;
           case 'login-reset-password.ftl':

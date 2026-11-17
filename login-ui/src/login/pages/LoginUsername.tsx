@@ -12,8 +12,8 @@ import { REGISTER_EMAIL_KEY } from './Register';
 /**
  * Entrar, primer paso, como en Adobe: crear una cuenta bajo el título, sólo el correo y «Continuar», y debajo de la raya
  * las otras formas (proveedores y passkey; la passkey también la ofrece el navegador al tocar el correo). Si el correo
- * no tiene cuenta lo dice y ofrece crearla con él; si la cuenta no tiene contraseña (providers/EmailFirstForm.java),
- * dice cómo entra: con su proveedor, o eligiendo la contraseña.
+ * no tiene cuenta lo dice y ofrece crearla con él; si la cuenta entra con un proveedor (providers/EmailFirstForm.java),
+ * lo dice con su botón, y seguir le manda un código por correo.
  */
 export default function LoginUsername({ kcContext, i18n }: { kcContext: Extract<KcContext, { pageId: 'login-username.ftl' }>; i18n: I18n }) {
   const { social, realm, url, login, registrationDisabled, messagesPerField, message, enableWebAuthnConditionalUI, authenticators } = kcContext;
@@ -27,7 +27,6 @@ export default function LoginUsername({ kcContext, i18n }: { kcContext: Extract<
   // Los avisos de EmailFirstForm: la cuenta existe pero no entra con contraseña.
   const providers = realm.password ? (social?.providers ?? []) : [];
   const usesProvider = message?.type === 'info' && message.summary.startsWith(msgStr('fcAccountUsesProvider', '').replace(/\.$/, '').trim());
-  const noPassword = message?.type === 'info' && message.summary === msgStr('fcAccountNoPassword');
   const hinted = usesProvider ? providers.filter((p) => message.summary.includes(p.displayName)) : [];
   const label = !realm.loginWithEmailAllowed ? msg('username') : msg('email');
   const rememberEmail = () => {
@@ -40,11 +39,8 @@ export default function LoginUsername({ kcContext, i18n }: { kcContext: Extract<
 
   const hint = unknown && canRegister ? (
     <a href={url.registrationUrl} onClick={rememberEmail}>{msg('fcCreateWithEmail')}</a>
-  ) : usesProvider || noPassword ? (
-    <span className="text-fg">
-      <ServerText html={message.summary} />{' '}
-      {noPassword && realm.resetPasswordAllowed && <a href={url.loginResetCredentialsUrl}>{msg('fcCreatePassword')}</a>}
-    </span>
+  ) : usesProvider ? (
+    <ServerText className="text-fg" html={message.summary} />
   ) : undefined;
 
   return (
@@ -61,7 +57,7 @@ export default function LoginUsername({ kcContext, i18n }: { kcContext: Extract<
           </>
         )
       }
-      displayMessage={!error && !usesProvider && !noPassword}
+      displayMessage={!error && !usesProvider}
     >
       {realm.password && (
         <form id="kc-form-login" action={url.loginAction} method="post" onSubmit={() => setSubmitting(true)} className="flex flex-col gap-5">
@@ -89,8 +85,10 @@ export default function LoginUsername({ kcContext, i18n }: { kcContext: Extract<
             </div>
           )}
           {realm.rememberMe && <Checkbox id="rememberMe" label={msg('rememberMe')} defaultChecked={!!login.rememberMe} />}
+          {/* Tras el aviso del proveedor, seguir es entrar con un código por correo (EmailFirstForm.FIELD_PROCEED). */}
+          {hinted.length > 0 && <input type="hidden" name="fcProceed" value="true" />}
           <button id="kc-login" name="login" type="submit" disabled={submitting} className={`${hinted.length > 0 ? BUTTON_SECONDARY : BUTTON_PRIMARY} mt-3`}>
-            {msg('doContinue')}
+            {hinted.length > 0 ? msg('fcEmailCodeInstead') : msg('doContinue')}
           </button>
         </form>
       )}
