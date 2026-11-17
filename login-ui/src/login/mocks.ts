@@ -82,6 +82,7 @@ export const mocks: Record<string, Mock> = {
   'recuperacion-entrar': { pageId: 'login-recovery-authn-code-input.ftl', overrides: { ...enDosPasos, recoveryAuthnCodesInputBean: { codeNumber: 3 } } },
   'recuperacion-error': { pageId: 'login-recovery-authn-code-input.ftl', overrides: { ...enDosPasos, ...errors({ recoveryCodeInput: 'El código no es correcto. Revisa que sea el número que se pide.' }), recoveryAuthnCodesInputBean: { codeNumber: 3 } } },
   'codigo-activar': { pageId: 'fc-email-code.ftl', overrides: { isAppInitiatedAction: true, fcEmailCode: { mode: 'setup', email: 'ana@example.test', minutes: 10, resendIn: 0, active: true } } },
+  'contrasena-passkey': { pageId: 'login-password.ftl', overrides: { ...enDosPasos, enableWebAuthnConditionalUI: true, authenticators: { authenticators: [{ credentialId: 'pk1', label: 'iPhone 15', createdAt: '2026-11-01', transports: { displayNameProperties: [], iconClass: '' } }] }, auth: { ...enDosPasos.auth, authenticationSelections: [opcionContrasena, opcionCodigo] } } },
   'contrasena-bloqueo': { pageId: 'login-password.ftl', overrides: { ...enDosPasos, ...errors({ username: 'Hubo demasiados intentos con esta cuenta. Espera unos minutos y vuelve a probar.' }) } },
   'contrasena-reauth': { pageId: 'login-password.ftl', overrides: { ...enDosPasos, message: { type: 'info', summary: 'Por seguridad, vuelve a escribir tu contraseña.' } } },
   login: { pageId: 'login.ftl' },
