@@ -48,7 +48,7 @@ export default function Template(props: LayoutProps) {
 
   return (
     <div className="grid min-h-dvh bg-surface lg:grid-cols-[minmax(560px,5fr)_minmax(0,6fr)]">
-      <div className="flex min-w-0 flex-col px-6 pt-5 pb-6 sm:px-12 sm:pt-8 lg:px-16">
+      <div className="flex min-w-0 flex-col px-6 pt-5 pb-6 sm:px-12 sm:pt-8 lg:px-16 [@media(max-height:760px)]:pt-5">
         <header className="flex h-10 items-center justify-between gap-4 lg:justify-end">
           {/* Desde 1024 px el nombre ya está en el panel: aquí sólo en la columna sola. */}
           <p className="text-lg/6 font-semibold tracking-[-0.02em] text-fg lg:hidden">{brand}</p>
@@ -72,7 +72,8 @@ export default function Template(props: LayoutProps) {
           )}
         </header>
 
-        <main className="mx-auto flex w-full max-w-[400px] flex-1 flex-col pt-[clamp(32px,calc(18vh-48px),136px)] pb-10 max-sm:pt-8">
+        {/* En pantallas bajas (un portátil de 720 px), menos aire arriba y abajo: el formulario entero cabe sin desplazar. */}
+        <main className="mx-auto flex w-full max-w-[400px] flex-1 flex-col pt-[clamp(32px,calc(18vh-48px),136px)] pb-10 max-sm:pt-8 [@media(max-height:760px)]:pt-6 [@media(max-height:760px)]:pb-4">
           <h1 className="text-[30px]/[38px] font-semibold tracking-[-0.025em] text-balance text-fg max-sm:text-[26px]/[34px]">{headerNode}</h1>
           {(subtitle || infoAsSubtitle) && (
             <p className="mt-2 text-base/6 text-pretty text-fg-muted">{infoAsSubtitle ? <ServerText html={message.summary} /> : subtitle}</p>

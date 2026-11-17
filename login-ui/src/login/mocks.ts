@@ -6,7 +6,7 @@ import type { KcContext, KcContextExtension, KcContextExtensionPerPage } from '.
 /* Contextos simulados para ver cada pantalla y estado sin Keycloak (`pnpm dev`, ?mock=<nombre>). Sólo en desarrollo:
    main.tsx los importa bajo import.meta.env.DEV. */
 const kcContextExtension: KcContextExtension = { themeName: themeNames[0] ?? 'fretchcop', properties: { ...kcEnvDefaults, FC_ACCOUNT_URL: '#cuenta' } };
-const kcContextExtensionPerPage: KcContextExtensionPerPage = { 'register.ftl': { url: { loginResetCredentialsUrl: '#reset' } } };
+const kcContextExtensionPerPage: KcContextExtensionPerPage = { 'register.ftl': { url: { loginResetCredentialsUrl: '#reset' } }, 'login-config-totp.ftl': { totp: { username: 'ana@example.test' } } };
 
 const { getKcContextMock } = createGetKcContextMock({
   kcContextExtension,
@@ -34,6 +34,9 @@ const errors = (byField: Record<string, string>) => ({
   },
 });
 const reauth = { usernameHidden: true, auth: { showUsername: true, attemptedUsername: 'ana@example.test', showResetCredentials: false }, message: { type: 'info' as const, summary: 'Por seguridad, vuelve a escribir tu contraseña.' } };
+
+// Las apps que Keycloak 26.8 ofrece con la política del realm, en su orden.
+const totpApps = { supportedApplications: ['totpAppGoogleName', 'totpAppMicrosoftAuthenticatorName', 'totpAppFreeOTPName'] };
 
 const registerRealm = {
   realm: { registrationEmailAsUsername: true },
@@ -66,9 +69,12 @@ export const mocks: Record<string, Mock> = {
   reset: { pageId: 'login-reset-password.ftl' },
   'update-password': { pageId: 'login-update-password.ftl', overrides: { isAppInitiatedAction: true } },
   'update-password-error': { pageId: 'login-update-password.ftl', overrides: { isAppInitiatedAction: true, ...errors({ password: 'Usa al menos 12 caracteres.' }) } },
-  totp: { pageId: 'login-config-totp.ftl', overrides: { isAppInitiatedAction: true } },
-  'totp-manual': { pageId: 'login-config-totp.ftl', overrides: { isAppInitiatedAction: true, mode: 'manual' } },
-  'totp-error': { pageId: 'login-config-totp.ftl', overrides: { isAppInitiatedAction: true, ...errors({ totp: 'El código no es correcto. Escribe el que muestra ahora la app.' }) } },
+  totp: { pageId: 'login-config-totp.ftl', overrides: { isAppInitiatedAction: true, totp: totpApps } },
+  'totp-manual': { pageId: 'login-config-totp.ftl', overrides: { isAppInitiatedAction: true, mode: 'manual', totp: totpApps } },
+  // Ya hay un dispositivo: pide el nombre. Sin error: el campo es obligatorio también en el navegador.
+  'totp-segundo': { pageId: 'login-config-totp.ftl', overrides: { isAppInitiatedAction: true, totp: { ...totpApps, otpCredentials: [{ id: 'a', userLabel: 'Móvil de Ana' }] } } },
+  'totp-nombre': { pageId: 'login-config-totp.ftl', overrides: { isAppInitiatedAction: true, totp: { ...totpApps, otpCredentials: [{ id: 'a', userLabel: 'Móvil de Ana' }] }, ...errors({ userLabel: 'Ponle un nombre al dispositivo.' }) } },
+  'totp-error': { pageId: 'login-config-totp.ftl', overrides: { isAppInitiatedAction: true, totp: totpApps, ...errors({ totp: 'El código no es correcto. Escribe el que muestra ahora la app.' }) } },
   otp: { pageId: 'login-otp.ftl', overrides: { otpLogin: { userOtpCredentials: [{ id: 'a', userLabel: 'Móvil de Ana' }] } } },
   'otp-devices': { pageId: 'login-otp.ftl', overrides: { otpLogin: { userOtpCredentials: [{ id: 'a', userLabel: 'Móvil de Ana' }, { id: 'b', userLabel: 'Tableta' }], selectedCredentialId: 'a' } } },
   'passkey-register': { pageId: 'webauthn-register.ftl', overrides: { isAppInitiatedAction: true } },

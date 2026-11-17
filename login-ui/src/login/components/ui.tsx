@@ -60,7 +60,7 @@ export function Field({ id, label, error, hint, labelAside, reveal, type = 'text
         {isPassword && <RevealButton inputId={id} labels={reveal} />}
       </div>
       {error && (
-        <p className="mt-2 flex items-start gap-1.5 text-sm/5 text-danger">
+        <p className="mt-2 flex items-start gap-1.5 text-sm/5 text-pretty text-danger">
           <IconAlert size={16} className="mt-0.5 shrink-0" />
           <ServerText id={errorId} html={error} />
         </p>
