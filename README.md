@@ -53,8 +53,9 @@ El código QR de los dos pasos lo dibuja la app (`src/login/qr.ts`) con el mismo
 como una cámara (lejos, desenfocado, en ángulo, con poco contraste) con zbarimg y, con `ZXING_PYTHON`, con ZXing.
 
 `scripts/dev.sh` copia el jar en Keycloak al arrancar: tras cambiar una pantalla, construirlo y reiniciar Keycloak. Los
-botones de Google, GitHub, Facebook, Microsoft y Apple salen solos cuando el proveedor se configura en el realm; hoy no
-hay ninguno, y en la vista previa se ven con `?mock=login-tres` o `?mock=login-cinco`. El registro no pide contraseña:
+proveedores de acceso (Google, Facebook y GitHub) están en `config/realm.yaml` y sus credenciales, en `.env`: el que
+no tiene `CLIENT_ID` queda apagado y su botón no sale. Microsoft y Apple se ven en la vista previa con
+`?mock=login-cinco`. El registro no pide contraseña:
 con `verifyEmail`, Keycloak la pide después de verificar el correo (así nadie deja una contraseña en una cuenta con
 un correo ajeno). Quien no abre ese enlace sale con «¿Olvidaste tu contraseña?» y un solo correo: abrir el enlace de
 recuperar también verifica el correo (`providers/`, en el flujo `reset credentials verify email`).

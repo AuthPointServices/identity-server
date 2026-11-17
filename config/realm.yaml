@@ -252,6 +252,38 @@ authenticationFlows:
         authenticatorFlow: false
         userSetupAllowed: false
 
+# Entrar con Google, Facebook o GitHub. Las credenciales van en .env; scripts/apply.sh apaga el proveedor que no
+# tiene CLIENT_ID, y su botón no sale. En la consola de cada uno, la redirección autorizada es
+# $KC_URL/realms/$REALM/broker/<alias>/endpoint. Sólo el correo que llega de Google se da por verificado.
+identityProviders:
+  - alias: google
+    providerId: google
+    displayName: Google
+    enabled: $(env:GOOGLE_ENABLED)
+    trustEmail: true
+    config:
+      clientId: $(env:GOOGLE_CLIENT_ID:-)
+      clientSecret: $(env:GOOGLE_CLIENT_SECRET:-)
+      syncMode: IMPORT
+  - alias: facebook
+    providerId: facebook
+    displayName: Facebook
+    enabled: $(env:FACEBOOK_ENABLED)
+    trustEmail: false
+    config:
+      clientId: $(env:FACEBOOK_CLIENT_ID:-)
+      clientSecret: $(env:FACEBOOK_CLIENT_SECRET:-)
+      syncMode: IMPORT
+  - alias: github
+    providerId: github
+    displayName: GitHub
+    enabled: $(env:GITHUB_ENABLED)
+    trustEmail: false
+    config:
+      clientId: $(env:GITHUB_CLIENT_ID:-)
+      clientSecret: $(env:GITHUB_CLIENT_SECRET:-)
+      syncMode: IMPORT
+
 roles:
   realm:
     - name: default-roles-$(env:REALM)

@@ -47,4 +47,10 @@ expect "entrar pide primero el correo y luego la contraseña o un código por co
 expect "los dos pasos aceptan la app o un código por correo" yes "$([[ $first == *"auth-otp-form fc-email-code-2fa"* ]] && echo yes || echo no)"
 expect "abrir el enlace de recuperar verifica el correo" yes "$([[ $steps == *"reset-credential-email reset-link-verifies-email "* ]] && echo yes || echo no)"
 
+# Los proveedores de acceso salen de config/realm.yaml: encendidos los que tienen CLIENT_ID en .env.
+idps=$(curl -sf -H "Authorization: Bearer $boot" "$admin/identity-provider/instances" \
+  | python3 -c 'import sys,json;print(" ".join("%s=%s" % (i["alias"], str(i["enabled"]).lower()) for i in sorted(json.load(sys.stdin), key=lambda i: i["alias"])))')
+want=""; for p in facebook github google; do id="${p^^}_CLIENT_ID"; want+="$p=$([[ -n ${!id:-} ]] && echo true || echo false) "; done
+expect "los proveedores de acceso son los de .env" "${want% }" "$idps"
+
 exit $fail
