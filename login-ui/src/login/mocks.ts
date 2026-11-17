@@ -109,6 +109,8 @@ export const mocks: Record<string, Mock> = {
   'totp-error': { pageId: 'login-config-totp.ftl', overrides: { isAppInitiatedAction: true, totp: totpApps, ...errors({ totp: 'El código no es correcto. Escribe el que muestra ahora la app.' }) } },
   otp: { pageId: 'login-otp.ftl', overrides: { otpLogin: { userOtpCredentials: [{ id: 'a', userLabel: 'Móvil de Ana' }] } } },
   'otp-devices': { pageId: 'login-otp.ftl', overrides: { otpLogin: { userOtpCredentials: [{ id: 'a', userLabel: 'Móvil de Ana' }, { id: 'b', userLabel: 'Tableta' }], selectedCredentialId: 'a' } } },
+  'conectar-google': { pageId: 'link-idp-action.ftl', overrides: { idpDisplayName: 'Google' } },
+  'conectar-github': { pageId: 'link-idp-action.ftl', overrides: { idpDisplayName: 'GitHub' } },
   'passkey-register': { pageId: 'webauthn-register.ftl', overrides: { isAppInitiatedAction: true } },
   'passkey-login': { pageId: 'webauthn-authenticate.ftl' },
   'verify-email': { pageId: 'login-verify-email.ftl', overrides: { user: { email: 'jhonatan.camilo@gmail.com' }, message: { type: 'warning', summary: 'Verifica tu correo para seguir.' } } },

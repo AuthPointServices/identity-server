@@ -28,6 +28,7 @@ import ErrorPage from './pages/Error';
 import LoginPageExpiredPage from './pages/LoginPageExpired';
 import SelectAuthenticatorPage from './pages/SelectAuthenticator';
 import LoginIdpLinkConfirmPage from './pages/LoginIdpLinkConfirm';
+import LinkIdpActionPage from './pages/LinkIdpAction';
 import TermsPage from './pages/Terms';
 
 /**
@@ -87,6 +88,8 @@ export default function KcPage({ kcContext }: { kcContext: KcContext }) {
             return <SelectAuthenticatorPage kcContext={kcContext} i18n={i18n} />;
           case 'login-idp-link-confirm.ftl':
             return <LoginIdpLinkConfirmPage kcContext={kcContext} i18n={i18n} />;
+          case 'link-idp-action.ftl':
+            return <LinkIdpActionPage kcContext={kcContext} i18n={i18n} />;
           case 'terms.ftl':
             return <TermsPage kcContext={kcContext} i18n={i18n} />;
           default:
