@@ -82,6 +82,10 @@ con `kc_action=CONFIGURE_RECOVERY_AUTHN_CODES` y que el segundo paso acepta como
 `src/login/pages/LoginRecoveryAuthnCode{Config,Input}.tsx`. Ojo: con sólo los códigos, Keycloak pide uno en cada
 inicio de sesión, así que la Cuenta los quita al desactivar los dos pasos.
 
+En el segundo paso, «No volver a pedirlo en este dispositivo» deja una cookie firmada por el realm
+(`providers/TrustedDevice.java`): 30 días, para esa cuenta y ese navegador, y deja de valer si se añade o se quita una
+forma del segundo paso. Con passkey, entrar empieza por ella; la contraseña queda a un toque.
+
 Keycloak avisa por correo de los cambios de seguridad (contraseña, dos pasos, passkeys). Los intentos fallidos no se
 avisan uno por uno: el arranque lleva `--spi-events-listener--email--exclude-events=LOGIN_ERROR`. La consola de
 cuenta de Keycloak está apagada; sus enlaces llevan a la Cuenta.

@@ -2,3 +2,5 @@ space.fretchcop.identity.ResetLinkVerifiesEmail
 space.fretchcop.identity.EmailFirstForm$Factory
 space.fretchcop.identity.EmailCodeLoginForm$Factory
 space.fretchcop.identity.EmailCodeSecondFactor$Factory
+space.fretchcop.identity.TrustedDevice$NotTrustedFactory
+space.fretchcop.identity.TrustedDevice$RememberFactory

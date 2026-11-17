@@ -163,6 +163,12 @@ authenticationFlows:
         priority: 30
         authenticatorFlow: true
         userSetupAllowed: false
+      # «No volver a pedirlo en este dispositivo» marcado en el segundo paso (providers/TrustedDevice.java).
+      - authenticator: fc-remember-device
+        requirement: REQUIRED
+        priority: 40
+        authenticatorFlow: false
+        userSetupAllowed: false
   # Como en Adobe: la contraseña o un código por correo (providers/EmailCodeLoginForm.java). Quien tiene contraseña la ve
   # primero y elige el código desde su página; quien no tiene, recibe el código directamente.
   - alias: identifier first - password or code
@@ -197,6 +203,12 @@ authenticationFlows:
         authenticatorConfig: identifier first - conditional credential
         requirement: REQUIRED
         priority: 20
+        authenticatorFlow: false
+        userSetupAllowed: false
+      # Tampoco en un dispositivo de confianza de esta cuenta, durante 30 días.
+      - authenticator: fc-device-not-trusted
+        requirement: REQUIRED
+        priority: 25
         authenticatorFlow: false
         userSetupAllowed: false
       - authenticator: auth-otp-form
