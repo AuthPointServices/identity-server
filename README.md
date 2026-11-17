@@ -35,7 +35,7 @@ cambie ahí se pierde en el próximo `apply.sh`. Los cambios van en `config/`.
 | `config/clients.yaml` | Un cliente OIDC por producto, con sus redirecciones y sus permisos |
 | `login-ui/` | Las pantallas de acceso, hechas por nosotros en React, TypeScript y Tailwind con [Keycloakify](https://www.keycloakify.dev): una página propia por pantalla (`src/login/pages`), los tokens y la letra de la Cuenta y los textos de tú (`src/login/i18n.ts`). Keycloakify las empaqueta en `dist_keycloak/fretchcop-login.jar`, el tema `fretchcop` de Keycloak |
 | `themes/fretchcop/email` | Los correos en español, de tú, con la marca |
-| `providers/` | Pasos de flujo propios en Java, compilados por `scripts/dev.sh` contra el Keycloak fijado: abrir el enlace de recuperar la contraseña verifica el correo |
+| `providers/` | Pasos de flujo propios en Java, compilados por `scripts/dev.sh` contra el Keycloak fijado: el paso del correo de entrar (`EmailFirstForm`) y que abrir el enlace de recuperar la contraseña verifique el correo |
 | `versions.env` | Versiones fijadas de Keycloak, keycloak-config-cli y Mailpit, con su SHA-256 |
 
 Ninguna plantilla de Keycloak ni PatternFly: Keycloak sigue mostrando el acceso (lo exigen las passkeys, los dos pasos
@@ -58,6 +58,11 @@ hay ninguno, y en la vista previa se ven con `?mock=login-tres` o `?mock=login-c
 con `verifyEmail`, Keycloak la pide después de verificar el correo (así nadie deja una contraseña en una cuenta con
 un correo ajeno). Quien no abre ese enlace sale con «¿Olvidaste tu contraseña?» y un solo correo: abrir el enlace de
 recuperar también verifica el correo (`providers/`, en el flujo `reset credentials verify email`).
+
+Entrar va en dos pasos, como en Adobe: primero el correo y luego la contraseña (o la passkey, que el navegador ofrece
+al tocar el correo). El flujo es `browser identifier first` (`config/realm.yaml`). Si el correo no tiene cuenta, lo
+dice y ofrece crearla con él; si la cuenta no tiene contraseña, `EmailFirstForm` se queda en el correo y dice cómo
+entra: con su proveedor (Google…) o eligiendo la contraseña.
 
 Keycloak avisa por correo de los cambios de seguridad (contraseña, dos pasos, passkeys). Los intentos fallidos no se
 avisan uno por uno: el arranque lleva `--spi-events-listener--email--exclude-events=LOGIN_ERROR`. La consola de

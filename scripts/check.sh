@@ -40,6 +40,10 @@ boot=$(curl -sf -d grant_type=client_credentials -d client_id="$KC_BOOTSTRAP_ADM
 flow=$(curl -sf -H "Authorization: Bearer $boot" "$admin" | python3 -c 'import sys,json,urllib.parse;print(urllib.parse.quote(json.load(sys.stdin)["resetCredentialsFlow"]))')
 steps=$(curl -sf -H "Authorization: Bearer $boot" "$admin/authentication/flows/$flow/executions" \
   | python3 -c 'import sys,json;print(" ".join(e.get("providerId","") for e in json.load(sys.stdin) if e["level"]==0))')
+first=$(curl -sf -H "Authorization: Bearer $boot" "$admin" | python3 -c 'import sys,json,urllib.parse;print(urllib.parse.quote(json.load(sys.stdin)["browserFlow"]))')
+first=$(curl -sf -H "Authorization: Bearer $boot" "$admin/authentication/flows/$first/executions" \
+  | python3 -c 'import sys,json;print(" ".join(e.get("providerId","") for e in json.load(sys.stdin) if e["level"]==1))')
+expect "entrar pide primero el correo y luego la contraseña" yes "$([[ $first == "email-first-form auth-password-form"* ]] && echo yes || echo no)"
 expect "abrir el enlace de recuperar verifica el correo" yes "$([[ $steps == *"reset-credential-email reset-link-verifies-email "* ]] && echo yes || echo no)"
 
 exit $fail

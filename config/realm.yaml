@@ -80,6 +80,11 @@ smtpServer:
   user: $(env:SMTP_USER)
   password: $(env:SMTP_PASSWORD)
 
+authenticatorConfig:
+  - alias: identifier first - conditional credential
+    config:
+      credentials: webauthn-passwordless
+
 # Cambiar el correo (verificando el nuevo) y borrar la cuenta se lanzan desde la Cuenta como acciones.
 requiredActions:
   - alias: UPDATE_EMAIL
@@ -93,10 +98,81 @@ requiredActions:
     enabled: true
     defaultAction: false
 
+# Entrar como en Adobe: primero el correo y después cómo entra esa cuenta (contraseña, o la passkey que el navegador ya
+# ofrece al escribir el correo). Es el «browser» de Keycloak con el paso del correo (providers/EmailFirstForm.java, su
+# «Username Form» más un aviso para las cuentas sin contraseña) y «Password Form» en lugar del formulario de los dos
+# juntos; los dos pasos y la cookie de sesión siguen igual.
+browserFlow: browser identifier first
 # Recuperar la contraseña es el de Keycloak más un paso (providers/): abrir el enlace verifica el correo. Así quien se
 # registró y no abrió el primer enlace (el registro no pide contraseña; llega tras verificar) entra con un solo correo.
 resetCredentialsFlow: reset credentials verify email
 authenticationFlows:
+  - alias: browser identifier first
+    description: Keycloak's browser flow, asking for the email first and then for the password
+    providerId: basic-flow
+    topLevel: true
+    builtIn: false
+    authenticationExecutions:
+      - authenticator: auth-cookie
+        requirement: ALTERNATIVE
+        priority: 10
+        authenticatorFlow: false
+        userSetupAllowed: false
+      - authenticator: identity-provider-redirector
+        requirement: ALTERNATIVE
+        priority: 25
+        authenticatorFlow: false
+        userSetupAllowed: false
+      - flowAlias: identifier first - forms
+        requirement: ALTERNATIVE
+        priority: 30
+        authenticatorFlow: true
+        userSetupAllowed: false
+  - alias: identifier first - forms
+    description: The email, then the password (skipped after a passkey), then two-step verification if set up
+    providerId: basic-flow
+    topLevel: false
+    builtIn: false
+    authenticationExecutions:
+      # El «Username Form» de Keycloak más un aviso para las cuentas sin contraseña (providers/EmailFirstForm.java).
+      - authenticator: email-first-form
+        requirement: REQUIRED
+        priority: 10
+        authenticatorFlow: false
+        userSetupAllowed: false
+      - authenticator: auth-password-form
+        requirement: REQUIRED
+        priority: 20
+        authenticatorFlow: false
+        userSetupAllowed: false
+      - flowAlias: identifier first - conditional 2fa
+        requirement: CONDITIONAL
+        priority: 30
+        authenticatorFlow: true
+        userSetupAllowed: false
+  - alias: identifier first - conditional 2fa
+    description: The code from the app, unless the account has none or entered with a passkey
+    providerId: basic-flow
+    topLevel: false
+    builtIn: false
+    authenticationExecutions:
+      - authenticator: conditional-user-configured
+        requirement: REQUIRED
+        priority: 10
+        authenticatorFlow: false
+        userSetupAllowed: false
+      # Como en el «browser» de Keycloak: quien entró con una passkey no pasa por los dos pasos.
+      - authenticator: conditional-credential
+        authenticatorConfig: identifier first - conditional credential
+        requirement: REQUIRED
+        priority: 20
+        authenticatorFlow: false
+        userSetupAllowed: false
+      - authenticator: auth-otp-form
+        requirement: ALTERNATIVE
+        priority: 30
+        authenticatorFlow: false
+        userSetupAllowed: false
   - alias: reset credentials verify email
     description: Keycloak's reset credentials, where opening the reset link also verifies the email
     providerId: basic-flow
