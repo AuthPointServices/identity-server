@@ -58,6 +58,8 @@ const registerRealm = {
 } as const;
 
 // El acceso en dos pasos: la cuenta que ya escribió el correo, y los dos proveedores del realm.
+// Como los de Keycloak: 12 códigos de 12 caracteres, con W y M (los más anchos).
+const codigosRecuperacion = ['WMQ4KZ7HXP2D', 'MWX8RT3NBQ6F', 'K7D2WHMX9PQA', 'Z3NBW8MKQ4TR', 'H9PXMW2DK7QZ', 'Q4TZ8NWMXB3K', 'B6KQWM3ZXH9P', 'X2MDW7QKZ4NT', 'T8ZQ3WMKXP6B', 'N4BXKM9WQZ2H', 'P7WQZ4MXKD8T', 'D3KMXW6QZB9N'];
 const enDosPasos = { auth: { showUsername: true, attemptedUsername: 'ana@example.test' } };
 // Las formas de entrar que Keycloak ofrece en el paso de la contraseña (AuthenticationSelectionOption).
 const opcionContrasena = { authExecId: 'pw', displayName: 'password-display-name', helpText: 'password-help-text' };
@@ -76,6 +78,9 @@ export const mocks: Record<string, Mock> = {
   'codigo-espera': { pageId: 'fc-email-code.ftl', overrides: { ...enDosPasos, message: { type: 'success', summary: 'Te enviamos otro código.' }, fcEmailCode: { mode: 'login', email: 'ana@gmail.com', minutes: 10, resendIn: 27, active: true } } },
   'codigo-error': { pageId: 'fc-email-code.ftl', overrides: { ...enDosPasos, ...errors({ code: 'El código no es correcto. Revisa el último correo que te enviamos.' }), fcEmailCode: { mode: 'login', email: 'ana@example.test', minutes: 10, resendIn: 0, active: true } } },
   'codigo-segundo': { pageId: 'fc-email-code.ftl', overrides: { ...enDosPasos, fcEmailCode: { mode: 'second', email: 'ana@example.test', minutes: 10, resendIn: 12, active: true } } },
+  'recuperacion-guardar': { pageId: 'login-recovery-authn-code-config.ftl', overrides: { isAppInitiatedAction: true, recoveryAuthnCodesConfigBean: { generatedRecoveryAuthnCodesList: codigosRecuperacion, generatedRecoveryAuthnCodesAsString: codigosRecuperacion.join(','), generatedAt: 1794938400000 } } },
+  'recuperacion-entrar': { pageId: 'login-recovery-authn-code-input.ftl', overrides: { ...enDosPasos, recoveryAuthnCodesInputBean: { codeNumber: 3 } } },
+  'recuperacion-error': { pageId: 'login-recovery-authn-code-input.ftl', overrides: { ...enDosPasos, ...errors({ recoveryCodeInput: 'El código no es correcto. Revisa que sea el número que se pide.' }), recoveryAuthnCodesInputBean: { codeNumber: 3 } } },
   'codigo-activar': { pageId: 'fc-email-code.ftl', overrides: { isAppInitiatedAction: true, fcEmailCode: { mode: 'setup', email: 'ana@example.test', minutes: 10, resendIn: 0, active: true } } },
   'contrasena-bloqueo': { pageId: 'login-password.ftl', overrides: { ...enDosPasos, ...errors({ username: 'Hubo demasiados intentos con esta cuenta. Espera unos minutos y vuelve a probar.' }) } },
   'contrasena-reauth': { pageId: 'login-password.ftl', overrides: { ...enDosPasos, message: { type: 'info', summary: 'Por seguridad, vuelve a escribir tu contraseña.' } } },

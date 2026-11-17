@@ -14,6 +14,8 @@ import LoginResetPasswordPage from './pages/LoginResetPassword';
 import LoginUpdatePasswordPage from './pages/LoginUpdatePassword';
 import LoginConfigTotpPage from './pages/LoginConfigTotp';
 import LoginOtpPage from './pages/LoginOtp';
+import LoginRecoveryAuthnCodeConfigPage from './pages/LoginRecoveryAuthnCodeConfig';
+import LoginRecoveryAuthnCodeInputPage from './pages/LoginRecoveryAuthnCodeInput';
 import WebauthnRegisterPage from './pages/WebauthnRegister';
 import WebauthnAuthenticatePage from './pages/WebauthnAuthenticate';
 import LoginVerifyEmailPage from './pages/LoginVerifyEmail';
@@ -57,6 +59,10 @@ export default function KcPage({ kcContext }: { kcContext: KcContext }) {
             return <LoginConfigTotpPage kcContext={kcContext} i18n={i18n} />;
           case 'login-otp.ftl':
             return <LoginOtpPage kcContext={kcContext} i18n={i18n} />;
+          case 'login-recovery-authn-code-config.ftl':
+            return <LoginRecoveryAuthnCodeConfigPage kcContext={kcContext} i18n={i18n} />;
+          case 'login-recovery-authn-code-input.ftl':
+            return <LoginRecoveryAuthnCodeInputPage kcContext={kcContext} i18n={i18n} />;
           case 'webauthn-register.ftl':
             return <WebauthnRegisterPage kcContext={kcContext} i18n={i18n} />;
           case 'webauthn-authenticate.ftl':
