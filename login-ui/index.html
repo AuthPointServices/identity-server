@@ -4,9 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="light dark" />
+    <!-- El script de la app bloquea la pintura (blocking="render", lo pone vite.config.ts al construir) hasta dibujar
+         la pantalla entera en src/main.tsx: sin eso, cada clic mostraba un instante la página en blanco. La letra y el
+         fotograma del panel se piden ya, para que estén en esa primera pintura. -->
+    <script type="module" src="/src/main.tsx"></script>
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2" />
+    <link rel="preload" as="image" href="/src/login/assets/fire.webp" />
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

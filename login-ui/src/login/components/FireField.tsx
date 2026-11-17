@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 /* El fondo del panel de la marca: un shader de WebGL (espirales de fuego que giran y se apartan del cursor). Ocupa su
    caja, no la ventana, y sólo dibuja mientras se ve; con «reducir movimiento» se queda en un fotograma quieto, y sin
-   WebGL queda el negro del panel. */
+   WebGL queda el fotograma quieto que el panel lleva debajo. */
 
 const VERTEX = `
 attribute vec2 a_position;
@@ -112,23 +112,30 @@ export function FireField({ className = '' }: { className?: string }) {
     const still = window.matchMedia('(prefers-reduced-motion: reduce)');
     let frame = 0;
 
-    const draw = (ms: number) => {
+    // El tiempo es el del reloj y no el de la página: al pasar de una pantalla a otra, el fuego sigue donde iba en vez de
+    // volver a empezar. ponytail: da la vuelta cada hora (un salto entonces) para que quepa en el float del shader.
+    const clock = (ms: number) => ((performance.timeOrigin + ms) % 3_600_000) * 0.001;
+    const draw = (seconds: number) => {
       gl.uniform2f(uResolution, canvas.width, canvas.height);
-      gl.uniform1f(uTime, ms * 0.001);
+      gl.uniform1f(uTime, seconds);
       gl.uniform2f(uMouse, mouse[0]!, mouse[1]!);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     };
     const loop = (ms: number) => {
-      draw(ms);
+      draw(clock(ms));
       frame = requestAnimationFrame(loop);
     };
     const start = () => {
       cancelAnimationFrame(frame);
       // Oculto (el panel no sale bajo 1024 px): no se dibuja nada.
       if (canvas.clientWidth === 0) return;
-      // Quieto: un solo fotograma, el de los 12 s, cuando las espirales ya tienen forma.
-      if (still.matches) draw(12_000);
-      else frame = requestAnimationFrame(loop);
+      // Quieto: un solo fotograma, el de los 12 s, cuando las espirales ya tienen forma. En marcha, el primero se dibuja
+      // ya: el lienzo es opaco y, hasta su primer fotograma, el panel se vería negro.
+      if (still.matches) draw(12);
+      else {
+        draw(clock(performance.now()));
+        frame = requestAnimationFrame(loop);
+      }
     };
     const resize = () => {
       dpr = Math.min(window.devicePixelRatio || 1, 2);

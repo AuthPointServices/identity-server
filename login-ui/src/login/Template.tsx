@@ -34,8 +34,9 @@ export default function Template(props: LayoutProps) {
     document.documentElement.lang = currentLanguage.languageTag;
   }, [currentLanguage.languageTag]);
 
-  const { isReadyToRender } = useInitialize({ kcContext, doUseDefaultCss: false });
-  if (!isReadyToRender) return null;
+  // Mete los scripts de Keycloak (la sesión en otras pestañas). Su «isReadyToRender» espera las hojas de PatternFly, que
+  // aquí no hay: esperarlo pintaba la página vacía antes de cada pantalla.
+  useInitialize({ kcContext, doUseDefaultCss: false });
 
   // Las acciones que pide la propia app no ven el aviso de que hay que completarlas.
   const showMessage = displayMessage && message !== undefined && (message.type !== 'warning' || !isAppInitiatedAction);

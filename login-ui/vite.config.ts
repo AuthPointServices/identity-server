@@ -8,6 +8,11 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    // Vite reescribe el script de la app y pierde blocking="render" (index.html): se lo devuelve.
+    {
+      name: 'render-blocking-entry',
+      transformIndexHtml: { order: 'post', handler: (html) => html.replace('<script type="module" crossorigin', '<script type="module" blocking="render" crossorigin') },
+    },
     keycloakify({
       themeName: 'fretchcop',
       accountThemeImplementation: 'none',

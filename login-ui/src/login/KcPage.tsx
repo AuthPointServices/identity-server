@@ -1,36 +1,39 @@
 import DefaultPage from 'keycloakify/login/DefaultPage';
 import UserProfileFormFields from 'keycloakify/login/UserProfileFormFields';
-import { lazy, Suspense } from 'react';
 import { classes } from './classes';
 import { useI18n } from './i18n';
 import type { KcContext } from './KcContext';
 import Template from './Template';
 
-const LoginPage = lazy(() => import('./pages/Login'));
-const RegisterPage = lazy(() => import('./pages/Register'));
-const LoginResetPasswordPage = lazy(() => import('./pages/LoginResetPassword'));
-const LoginUpdatePasswordPage = lazy(() => import('./pages/LoginUpdatePassword'));
-const LoginConfigTotpPage = lazy(() => import('./pages/LoginConfigTotp'));
-const LoginOtpPage = lazy(() => import('./pages/LoginOtp'));
-const WebauthnRegisterPage = lazy(() => import('./pages/WebauthnRegister'));
-const WebauthnAuthenticatePage = lazy(() => import('./pages/WebauthnAuthenticate'));
-const LoginVerifyEmailPage = lazy(() => import('./pages/LoginVerifyEmail'));
-const UpdateEmailPage = lazy(() => import('./pages/UpdateEmail'));
-const LoginUpdateProfilePage = lazy(() => import('./pages/LoginUpdateProfile'));
-const DeleteAccountConfirmPage = lazy(() => import('./pages/DeleteAccountConfirm'));
-const LogoutConfirmPage = lazy(() => import('./pages/LogoutConfirm'));
-const InfoPage = lazy(() => import('./pages/Info'));
-const ErrorPage = lazy(() => import('./pages/Error'));
-const LoginPageExpiredPage = lazy(() => import('./pages/LoginPageExpired'));
-const SelectAuthenticatorPage = lazy(() => import('./pages/SelectAuthenticator'));
-const LoginIdpLinkConfirmPage = lazy(() => import('./pages/LoginIdpLinkConfirm'));
-const TermsPage = lazy(() => import('./pages/Terms'));
+import LoginPage from './pages/Login';
+import RegisterPage from './pages/Register';
+import LoginResetPasswordPage from './pages/LoginResetPassword';
+import LoginUpdatePasswordPage from './pages/LoginUpdatePassword';
+import LoginConfigTotpPage from './pages/LoginConfigTotp';
+import LoginOtpPage from './pages/LoginOtp';
+import WebauthnRegisterPage from './pages/WebauthnRegister';
+import WebauthnAuthenticatePage from './pages/WebauthnAuthenticate';
+import LoginVerifyEmailPage from './pages/LoginVerifyEmail';
+import UpdateEmailPage from './pages/UpdateEmail';
+import LoginUpdateProfilePage from './pages/LoginUpdateProfile';
+import DeleteAccountConfirmPage from './pages/DeleteAccountConfirm';
+import LogoutConfirmPage from './pages/LogoutConfirm';
+import InfoPage from './pages/Info';
+import ErrorPage from './pages/Error';
+import LoginPageExpiredPage from './pages/LoginPageExpired';
+import SelectAuthenticatorPage from './pages/SelectAuthenticator';
+import LoginIdpLinkConfirmPage from './pages/LoginIdpLinkConfirm';
+import TermsPage from './pages/Terms';
 
-/** Cada pantalla de Keycloak con su página; las poco frecuentes, con la de Keycloakify y nuestras clases. */
+/**
+ * Cada pantalla de Keycloak con su página; las poco frecuentes, con la de Keycloakify y nuestras clases. Las nuestras
+ * van en el mismo archivo que la app, sin carga diferida: cada clic es una página nueva de Keycloak, y si la pantalla
+ * llega en otro archivo el navegador pinta antes la página vacía (un parpadeo en blanco en cada navegación).
+ */
 export default function KcPage({ kcContext }: { kcContext: KcContext }) {
   const { i18n } = useI18n({ kcContext });
   return (
-    <Suspense>
+    <>
       {(() => {
         switch (kcContext.pageId) {
           case 'login.ftl':
@@ -85,6 +88,6 @@ export default function KcPage({ kcContext }: { kcContext: KcContext }) {
             );
         }
       })()}
-    </Suspense>
+    </>
   );
 }
