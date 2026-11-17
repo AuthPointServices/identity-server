@@ -48,6 +48,10 @@ pnpm --dir login-ui check      # tipos y lint
 pnpm --dir login-ui build      # el jar; hace falta Maven (mvn) en el PATH
 ```
 
+El código QR de los dos pasos lo dibuja la app (`src/login/qr.ts`) con el mismo enlace `otpauth://` que el de Keycloak
+(`src/login/totp.ts`, comprobado en `pnpm check`). Tras tocar sus formas, `node login-ui/scripts/qr-check.mjs` lo lee
+como una cámara (lejos, desenfocado, en ángulo, con poco contraste) con zbarimg y, con `ZXING_PYTHON`, con ZXing.
+
 `scripts/dev.sh` copia el jar en Keycloak al arrancar: tras cambiar una pantalla, construirlo y reiniciar Keycloak. Los
 botones de Google, GitHub, Facebook, Microsoft y Apple salen solos cuando el proveedor se configura en el realm; hoy no
 hay ninguno, y en la vista previa se ven con `?mock=login-tres` o `?mock=login-cinco`. El registro no pide contraseña:
