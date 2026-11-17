@@ -22,6 +22,8 @@ jar --create --file ".cache/keycloak-$KEYCLOAK_VERSION/providers/fretchcop-provi
 
 # En desarrollo, «Revisa tu correo» abre Mailpit en vez del webmail de la persona (el tema lo lee de aquí).
 export FC_DEV_INBOX_URL="${MAILPIT_UI:-}"
+# La Cuenta: adonde llevan las pantallas que no saben de qué app venías («Ya iniciaste sesión», «Cerraste la sesión»).
+export FC_ACCOUNT_URL="${ACCOUNTS_URL:-}"
 exec ".cache/keycloak-$KEYCLOAK_VERSION/bin/kc.sh" start-dev \
   --http-port="$KC_PORT" \
   --http-management-port="$KC_MANAGEMENT_PORT" \

@@ -18,7 +18,11 @@ export default defineConfig({
       accountThemeImplementation: 'none',
       // Variables de Keycloak que lee el tema (kcContext.properties). FC_DEV_INBOX_URL: en desarrollo, el buzón donde
       // llegan los correos (Mailpit); vacía en producción, donde se abre el webmail del correo de la persona.
-      environmentVariables: [{ name: 'FC_DEV_INBOX_URL', default: '' }],
+      // FC_ACCOUNT_URL: la Cuenta, la salida de las pantallas que no saben de qué app venías («Ya iniciaste sesión»).
+      environmentVariables: [
+        { name: 'FC_DEV_INBOX_URL', default: '' },
+        { name: 'FC_ACCOUNT_URL', default: '' },
+      ],
       // Keycloak 26.8: un solo jar.
       keycloakVersionTargets: { '22-to-25': false, 'all-other-versions': 'fretchcop-login.jar' },
     }),

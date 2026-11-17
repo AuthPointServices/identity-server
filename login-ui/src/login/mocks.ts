@@ -5,7 +5,7 @@ import type { KcContext, KcContextExtension, KcContextExtensionPerPage } from '.
 
 /* Contextos simulados para ver cada pantalla y estado sin Keycloak (`pnpm dev`, ?mock=<nombre>). Sólo en desarrollo:
    main.tsx los importa bajo import.meta.env.DEV. */
-const kcContextExtension: KcContextExtension = { themeName: themeNames[0] ?? 'fretchcop', properties: { ...kcEnvDefaults } };
+const kcContextExtension: KcContextExtension = { themeName: themeNames[0] ?? 'fretchcop', properties: { ...kcEnvDefaults, FC_ACCOUNT_URL: '#cuenta' } };
 const kcContextExtensionPerPage: KcContextExtensionPerPage = { 'register.ftl': { url: { loginResetCredentialsUrl: '#reset' } } };
 
 const { getKcContextMock } = createGetKcContextMock({
@@ -84,6 +84,12 @@ export const mocks: Record<string, Mock> = {
   'info-actions': { pageId: 'info.ftl', overrides: { messageHeader: 'Para seguir, completa esto', requiredActions: ['UPDATE_PASSWORD'], actionUri: '#action', message: { type: 'info', summary: 'Tu cuenta necesita:' } } },
   // Sin actionUri, como en Keycloak: el de Keycloakify trae «#» y el botón diría «Continuar».
   'info-cuenta': { pageId: 'info.ftl', overrides: { messageHeader: 'accountUpdatedTitle', actionUri: undefined, message: { type: 'success', summary: 'Ya puedes iniciar sesión.' }, client: { baseUrl: '#app' } } },
+  // Una página de entrar vieja, ya con la sesión abierta y sin saber de qué app venía: Keycloak no da salida.
+  'ya-dentro': { pageId: 'info.ftl', overrides: { messageHeader: undefined, actionUri: undefined, skipLink: true, message: { type: 'success', summary: 'Ya iniciaste sesión.' }, client: { baseUrl: '' } } },
+  // Cerrar la sesión desde Keycloak sin una app a la que volver.
+  'sesion-cerrada': { pageId: 'info.ftl', overrides: { messageHeader: undefined, actionUri: undefined, skipLink: true, message: { type: 'success', summary: 'Cerraste la sesión' }, client: { baseUrl: '' } } },
+  'enlace-usado': { pageId: 'info.ftl', overrides: { messageHeader: 'emailVerifiedAlreadyMessageHeader', actionUri: undefined, message: { type: 'info', summary: 'Tu correo ya estaba verificado.' }, client: { baseUrl: '#app' } } },
+  'enlace-caducado': { pageId: 'error.ftl', overrides: { message: { type: 'error', summary: 'El enlace caducó. Vuelve a empezar desde la aplicación.' }, client: { baseUrl: '#app' } } },
   'error-cookies': { pageId: 'error.ftl', overrides: { message: { type: 'error', summary: 'El navegador borró o bloquea las cookies de esta página. Vuelve a empezar y, si se repite, permite las cookies de este sitio.' }, client: { baseUrl: '#app' } } },
   error: { pageId: 'error.ftl', overrides: { message: { type: 'error', summary: 'No reconocemos la aplicación desde la que llegaste. Vuelve a ella e inténtalo otra vez.' } } },
   expired: { pageId: 'login-page-expired.ftl' },
