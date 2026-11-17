@@ -21,6 +21,7 @@ export const IconChevronDown = (p: IconProps) => <Base {...p}><path d="m6 9 6 6 
 export const IconCopy = (p: IconProps) => <Base {...p}><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></Base>;
 export const IconCheck = (p: IconProps) => <Base {...p}><path d="M20 6 9 17l-5-5" /></Base>;
 export const IconFingerprint = (p: IconProps) => <Base {...p}><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4" /><path d="M14 13.12c0 2.38 0 6.38-1 8.88" /><path d="M17.29 21.02c.12-.6.43-2.3.5-3.02" /><path d="M2 12a10 10 0 0 1 18-6" /><path d="M2 16h.01" /><path d="M21.8 16c.2-2 .131-5.354 0-6" /><path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2" /><path d="M8.65 22c.21-.66.45-1.32.57-2" /><path d="M9 6.8a6 6 0 0 1 9 5.2v2" /></Base>;
+export const IconExternal = (p: IconProps) => <Base {...p}><path d="M15 3h6v6" /><path d="M10 14 21 3" /><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /></Base>;
 export const IconMail = (p: IconProps) => <Base {...p}><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></Base>;
 
 /* Las marcas de cada proveedor, sin redibujar (SVG Logos y Simple Icons, CC0). GitHub y Apple van en currentColor:

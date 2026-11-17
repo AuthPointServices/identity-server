@@ -14,6 +14,8 @@ jar=login-ui/dist_keycloak/fretchcop-login.jar
 [[ -f $jar ]] || { echo "Falta $jar: pnpm --dir login-ui install && pnpm --dir login-ui build" >&2; exit 1; }
 cp "$jar" ".cache/keycloak-$KEYCLOAK_VERSION/providers/fretchcop-login.jar"
 
+# En desarrollo, «Revisa tu correo» abre Mailpit en vez del webmail de la persona (el tema lo lee de aquí).
+export FC_DEV_INBOX_URL="${MAILPIT_UI:-}"
 exec ".cache/keycloak-$KEYCLOAK_VERSION/bin/kc.sh" start-dev \
   --http-port="$KC_PORT" \
   --http-management-port="$KC_MANAGEMENT_PORT" \
