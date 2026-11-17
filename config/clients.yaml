@@ -33,6 +33,62 @@ clients:
       backchannel.logout.session.required: "true"
       backchannel.logout.revoke.offline.tokens: "true"
 
+  # Orange: entra por redirección con auth-go, como la Cuenta, y su backend guarda los tokens. Sin cuenta de servicio:
+  # no habla con Keycloak más que para iniciar y cerrar sesión.
+  - clientId: orange
+    name: $(env:BRAND_NAME) · Orange
+    enabled: true
+    protocol: openid-connect
+    publicClient: false
+    clientAuthenticatorType: client-secret
+    secret: $(env:ORANGE_CLIENT_SECRET)
+    standardFlowEnabled: true
+    implicitFlowEnabled: false
+    directAccessGrantsEnabled: false
+    serviceAccountsEnabled: false
+    consentRequired: false
+    frontchannelLogout: false
+    rootUrl: $(env:ORANGE_URL)
+    baseUrl: /
+    redirectUris: [/auth/callback]
+    webOrigins: []
+    fullScopeAllowed: false
+    defaultClientScopes: [basic, acr, profile, email]
+    attributes:
+      pkce.code.challenge.method: S256
+      post.logout.redirect.uris: /*
+      backchannel.logout.url: $(env:ORANGE_BACKCHANNEL_URL)
+      backchannel.logout.session.required: "true"
+      backchannel.logout.revoke.offline.tokens: "true"
+
+  # letgrid: entra por redirección con auth-go, como la Cuenta, y su backend guarda los tokens. Sin cuenta de servicio:
+  # no habla con Keycloak más que para iniciar y cerrar sesión.
+  - clientId: letgrid
+    name: $(env:BRAND_NAME) · letgrid
+    enabled: true
+    protocol: openid-connect
+    publicClient: false
+    clientAuthenticatorType: client-secret
+    secret: $(env:LETGRID_CLIENT_SECRET)
+    standardFlowEnabled: true
+    implicitFlowEnabled: false
+    directAccessGrantsEnabled: false
+    serviceAccountsEnabled: false
+    consentRequired: false
+    frontchannelLogout: false
+    rootUrl: $(env:LETGRID_URL)
+    baseUrl: /
+    redirectUris: [/auth/callback]
+    webOrigins: []
+    fullScopeAllowed: false
+    defaultClientScopes: [basic, acr, profile, email]
+    attributes:
+      pkce.code.challenge.method: S256
+      post.logout.redirect.uris: /*
+      backchannel.logout.url: $(env:LETGRID_BACKCHANNEL_URL)
+      backchannel.logout.session.required: "true"
+      backchannel.logout.revoke.offline.tokens: "true"
+
   # La consola de cuenta de Keycloak no se usa: la Cuenta es accounts-frontend. Los enlaces «a tu cuenta» de Keycloak
   # van a la nuestra, y la API de cuenta (cliente account) sigue, porque es la que usa accounts-backend.
   - clientId: account-console

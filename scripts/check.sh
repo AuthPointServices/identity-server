@@ -48,6 +48,15 @@ expect "los dos pasos aceptan la app, un código por correo o uno de recuperaci�
 expect "los dos pasos se saltan en un dispositivo de confianza" yes "$([[ $first == *"conditional-credential fc-device-not-trusted auth-otp-form"* && $first == *"fc-remember-device"* ]] && echo yes || echo no)"
 expect "abrir el enlace de recuperar verifica el correo" yes "$([[ $steps == *"reset-credential-email reset-link-verifies-email "* ]] && echo yes || echo no)"
 
+# Orange y letgrid: entran por redirección con PKCE, sólo a su vuelta, y nunca con la contraseña directa.
+for c in "orange $ORANGE_URL" "letgrid $LETGRID_URL"; do
+  read -r id url <<<"$c"
+  expect "$id: la página de entrar abre" 200 "$(code "$realm/protocol/openid-connect/auth?client_id=$id&response_type=code&scope=openid&redirect_uri=$url/auth/callback&code_challenge=$challenge&code_challenge_method=S256")"
+  expect "$id: sin PKCE no entra" invalid_request "$(curl -s -o /dev/null -w '%{redirect_url}' "$realm/protocol/openid-connect/auth?client_id=$id&response_type=code&scope=openid&redirect_uri=$url/auth/callback" | sed -n 's/.*error=\([a-z_]*\).*/\1/p')"
+  expect "$id: otra vuelta no vale" 400 "$(code "$realm/protocol/openid-connect/auth?client_id=$id&response_type=code&scope=openid&redirect_uri=https://evil.example/auth/callback&code_challenge=$challenge&code_challenge_method=S256")"
+  expect "$id: sin contraseña directa" unauthorized_client "$(curl -s -d grant_type=password -d client_id="$id" -d client_secret=x -d username=a -d password=b "$realm/protocol/openid-connect/token" | python3 -c 'import sys,json;print(json.load(sys.stdin).get("error"))')"
+done
+
 # Los proveedores de acceso salen de config/realm.yaml: encendidos los que tienen CLIENT_ID en .env.
 idps=$(curl -sf -H "Authorization: Bearer $boot" "$admin/identity-provider/instances" \
   | python3 -c 'import sys,json;print(" ".join("%s=%s" % (i["alias"], str(i["enabled"]).lower()) for i in sorted(json.load(sys.stdin), key=lambda i: i["alias"])))')

@@ -6,7 +6,9 @@ de todos los productos (Orange, letgrid, …) y guarda las cuentas, las sesiones
 - `auth.fretchcop.space`: este servidor (inicio de sesión, registro, recuperación).
 - `accounts.fretchcop.space`: la gestión de la cuenta, en `accounts-frontend` y `accounts-backend`.
 
-Cada producto es un cliente OIDC del realm, esté en un subdominio o en un dominio propio.
+Cada producto es un cliente OIDC del realm, esté en un subdominio o en un dominio propio. Orange y letgrid ya lo son (`config/clients.yaml`):
+confidenciales, por redirección con PKCE y `auth-go`, con su vuelta en `/auth/callback`, su secreto en `.env` y el cierre de
+sesión por el canal trasero. Hoy siguen entrando con su Keycloak anterior; el cliente queda listo para cuando migren.
 
 ## Requisitos
 
