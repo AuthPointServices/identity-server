@@ -1,13 +1,8 @@
 package space.fretchcop.identity;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import jakarta.ws.rs.core.Cookie;
 import jakarta.ws.rs.core.NewCookie;
@@ -31,7 +26,8 @@ import org.keycloak.representations.JsonWebToken;
 
 /**
  * «No volver a pedirlo en este dispositivo»: tras los dos pasos, una cookie firmada por el realm los salta 30 días en
- * este navegador. Vale para una cuenta y mientras no cambien sus formas del segundo paso.
+ * este navegador. Vale para una cuenta y mientras exista su credencial de dispositivos de confianza: quitarla
+ * («Olvidar» o «Desactivar» en la Cuenta) deja de confiar en todos.
  */
 public final class TrustedDevice {
 
@@ -39,46 +35,49 @@ public final class TrustedDevice {
     static final int DAYS = 30;
     private static final String COOKIE = "FC_TRUSTED_DEVICE";
     private static final String TYPE = "fc-trusted-device";
-    private static final String WAYS_CLAIM = "ways";
-    private static final Set<String> WAYS = Set.of(OTPCredentialModel.TYPE, EmailCodeCredentialProvider.TYPE);
+    private static final String CREDENTIAL_CLAIM = "cred";
+    private static final Set<String> SECOND_STEP = Set.of(OTPCredentialModel.TYPE, EmailCodeCredentialProvider.TYPE);
 
     private TrustedDevice() {
     }
 
-    /** Huella de las formas del segundo paso: añadir o quitar una deja de confiar en todos los dispositivos. */
-    static String ways(UserModel user) {
-        String ids = user.credentialManager().getStoredCredentialsStream()
-                .filter(c -> WAYS.contains(c.getType())).map(CredentialModel::getId).sorted().collect(Collectors.joining(","));
-        if (ids.isEmpty()) return "";
-        try {
-            byte[] digest = MessageDigest.getInstance("SHA-256").digest(ids.getBytes(StandardCharsets.UTF_8));
-            return Base64.getUrlEncoder().withoutPadding().encodeToString(digest);
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException(e);
-        }
+    private static boolean hasSecondStep(UserModel user) {
+        return user.credentialManager().getStoredCredentialsStream().anyMatch(c -> SECOND_STEP.contains(c.getType()));
     }
 
     static boolean trusted(KeycloakSession session, UserModel user) {
         Cookie cookie = session.getContext().getHttpRequest().getHttpHeaders().getCookies().get(COOKIE);
-        String ways = ways(user);
-        if (cookie == null || ways.isEmpty()) return false;
+        if (cookie == null) return false;
         JsonWebToken token;
         try {
             token = session.tokens().decode(cookie.getValue(), JsonWebToken.class);
         } catch (RuntimeException e) {
             return false;
         }
-        return token != null && token.isActive() && TYPE.equals(token.getType()) && user.getId().equals(token.getSubject())
-                && ways.equals(token.getOtherClaims().get(WAYS_CLAIM));
+        if (token == null || !token.isActive() || !TYPE.equals(token.getType()) || !user.getId().equals(token.getSubject())) return false;
+        CredentialModel credential = token.getOtherClaims().get(CREDENTIAL_CLAIM) instanceof String id
+                ? user.credentialManager().getStoredCredentialById(id) : null;
+        return credential != null && TrustedDeviceCredentialProvider.TYPE.equals(credential.getType());
     }
 
+    /** Sólo con segundo paso: si no, confiar ahora saltaría el que se active después sin haberlo pasado nunca. */
     static void remember(KeycloakSession session, RealmModel realm, UserModel user) {
-        String ways = ways(user);
-        if (ways.isEmpty()) return;
+        if (!hasSecondStep(user)) return;
         long now = Time.currentTimeSeconds();
+        CredentialModel credential = user.credentialManager().getStoredCredentialsByTypeStream(TrustedDeviceCredentialProvider.TYPE).findFirst().orElse(null);
+        String data = "{\"lastTrustedAt\":" + now * 1000 + "}";
+        if (credential == null) {
+            credential = new CredentialModel();
+            credential.setUserLabel("Dispositivos de confianza");
+            credential.setCredentialData(data);
+            credential = new TrustedDeviceCredentialProvider(session).createCredential(realm, user, credential);
+        } else {
+            credential.setCredentialData(data);
+            user.credentialManager().updateStoredCredential(credential);
+        }
         JsonWebToken token = new JsonWebToken().id(UUID.randomUUID().toString()).type(TYPE).subject(user.getId())
                 .iat(now).exp(now + DAYS * 86400L);
-        token.setOtherClaims(WAYS_CLAIM, ways);
+        token.setOtherClaims(CREDENTIAL_CLAIM, credential.getId());
         String path = session.getContext().getUri().getBaseUriBuilder().path("realms").path(realm.getName()).build().getRawPath();
         session.getContext().getHttpResponse().setCookieIfAbsent(new NewCookie.Builder(COOKIE).value(session.tokens().encode(token))
                 .path(path).maxAge(DAYS * 86400).httpOnly(true).sameSite(NewCookie.SameSite.LAX)
@@ -234,9 +233,10 @@ public final class TrustedDevice {
             return "Trusts this browser for 30 days when the two-step form was sent with fcTrustDevice=on. Put it after two-step verification.";
         }
 
+        /** Así la Cuenta ve la credencial de dispositivos de confianza (Keycloak sólo lista las de algún paso). */
         @Override
         public String getReferenceCategory() {
-            return null;
+            return TrustedDeviceCredentialProvider.TYPE;
         }
 
         @Override
