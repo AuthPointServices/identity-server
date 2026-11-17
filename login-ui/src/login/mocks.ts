@@ -80,8 +80,11 @@ export const mocks: Record<string, Mock> = {
   'update-profile': { pageId: 'login-update-profile.ftl' },
   'delete-account': { pageId: 'delete-account-confirm.ftl', overrides: { triggered_from_aia: true } },
   logout: { pageId: 'logout-confirm.ftl', overrides: { client: { baseUrl: '#app' } } },
-  info: { pageId: 'info.ftl', overrides: { messageHeader: undefined, message: { type: 'info', summary: 'Tu correo está verificado.' }, client: { baseUrl: '#app' } } },
+  info: { pageId: 'info.ftl', overrides: { messageHeader: undefined, actionUri: undefined, message: { type: 'info', summary: 'Tu correo está verificado.' }, client: { baseUrl: '#app' } } },
   'info-actions': { pageId: 'info.ftl', overrides: { messageHeader: 'Para seguir, completa esto', requiredActions: ['UPDATE_PASSWORD'], actionUri: '#action', message: { type: 'info', summary: 'Tu cuenta necesita:' } } },
+  // Sin actionUri, como en Keycloak: el de Keycloakify trae «#» y el botón diría «Continuar».
+  'info-cuenta': { pageId: 'info.ftl', overrides: { messageHeader: 'accountUpdatedTitle', actionUri: undefined, message: { type: 'success', summary: 'Ya puedes iniciar sesión.' }, client: { baseUrl: '#app' } } },
+  'error-cookies': { pageId: 'error.ftl', overrides: { message: { type: 'error', summary: 'El navegador borró o bloquea las cookies de esta página. Vuelve a empezar y, si se repite, permite las cookies de este sitio.' }, client: { baseUrl: '#app' } } },
   error: { pageId: 'error.ftl', overrides: { message: { type: 'error', summary: 'No reconocemos la aplicación desde la que llegaste. Vuelve a ella e inténtalo otra vez.' } } },
   expired: { pageId: 'login-page-expired.ftl' },
   'select-authenticator': { pageId: 'select-authenticator.ftl' },
