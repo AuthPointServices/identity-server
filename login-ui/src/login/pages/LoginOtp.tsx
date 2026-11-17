@@ -1,5 +1,5 @@
 import { Actions } from '../components/Actions';
-import { Field } from '../components/ui';
+import { Checkbox, Field } from '../components/ui';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../KcContext';
 import Template from '../Template';
@@ -40,6 +40,7 @@ export default function LoginOtp({ kcContext, i18n }: { kcContext: Extract<KcCon
           error={messagesPerField.existsError('totp') ? messagesPerField.get('totp') : undefined}
           className="text-lg/6 font-medium tracking-[0.16em] tabular-nums"
         />
+        <Checkbox id="fcTrustDevice" label={msg('fcTrustDevice')} />
         <Actions submit={msg('doLogInWithOtp')} submitProps={{ id: 'kc-login', name: 'login' }} />
       </form>
     </Template>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { IconExternal } from '../components/icons';
-import { BUTTON_PRIMARY, BUTTON_SECONDARY, BUTTON_TEXT, Field } from '../components/ui';
+import { BUTTON_PRIMARY, BUTTON_SECONDARY, BUTTON_TEXT, Checkbox, Field } from '../components/ui';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../KcContext';
 import Template from '../Template';
@@ -75,6 +75,7 @@ export default function EmailCode({ kcContext, i18n }: { kcContext: Extract<KcCo
           onInput={(e) => void (e.currentTarget.value = e.currentTarget.value.replace(/\D/g, '').slice(0, 6))}
           className="text-lg/6 font-medium tracking-[0.16em] tabular-nums"
         />
+        {code.mode === 'second' && <Checkbox id="fcTrustDevice" label={msg('fcTrustDevice')} />}
         <button id="kc-login" type="submit" disabled={submitting} className={`${BUTTON_PRIMARY} mt-3`}>{submit}</button>
         <div className="-mt-3 flex flex-col gap-2">
           {inbox && (
