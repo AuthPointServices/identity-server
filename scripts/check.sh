@@ -33,4 +33,13 @@ expect "sin kc-admin-api no hay administración" 401 "$(code -H "Authorization: 
 
 expect "la consola de cuenta de Keycloak está apagada" 400 "$(code "$realm/protocol/openid-connect/auth?client_id=account-console&response_type=code&scope=openid&redirect_uri=$KC_URL/realms/$REALM/account/")"
 
+# Recuperar la contraseña verifica el correo (providers/): el paso va justo después de enviar el enlace. El flujo sólo
+# lo ve un administrador: la cuenta de servicio del arranque, la de apply.sh.
+boot=$(curl -sf -d grant_type=client_credentials -d client_id="$KC_BOOTSTRAP_ADMIN_CLIENT_ID" -d client_secret="$KC_BOOTSTRAP_ADMIN_CLIENT_SECRET" \
+  "$KC_URL/realms/master/protocol/openid-connect/token" | python3 -c 'import sys,json;print(json.load(sys.stdin)["access_token"])')
+flow=$(curl -sf -H "Authorization: Bearer $boot" "$admin" | python3 -c 'import sys,json,urllib.parse;print(urllib.parse.quote(json.load(sys.stdin)["resetCredentialsFlow"]))')
+steps=$(curl -sf -H "Authorization: Bearer $boot" "$admin/authentication/flows/$flow/executions" \
+  | python3 -c 'import sys,json;print(" ".join(e.get("providerId","") for e in json.load(sys.stdin) if e["level"]==0))')
+expect "abrir el enlace de recuperar verifica el correo" yes "$([[ $steps == *"reset-credential-email reset-link-verifies-email "* ]] && echo yes || echo no)"
+
 exit $fail

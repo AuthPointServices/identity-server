@@ -35,6 +35,7 @@ cambie ahí se pierde en el próximo `apply.sh`. Los cambios van en `config/`.
 | `config/clients.yaml` | Un cliente OIDC por producto, con sus redirecciones y sus permisos |
 | `login-ui/` | Las pantallas de acceso, hechas por nosotros en React, TypeScript y Tailwind con [Keycloakify](https://www.keycloakify.dev): una página propia por pantalla (`src/login/pages`), los tokens y la letra de la Cuenta y los textos de tú (`src/login/i18n.ts`). Keycloakify las empaqueta en `dist_keycloak/fretchcop-login.jar`, el tema `fretchcop` de Keycloak |
 | `themes/fretchcop/email` | Los correos en español, de tú, con la marca |
+| `providers/` | Pasos de flujo propios en Java, compilados por `scripts/dev.sh` contra el Keycloak fijado: abrir el enlace de recuperar la contraseña verifica el correo |
 | `versions.env` | Versiones fijadas de Keycloak, keycloak-config-cli y Mailpit, con su SHA-256 |
 
 Ninguna plantilla de Keycloak ni PatternFly: Keycloak sigue mostrando el acceso (lo exigen las passkeys, los dos pasos
@@ -50,7 +51,9 @@ pnpm --dir login-ui build      # el jar; hace falta Maven (mvn) en el PATH
 `scripts/dev.sh` copia el jar en Keycloak al arrancar: tras cambiar una pantalla, construirlo y reiniciar Keycloak. Los
 botones de Google, GitHub, Facebook, Microsoft y Apple salen solos cuando el proveedor se configura en el realm; hoy no
 hay ninguno, y en la vista previa se ven con `?mock=login-tres` o `?mock=login-cinco`. El registro no pide contraseña:
-con `verifyEmail`, Keycloak la pide después de verificar el correo.
+con `verifyEmail`, Keycloak la pide después de verificar el correo (así nadie deja una contraseña en una cuenta con
+un correo ajeno). Quien no abre ese enlace sale con «¿Olvidaste tu contraseña?» y un solo correo: abrir el enlace de
+recuperar también verifica el correo (`providers/`, en el flujo `reset credentials verify email`).
 
 Keycloak avisa por correo de los cambios de seguridad (contraseña, dos pasos, passkeys). Los intentos fallidos no se
 avisan uno por uno: el arranque lleva `--spi-events-listener--email--exclude-events=LOGIN_ERROR`. La consola de

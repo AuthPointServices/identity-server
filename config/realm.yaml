@@ -93,6 +93,58 @@ requiredActions:
     enabled: true
     defaultAction: false
 
+# Recuperar la contraseña es el de Keycloak más un paso (providers/): abrir el enlace verifica el correo. Así quien se
+# registró y no abrió el primer enlace (el registro no pide contraseña; llega tras verificar) entra con un solo correo.
+resetCredentialsFlow: reset credentials verify email
+authenticationFlows:
+  - alias: reset credentials verify email
+    description: Keycloak's reset credentials, where opening the reset link also verifies the email
+    providerId: basic-flow
+    topLevel: true
+    builtIn: false
+    authenticationExecutions:
+      - authenticator: reset-credentials-choose-user
+        requirement: REQUIRED
+        priority: 10
+        authenticatorFlow: false
+        userSetupAllowed: false
+      - authenticator: reset-credential-email
+        requirement: REQUIRED
+        priority: 20
+        authenticatorFlow: false
+        userSetupAllowed: false
+      - authenticator: reset-link-verifies-email
+        requirement: REQUIRED
+        priority: 25
+        authenticatorFlow: false
+        userSetupAllowed: false
+      - authenticator: reset-password
+        requirement: REQUIRED
+        priority: 30
+        authenticatorFlow: false
+        userSetupAllowed: false
+      - flowAlias: reset verify email - conditional otp
+        requirement: CONDITIONAL
+        priority: 40
+        authenticatorFlow: true
+        userSetupAllowed: false
+  - alias: reset verify email - conditional otp
+    description: Resets the OTP when the account has one
+    providerId: basic-flow
+    topLevel: false
+    builtIn: false
+    authenticationExecutions:
+      - authenticator: conditional-user-configured
+        requirement: REQUIRED
+        priority: 10
+        authenticatorFlow: false
+        userSetupAllowed: false
+      - authenticator: reset-otp
+        requirement: REQUIRED
+        priority: 20
+        authenticatorFlow: false
+        userSetupAllowed: false
+
 roles:
   realm:
     - name: default-roles-$(env:REALM)
