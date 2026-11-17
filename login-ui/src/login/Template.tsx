@@ -11,8 +11,6 @@ import type { KcContext } from './KcContext';
 export type LayoutProps = TemplateProps<KcContext, I18n> & {
   /** Una frase bajo el título que explica la pantalla. */
   subtitle?: ReactNode;
-  /** Lo que va encima del título (el icono de una pantalla de confirmación). */
-  lead?: ReactNode;
 };
 
 /**
@@ -21,7 +19,7 @@ export type LayoutProps = TemplateProps<KcContext, I18n> & {
  * salir un error. En el teléfono sólo queda la columna del formulario.
  */
 export default function Template(props: LayoutProps) {
-  const { kcContext, i18n, headerNode, subtitle, lead, children, socialProvidersNode, infoNode, documentTitle } = props;
+  const { kcContext, i18n, headerNode, subtitle, children, socialProvidersNode, infoNode, documentTitle } = props;
   const { displayInfo = false, displayMessage = true } = props;
   const { realm, auth, url, message, isAppInitiatedAction } = kcContext;
   const { msg, msgStr, currentLanguage, enabledLanguages } = i18n;
@@ -72,7 +70,6 @@ export default function Template(props: LayoutProps) {
         </header>
 
         <main className="mx-auto flex w-full max-w-[400px] flex-1 flex-col pt-[clamp(32px,calc(18vh-48px),136px)] pb-10 max-sm:pt-8">
-          {lead && <div className="mb-6">{lead}</div>}
           <h1 className="text-[30px]/[38px] font-semibold tracking-[-0.025em] text-balance text-fg max-sm:text-[26px]/[34px]">{headerNode}</h1>
           {(subtitle || infoAsSubtitle) && (
             <p className="mt-2 text-base/6 text-pretty text-fg-muted">{infoAsSubtitle ? <ServerText html={message.summary} /> : subtitle}</p>

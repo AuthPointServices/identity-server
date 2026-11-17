@@ -1,4 +1,4 @@
-import { IconExternal, IconMail } from '../components/icons';
+import { IconExternal } from '../components/icons';
 import { BUTTON_PRIMARY, BUTTON_SECONDARY, Notice } from '../components/ui';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../KcContext';
@@ -24,11 +24,6 @@ export default function LoginVerifyEmail({ kcContext, i18n }: { kcContext: Extra
       i18n={i18n}
       doUseDefaultCss={false}
       displayMessage={false}
-      lead={
-        <span className="grid size-12 place-items-center rounded-2xl bg-accent-subtle text-accent-ink">
-          <IconMail size={24} />
-        </span>
-      }
       headerNode={msg('fcCheckInboxTitle')}
       documentTitle={msgStr('fcCheckInboxTitle')}
       subtitle={
