@@ -59,3 +59,18 @@ jobs:
       - name: keycloak log
         if: failure()
         run: tail -100 keycloak.log
+
+  # Las imágenes de docker-compose.yml (Dokploy): que el Dockerfile construya las dos.
+  image:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: config
+        run: docker build --target config -t identity-config .
+      - name: server
+        run: docker build --target server -t identity-server .
+      - name: server carries the theme and the providers
+        run: test "$(docker run --rm --entrypoint sh identity-server -c 'cd /opt/keycloak/providers && ls *.jar' | tr '\n' ' ')" = 'fretchcop-login.jar fretchcop-providers.jar '

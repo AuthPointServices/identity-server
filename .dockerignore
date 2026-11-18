@@ -1,0 +1,11 @@
+.git
+.github
+.cache
+.data
+.env
+.env.*
+**/node_modules
+login-ui/dist
+login-ui/dist_keycloak
+login-ui/public/keycloakify-dev-resources
+login-ui/art/out

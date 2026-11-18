@@ -1,0 +1,52 @@
+# Keycloak en Dokploy: el servidor y, cuando está sano, el trabajo que aplica config/ y termina. La base es un Postgres
+# de Dokploy (Databases), con sus copias. Las variables van en Environment: Dokploy las escribe en .env, junto a este
+# archivo. Los dominios, en Domains, sólo con las rutas públicas (README, «Producción»).
+services:
+  keycloak:
+    build: { context: ., target: server }
+    restart: unless-stopped
+    environment:
+      KC_HOSTNAME: ${KC_HOSTNAME:?KC_HOSTNAME, p. ej. https://account.example.com}
+      # La consola de administración no se publica: se entra con un túnel SSH a este puerto (README).
+      KC_HOSTNAME_ADMIN: http://localhost:${KC_ADMIN_PORT:-8180}
+      # Lo de dentro (el trabajo de config) llama por la red interna, no por el dominio.
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "true"
+      # Traefik pone el TLS y las cabeceras X-Forwarded.
+      KC_HTTP_ENABLED: "true"
+      KC_PROXY_HEADERS: xforwarded
+      KC_DB_URL: ${KC_DB_URL:?KC_DB_URL, p. ej. jdbc:postgresql://<postgres de Dokploy>:5432/keycloak}
+      KC_DB_USERNAME: ${KC_DB_USERNAME:?}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD:?}
+      # El primer arranque crea el administrador temporal: la cuenta de servicio (la de config) y el usuario de la consola.
+      KC_BOOTSTRAP_ADMIN_CLIENT_ID: ${KC_BOOTSTRAP_ADMIN_CLIENT_ID:?}
+      KC_BOOTSTRAP_ADMIN_CLIENT_SECRET: ${KC_BOOTSTRAP_ADMIN_CLIENT_SECRET:?}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_BOOTSTRAP_ADMIN_USERNAME:?}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_BOOTSTRAP_ADMIN_PASSWORD:?}
+      KC_SPI_EVENTS_LISTENER__EMAIL__EXCLUDE_EVENTS: LOGIN_ERROR
+      # Lo que leen las pantallas (vite.config.ts): sin buzón de pruebas, y la Cuenta como salida.
+      FC_DEV_INBOX_URL: ""
+      FC_ACCOUNT_URL: ${ACCOUNTS_URL:?}
+    expose: ["8080"]
+    ports: ["127.0.0.1:${KC_ADMIN_PORT:-8180}:8080"]
+    # Keycloak usa el 70 % de la memoria que ve: sin límite, la del servidor entero.
+    mem_limit: ${KC_MEMORY:-1536m}
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000 && printf 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -q 'HTTP/1.1 200' <&3"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    networks: [default, dokploy-network]
+
+  config:
+    build: { context: ., target: config }
+    restart: "no"
+    env_file: .env
+    environment:
+      KC_URL: http://keycloak:8080
+    depends_on:
+      keycloak: { condition: service_healthy }
+
+networks:
+  dokploy-network:
+    external: true

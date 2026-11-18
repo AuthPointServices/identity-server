@@ -29,6 +29,30 @@ scripts/check.sh    # comprueba el realm y los clientes
 La consola queda en http://localhost:8180/admin con el usuario temporal de `.env`. No se edita a mano: lo que
 cambie ahí se pierde en el próximo `apply.sh`. Los cambios van en `config/`.
 
+## Producción (Dokploy)
+
+`Dockerfile` hace dos imágenes: `server`, Keycloak con el tema, los pasos de flujo y los correos ya dentro
+(`kc.sh build`, arranca con `start --optimized`), y `config`, que corre `scripts/apply.sh` y termina.
+`docker-compose.yml` las une: `config` espera a que Keycloak esté sano.
+
+1. **Base:** en Dokploy, Databases → Postgres. Su nombre interno va en `KC_DB_URL`
+   (`jdbc:postgresql://<nombre>:5432/<base>`).
+2. **Compose:** este repo, rama `main`, archivo `docker-compose.yml`.
+3. **Environment:** las variables de `.env.example`, con estas diferencias:
+   - `KC_HOSTNAME=https://account.<dominio>`, y `KC_DB_URL`, `KC_DB_USERNAME`, `KC_DB_PASSWORD` de la base.
+   - `ACCOUNTS_URL=https://myaccount.<dominio>`; `ORANGE_URL` y `LETGRID_URL`, las de cada producto.
+   - `PASSKEY_RP_ID=<dominio>` y el SMTP real. Sin `MAILPIT_UI`, `KC_URL` ni `PG_ADMIN_DSN`.
+   - Los secretos, generados para producción (`openssl rand -hex 32`), nunca los de desarrollo.
+4. **Domains:** servicio `keycloak`, puerto 8080, HTTPS con Let's Encrypt, sólo estas rutas de `account.<dominio>`
+   (las que recomienda Keycloak): `/realms/<REALM>`, `/resources` y `/.well-known`. Así no se publican
+   `/admin` ni `/realms/master`.
+5. **Deploy.** En los logs de `config`, `keycloak-config-cli ran in …`.
+
+La consola de administración se abre con un túnel al puerto que el compose deja sólo en el servidor:
+`ssh -L 8180:127.0.0.1:8180 <servidor>` y http://localhost:8180/admin (`KC_ADMIN_PORT` lo cambia). La primera
+vez se entra con `KC_BOOTSTRAP_ADMIN_USERNAME`; hay que crear un administrador propio en el realm `master` y borrar el
+temporal (Keycloak lo avisa en la consola).
+
 ## Configuración
 
 | Archivo | Qué tiene |
