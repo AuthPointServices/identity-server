@@ -1,28 +1,10 @@
-// Trazados de Lucide (ISC), trazo 2, como los del panel; heredan el color con currentColor.
-import type { ReactNode, SVGProps } from 'react';
+// Los iconos de Lucide (ISC), los mismos que la Cuenta; las marcas de los proveedores, aparte.
+import type { ReactNode } from 'react';
 
-type IconProps = SVGProps<SVGSVGElement> & { size?: number };
-
-function Base({ size = 18, children, ...props }: IconProps & { children: ReactNode }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" {...props}>
-      {children}
-    </svg>
-  );
-}
-
-export const IconEye = (p: IconProps) => <Base {...p}><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" /><circle cx="12" cy="12" r="3" /></Base>;
-export const IconEyeOff = (p: IconProps) => <Base {...p}><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" /><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" /><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" /><path d="m2 2 20 20" /></Base>;
-export const IconAlert = (p: IconProps) => <Base {...p}><circle cx="12" cy="12" r="10" /><line x1="12" x2="12" y1="8" y2="12" /><line x1="12" x2="12.01" y1="16" y2="16" /></Base>;
-export const IconWarning = (p: IconProps) => <Base {...p}><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /><path d="M12 9v4" /><path d="M12 17h.01" /></Base>;
-export const IconSuccess = (p: IconProps) => <Base {...p}><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></Base>;
-export const IconInfo = (p: IconProps) => <Base {...p}><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></Base>;
-export const IconChevronDown = (p: IconProps) => <Base {...p}><path d="m6 9 6 6 6-6" /></Base>;
-export const IconCopy = (p: IconProps) => <Base {...p}><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></Base>;
-export const IconDownload = (p: IconProps) => <Base {...p}><path d="M12 15V3" /><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /></Base>;
-export const IconCheck = (p: IconProps) => <Base {...p}><path d="M20 6 9 17l-5-5" /></Base>;
-export const IconFingerprint = (p: IconProps) => <Base {...p}><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4" /><path d="M14 13.12c0 2.38 0 6.38-1 8.88" /><path d="M17.29 21.02c.12-.6.43-2.3.5-3.02" /><path d="M2 12a10 10 0 0 1 18-6" /><path d="M2 16h.01" /><path d="M21.8 16c.2-2 .131-5.354 0-6" /><path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2" /><path d="M8.65 22c.21-.66.45-1.32.57-2" /><path d="M9 6.8a6 6 0 0 1 9 5.2v2" /></Base>;
-export const IconExternal = (p: IconProps) => <Base {...p}><path d="M15 3h6v6" /><path d="M10 14 21 3" /><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /></Base>;
+export {
+  CircleAlert as IconAlert, Check as IconCheck, ChevronDown as IconChevronDown, ChevronRight as IconChevronRight, Copy as IconCopy,
+  Download as IconDownload, ExternalLink as IconExternal, Eye as IconEye, EyeOff as IconEyeOff, Fingerprint as IconFingerprint,
+} from 'lucide-react';
 
 /* Las marcas de cada proveedor, sin redibujar (SVG Logos y Simple Icons, CC0). GitHub y Apple van en currentColor:
    sus guías piden la marca en negro sobre claro y en blanco sobre oscuro. */

@@ -34,15 +34,15 @@ export default function WebauthnAuthenticate({ kcContext, i18n }: { kcContext: E
       {shouldDisplayAuthenticators && authenticators && authenticators.authenticators.length > 1 && (
         <ul className="flex flex-col gap-2">
           {authenticators.authenticators.map((a) => (
-            <li key={a.credentialId} className="rounded-[10px] border border-border px-4 py-3">
-              <p className="text-[15px]/[22px] font-medium text-fg">{a.label}</p>
-              <p className="text-sm/5 text-fg-muted">{msg('webauthn-createdAt-label')} {a.createdAt}</p>
+            <li key={a.credentialId} className="rounded-md border border-border px-4 py-3">
+              <p className="text-200 font-medium text-fg">{a.label}</p>
+              <p className="text-100 text-fg-muted">{msg('webauthn-createdAt-label')} {a.createdAt}</p>
             </li>
           ))}
         </ul>
       )}
       <button id={AUTH_BUTTON} type="button" autoFocus className={`${BUTTON_PRIMARY} mt-3`}>
-        <IconFingerprint />
+        <IconFingerprint size={18} />
         {msg('webauthn-doAuthenticate')}
       </button>
     </Template>

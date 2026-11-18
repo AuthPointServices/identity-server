@@ -33,11 +33,11 @@ export default function LoginRecoveryAuthnCodeConfig({ kcContext, i18n }: { kcCo
     <Template kcContext={kcContext} i18n={i18n} doUseDefaultCss={false} headerNode={msg('fcRecoveryTitle')} documentTitle={msgStr('fcRecoveryTitle')} subtitle={msg('fcRecoveryIntro')}>
       <div className="flex flex-col gap-3">
         <Notice type="warning">{msg('fcRecoveryWarning')}</Notice>
-        <ol aria-label={msgStr('fcRecoveryListLabel')} className="grid grid-cols-[repeat(auto-fill,minmax(8.75rem,1fr))] gap-x-4 gap-y-1 rounded-xl border border-border bg-surface-2 px-4 py-3">
+        <ol aria-label={msgStr('fcRecoveryListLabel')} className="grid grid-cols-[repeat(auto-fill,minmax(8.75rem,1fr))] gap-x-4 gap-y-1 rounded-lg border border-border bg-layer-1 px-4 py-3">
           {codes.map((c, i) => (
             <li key={c} className="flex items-baseline gap-2">
-              <span aria-hidden="true" className="w-4 shrink-0 text-right text-[13px]/6 text-fg-muted tabular-nums">{i + 1}</span>
-              <span className="font-mono text-[14px]/6 text-fg">{c}</span>
+              <span aria-hidden="true" className="w-4 shrink-0 text-right text-75 text-fg-muted tabular-nums">{i + 1}</span>
+              <span className="font-mono text-100 text-fg">{c}</span>
             </li>
           ))}
         </ol>

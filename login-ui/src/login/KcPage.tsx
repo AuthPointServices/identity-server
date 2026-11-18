@@ -30,6 +30,11 @@ import SelectAuthenticatorPage from './pages/SelectAuthenticator';
 import LoginIdpLinkConfirmPage from './pages/LoginIdpLinkConfirm';
 import LinkIdpActionPage from './pages/LinkIdpAction';
 import TermsPage from './pages/Terms';
+import LoginResetOtpPage from './pages/LoginResetOtp';
+import WebauthnErrorPage from './pages/WebauthnError';
+import SelectOrganizationPage from './pages/SelectOrganization';
+import CodePage from './pages/Code';
+import LoginPasskeysConditionalAuthenticatePage from './pages/LoginPasskeysConditionalAuthenticate';
 
 /**
  * Cada pantalla de Keycloak con su página; las poco frecuentes, con la de Keycloakify y nuestras clases. Las nuestras
@@ -92,6 +97,16 @@ export default function KcPage({ kcContext }: { kcContext: KcContext }) {
             return <LinkIdpActionPage kcContext={kcContext} i18n={i18n} />;
           case 'terms.ftl':
             return <TermsPage kcContext={kcContext} i18n={i18n} />;
+          case 'login-reset-otp.ftl':
+            return <LoginResetOtpPage kcContext={kcContext} i18n={i18n} />;
+          case 'webauthn-error.ftl':
+            return <WebauthnErrorPage kcContext={kcContext} i18n={i18n} />;
+          case 'select-organization.ftl':
+            return <SelectOrganizationPage kcContext={kcContext} i18n={i18n} />;
+          case 'code.ftl':
+            return <CodePage kcContext={kcContext} i18n={i18n} />;
+          case 'login-passkeys-conditional-authenticate.ftl':
+            return <LoginPasskeysConditionalAuthenticatePage kcContext={kcContext} i18n={i18n} />;
           default:
             return (
               <DefaultPage

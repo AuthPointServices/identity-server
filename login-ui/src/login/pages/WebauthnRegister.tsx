@@ -28,7 +28,7 @@ export default function WebauthnRegister({ kcContext, i18n }: { kcContext: Extra
       </form>
       <div className="mt-3 flex flex-col gap-2">
         <button id={REGISTER_BUTTON} type="button" className={BUTTON_PRIMARY}>
-          <IconFingerprint />
+          <IconFingerprint size={18} />
           {msg('doRegisterSecurityKey')}
         </button>
         {!isSetRetry && isAppInitiatedAction && (

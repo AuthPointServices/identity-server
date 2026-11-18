@@ -12,6 +12,12 @@ if (import.meta.env.DEV && !window.kcContext) {
   if (!window.kcContext) document.body.textContent = `Mocks: ${Object.keys(mocks).join(', ')}`;
 }
 
+// El tema del sistema, antes de pintar: los tokens de @authpoint/ui van por data-theme.
+const dark = window.matchMedia('(prefers-color-scheme: dark)');
+const theme = () => document.documentElement.setAttribute('data-theme', dark.matches ? 'dark' : 'light');
+theme();
+dark.addEventListener('change', theme);
+
 // El primer render, síncrono: el script bloquea la pintura (blocking="render" en index.html) y, al terminar, la página
 // ya está entera. Así el navegador pasa de la pantalla anterior a esta sin pintar nada en medio.
 const root = document.getElementById('root');

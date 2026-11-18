@@ -1,6 +1,7 @@
 import { useLayoutEffect } from 'react';
 import { Actions } from '../components/Actions';
 import { ProfileFields } from '../components/ProfileFields';
+import { IconAlert } from '../components/icons';
 import { BUTTON_PRIMARY, Checkbox, ServerText } from '../components/ui';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../KcContext';
@@ -62,9 +63,14 @@ export default function Register({ kcContext, i18n }: { kcContext: Extract<KcCon
         />
         {termsAcceptanceRequired && (
           <div className="flex flex-col gap-2">
-            <p className="text-sm/5 text-fg-muted">{msg('termsText')}</p>
+            {msgStr('termsText') && <p className="text-100 text-fg-muted">{msg('termsText')}</p>}
             <Checkbox id="termsAccepted" label={msg('acceptTerms')} aria-invalid={messagesPerField.existsError('termsAccepted') || undefined} />
-            {messagesPerField.existsError('termsAccepted') && <ServerText className="text-sm/5 text-danger" html={messagesPerField.get('termsAccepted')} />}
+            {messagesPerField.existsError('termsAccepted') && (
+              <p className="flex items-start gap-1.5 text-75 leading-tight text-negative-900">
+                <IconAlert size={14} className="mt-px shrink-0" />
+                <ServerText html={messagesPerField.get('termsAccepted')} />
+              </p>
+            )}
           </div>
         )}
         {recaptchaRequired && !invisibleRecaptcha && <div className="g-recaptcha" data-size="compact" data-sitekey={recaptchaSiteKey} data-action={recaptchaAction} />}

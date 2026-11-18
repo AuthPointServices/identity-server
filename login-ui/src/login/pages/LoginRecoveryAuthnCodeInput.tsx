@@ -32,7 +32,7 @@ export default function LoginRecoveryAuthnCodeInput({ kcContext, i18n }: { kcCon
           spellCheck={false}
           autoFocus
           error={error}
-          className="font-mono text-lg/6 tracking-[0.06em] uppercase"
+          className="font-mono text-300 tracking-[0.06em] uppercase"
         />
         <Actions submit={msg('doContinue')} submitProps={{ id: 'kc-login', name: 'login' }} />
       </form>

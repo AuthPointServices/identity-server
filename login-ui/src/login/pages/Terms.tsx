@@ -9,7 +9,10 @@ export default function Terms({ kcContext, i18n }: { kcContext: Extract<KcContex
   const { msg, msgStr } = i18n;
   return (
     <Template kcContext={kcContext} i18n={i18n} doUseDefaultCss={false} displayMessage={false} headerNode={msg('termsTitle')} documentTitle={msgStr('termsTitle')}>
-      <div id="kc-terms-text" tabIndex={0} className="max-h-72 overflow-y-auto rounded-xl border border-border bg-surface-2 px-4 py-3 text-sm/6 text-fg">{msg('termsText')}</div>
+      {/* Sin texto en el tema ni en el realm, ninguna caja vacía. */}
+      {msgStr('termsText') && (
+        <div id="kc-terms-text" tabIndex={0} className="max-h-72 overflow-y-auto rounded-lg border border-border px-4 py-3 text-100 text-fg">{msg('termsText')}</div>
+      )}
       <form action={url.loginAction} method="post" className="mt-3 flex flex-col gap-2">
         <button id="kc-accept" type="submit" name="accept" className={BUTTON_PRIMARY}>{msgStr('doAccept')}</button>
         <button id="kc-decline" type="submit" name="cancel" className={BUTTON_TEXT}>{msgStr('doDecline')}</button>

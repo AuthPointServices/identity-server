@@ -66,7 +66,7 @@ export default function Login({ kcContext, i18n }: { kcContext: Extract<KcContex
             error={usernameHidden ? error : undefined}
             aria-invalid={hasError || undefined}
             reveal={{ show: msgStr('showPassword'), hide: msgStr('hidePassword') }}
-            labelAside={realm.resetPasswordAllowed && <a href={url.loginResetCredentialsUrl} className="-my-0.5 inline-flex min-h-6 items-center text-sm/5 pointer-coarse:-my-3 pointer-coarse:py-3">{msg('doForgotPassword')}</a>}
+            labelAside={realm.resetPasswordAllowed && <a href={url.loginResetCredentialsUrl} className="-my-0.5 inline-flex min-h-6 items-center text-100 touch:-my-3 touch:py-3">{msg('doForgotPassword')}</a>}
           />
           {realm.rememberMe && !usernameHidden && <Checkbox id="rememberMe" label={msg('rememberMe')} defaultChecked={!!login.rememberMe} />}
           <input type="hidden" id="id-hidden-input" name="credentialId" value={auth.selectedCredential ?? ''} />

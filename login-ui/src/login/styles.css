@@ -1,79 +1,32 @@
 @import 'tailwindcss';
 @import '@fontsource-variable/geist';
-
-/* Los tokens del panel de la Cuenta (accounts-frontend/src/app/styles/index.css): mismos nombres y valores, cada uno
-   con su par claro y oscuro (light-dark). El modo lo da color-scheme: el del sistema en Keycloak y el que se elija en
-   el arnés. */
+@import '@authpoint/ui/theme.css';
+@source '../../node_modules/@authpoint/ui/dist';
 
 @theme {
-  --font-sans: 'Geist Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-
-  --color-bg: light-dark(#f0f3f8, #0f1115);
-  --color-surface: light-dark(#ffffff, #1a1d23);
-  --color-surface-2: light-dark(#f4f6fa, #20242b);
-  --color-container: light-dark(#e8edf5, #252a32);
-  --color-border: light-dark(#e1e6ee, #2a2f37);
-  --color-border-strong: light-dark(#c9d0db, #3a414c);
-  /* El borde de un campo es su forma: 3,6:1 sobre blanco (WCAG 1.4.11). */
-  --color-input: light-dark(#80889a, #6f7787);
-  --color-fg: light-dark(#1a1d24, #e7e9ee);
-  --color-fg-muted: light-dark(#4f5663, #a5adbb);
-  --color-accent: light-dark(#2f5bd3, #8fb0ff);
-  --color-accent-hover: light-dark(#2549b0, #a9c2ff);
-  --color-accent-fg: light-dark(#ffffff, #0b1a3d);
-  --color-accent-subtle: light-dark(#dce5fb, #22325a);
-  --color-accent-ink: light-dark(#1a3a8f, #d6e2ff);
-  --color-link-ink: light-dark(#1a3a8f, #8fb0ff);
-  --color-ok: light-dark(#16794a, #62d39a);
-  --color-ok-subtle: light-dark(#dff1e7, #15291f);
-  --color-ok-ink: light-dark(#0f5f39, #8fe0b5);
-  --color-warn: light-dark(#8a5200, #f0b85e);
-  --color-warn-subtle: light-dark(#fbeccf, #2c2312);
-  --color-danger: light-dark(#c22a2a, #ff8d87);
-  --color-danger-subtle: light-dark(#fbe4e2, #321918);
-  --color-danger-fg: light-dark(#ffffff, #2a0806);
-
   --duration-quick: 150ms;
 }
 
 @layer base {
+  /* La página es la superficie del formulario, también al desplazar; el tema lo pone main.tsx (data-theme). */
   html {
     @apply bg-bg font-sans text-fg antialiased;
-    color-scheme: light dark;
     font-feature-settings: 'ss01', 'cv11';
     caret-color: var(--color-accent);
   }
 
-  /* La página es la superficie del formulario, también al desplazar. */
-  html {
-    @apply bg-surface;
-  }
-
-  ::selection {
-    background: color-mix(in oklab, var(--color-accent) 25%, transparent);
-  }
-
   :focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 2px;
+    outline: var(--focus-ring) solid var(--color-focus);
+    outline-offset: var(--focus-gap);
   }
 
   a {
-    @apply font-medium text-link-ink underline-offset-4 hover:underline;
+    @apply rounded-sm font-medium text-accent-content underline-offset-2 hover:underline;
   }
 
   /* El relleno del navegador no pinta el campo de amarillo ni de azul. */
   input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 100px var(--color-surface) inset;
-    -webkit-text-fill-color: var(--color-fg);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      transition-duration: 0.01ms !important;
-    }
+    -webkit-box-shadow: 0 0 0 100px var(--color-bg) inset;
+    -webkit-text-fill-color: var(--color-fg-strong);
   }
 }
-

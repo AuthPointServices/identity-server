@@ -5,6 +5,8 @@ import { defineConfig } from 'vite';
 
 // El tema de acceso de Keycloak, hecho en React: Keycloakify lo empaqueta en un jar (dist_keycloak/fretchcop-login.jar).
 export default defineConfig({
+  // @authpoint/ui llega enlazado con su propio node_modules: una sola copia de React y de react-aria.
+  resolve: { dedupe: ['react', 'react-dom', 'react-aria-components', 'lucide-react'] },
   plugins: [
     react(),
     tailwindcss(),

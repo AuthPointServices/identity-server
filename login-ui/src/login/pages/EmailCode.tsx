@@ -73,7 +73,7 @@ export default function EmailCode({ kcContext, i18n }: { kcContext: Extract<KcCo
           error={error}
           // Sólo cifras y no más de seis: pegar «123 456» o «123-456» también vale.
           onInput={(e) => void (e.currentTarget.value = e.currentTarget.value.replace(/\D/g, '').slice(0, 6))}
-          className="text-lg/6 font-medium tracking-[0.16em] tabular-nums"
+          className="text-300 font-medium tracking-[0.16em] tabular-nums"
         />
         {code.mode === 'second' && <Checkbox id="fcTrustDevice" label={msg('fcTrustDevice')} />}
         <button id="kc-login" type="submit" disabled={submitting} className={`${BUTTON_PRIMARY} mt-3`}>{submit}</button>

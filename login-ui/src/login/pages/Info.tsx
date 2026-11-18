@@ -53,7 +53,7 @@ export default function Info({ kcContext, i18n }: { kcContext: InfoContext; i18n
         messageHeader || actions ? (
           <span id="kc-info-message" className="whitespace-pre-line">
             {messageHeader && <ServerText html={message.summary} />}
-            {actions && <> <strong className="font-semibold text-fg">{actions}</strong></>}
+            {actions && <> <strong className="font-bold text-fg">{actions}</strong></>}
           </span>
         ) : (
           kind.hint

@@ -11,7 +11,7 @@ export default function DeleteAccountConfirm({ kcContext, i18n }: { kcContext: E
   return (
     <Template kcContext={kcContext} i18n={i18n} doUseDefaultCss={false} headerNode={msg('deleteAccountConfirm')} documentTitle={msgStr('deleteAccountConfirm')}>
       <Notice type="warning">{msg('irreversibleAction')}</Notice>
-      <div className="text-[15px]/[22px] text-fg">
+      <div className="text-200 text-fg">
         <p>{msg('deletingImplies')}</p>
         <ul className="mt-2 flex list-disc flex-col gap-1.5 pl-5 marker:text-fg-muted">
           <li>{msg('loggingOutImmediately')}</li>

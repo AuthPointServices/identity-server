@@ -20,8 +20,8 @@ export function PasskeyButton({ loginAction, credentialIds, label, primary = fal
           {credentialIds.map((id) => <input key={id} type="hidden" name="authn_use_chk" readOnly value={id} />)}
         </form>
       )}
-      <button id={PASSKEY_BUTTON} type="button" className={primary ? BUTTON_PRIMARY : `${BUTTON_SECONDARY} font-medium`}>
-        <IconFingerprint />
+      <button id={PASSKEY_BUTTON} type="button" className={primary ? BUTTON_PRIMARY : BUTTON_SECONDARY}>
+        <IconFingerprint size={18} />
         {label}
       </button>
     </>

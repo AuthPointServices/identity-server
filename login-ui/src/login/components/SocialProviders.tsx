@@ -18,7 +18,7 @@ const rank = (p: Provider) => (ORDER.includes(p.providerId) ? ORDER.indexOf(p.pr
 export function SocialProviders({ providers, extra = [], continueWith, or, more }: { providers: Provider[]; extra?: ReactNode[]; continueWith: (name: string) => string; or: string | false; more: string }) {
   const items = [
     ...[...providers].sort((a, b) => rank(a) - rank(b)).map((p) => (
-      <a key={p.alias} id={`social-${p.alias}`} href={p.loginUrl} className={`${BUTTON_SECONDARY} font-medium`}>
+      <a key={p.alias} id={`social-${p.alias}`} href={p.loginUrl} className={BUTTON_SECONDARY}>
         <ProviderLogo providerId={p.providerId} size={18} />
         <span>{continueWith(p.displayName)}</span>
       </a>
@@ -36,7 +36,7 @@ export function SocialProviders({ providers, extra = [], continueWith, or, more 
         {hidden.length > 0 && (
           // Nativo: se abre con teclado y lo anuncian los lectores; la flecha gira al abrirlo.
           <details className="group">
-            <summary className="mx-auto flex w-fit cursor-pointer list-none items-center gap-1 rounded-lg px-2 py-2 text-sm/5 font-medium text-link-ink hover:underline [&::-webkit-details-marker]:hidden">
+            <summary className="mx-auto flex h-(--size-control-m) w-fit cursor-pointer list-none items-center gap-1 rounded-full px-3 text-100 font-bold text-accent-content hover:bg-hover [&::-webkit-details-marker]:hidden">
               {more}
               <IconChevronDown size={16} className="transition-transform duration-quick group-open:rotate-180" />
             </summary>

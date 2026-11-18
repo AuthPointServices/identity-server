@@ -48,7 +48,7 @@ export default function LoginVerifyEmail({ kcContext, i18n }: { kcContext: Extra
         <a href={url.loginAction} className={BUTTON_SECONDARY}>{msg('fcResendEmail')}</a>
       </div>
       {/* 30 minutos: actionTokenGeneratedByUserLifespan de config/realm.yaml. */}
-      <p className="text-sm/5 text-pretty text-fg-muted">{msg('fcVerifyHelp')}</p>
+      <p className="text-100 text-pretty text-fg-muted">{msg('fcVerifyHelp')}</p>
     </Template>
   );
 }

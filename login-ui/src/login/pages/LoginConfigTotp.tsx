@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState, type MouseEvent } from 'react';
 import { Actions } from '../components/Actions';
-import { IconCheck, IconCopy } from '../components/icons';
 import { QrCode } from '../components/QrCode';
-import { BUTTON_SECONDARY, Field } from '../components/ui';
+import { BUTTON_SECONDARY, CopyValue, Field } from '../components/ui';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../KcContext';
 import Template from '../Template';
@@ -61,33 +60,31 @@ export default function LoginConfigTotp({ kcContext, i18n }: { kcContext: TotpCo
     >
       {manual ? (
         <div className="flex flex-col gap-3">
-          <SecretKey value={totp.totpSecretEncoded} copyLabel={msgStr('fcCopyKey')} copiedLabel={msgStr('fcKeyCopied')} buttonRef={(el) => void (focusAfter.current = el)} />
-          {account && <p className="text-sm/5 text-pretty text-fg-muted">{msg('fcTotpManualName', issuer, account)}</p>}
+          <CopyValue id="kc-totp-secret-key" value={totp.totpSecretEncoded} copyLabel={msgStr('fcCopyKey')} copiedLabel={msgStr('fcKeyCopied')} buttonRef={(el) => void (focusAfter.current = el)} />
+          {account && <p className="text-100 text-pretty text-fg-muted">{msg('fcTotpManualName', issuer, account)}</p>}
           {customPolicy && (
-            <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm/5 text-fg-muted tabular-nums">
+            <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-100 text-fg-muted tabular-nums">
               <dt>{msg('loginTotpType')}</dt><dd className="text-fg">{msgStr(`loginTotp.${p.type}` as never)}</dd>
               <dt>{msg('loginTotpAlgorithm')}</dt><dd className="text-fg">{algorithm}</dd>
               <dt>{msg('loginTotpDigits')}</dt><dd className="text-fg">{p.digits}</dd>
               {p.type === 'totp' ? <><dt>{msg('loginTotpInterval')}</dt><dd className="text-fg">{p.period}</dd></> : <><dt>{msg('loginTotpCounter')}</dt><dd className="text-fg">{p.initialCounter}</dd></>}
             </dl>
           )}
-          <a id="mode-barcode" href={totp.qrUrl} onClick={switchTo('qr')} className="inline-flex min-h-6 w-fit items-center text-sm/5 pointer-coarse:py-3">{msg('loginTotpScanBarcode')}</a>
+          <a id="mode-barcode" href={totp.qrUrl} onClick={switchTo('qr')} className="inline-flex min-h-6 w-fit items-center text-100 touch:py-3">{msg('loginTotpScanBarcode')}</a>
         </div>
       ) : (
         <div className="flex flex-col gap-5">
           {/* En el teléfono, el código va centrado encima; desde 640 px, a la izquierda con qué hacer al lado. */}
-          <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-stretch">
-            {/* Blanco también en oscuro, que es lo que leen las cámaras (el SVG lleva su propio fondo blanco; el marco sólo
-                lo pone en oscuro, para que sus esquinas redondeadas sean blancas). Un objeto sobre la página: borde fino en
-                claro, sombra suave en los dos. */}
-            <div className="shrink-0 rounded-[16px] bg-[light-dark(transparent,#fff)] p-1.5 shadow-[0_1px_2px_light-dark(rgb(16_24_40/0.06),transparent),0_10px_28px_-14px_light-dark(rgb(16_24_40/0.28),rgb(0_0_0/0.6))] ring-1 ring-[light-dark(var(--color-border),transparent)]">
+          <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-start">
+            {/* El QR trae su propio blanco; en oscuro, una ficha blanca alrededor: es lo que leen las cámaras. */}
+            <div className="shrink-0 rounded-lg p-1.5 dark:bg-white">
               {uri ? (
                 <QrCode value={uri} label={msgStr('fcTotpQrAlt')} className="size-[168px] max-sm:size-[192px]" />
               ) : (
                 <img id="kc-totp-secret-qr-code" src={`data:image/png;base64, ${totp.totpSecretQrCode}`} alt={msgStr('fcTotpQrAlt')} className="size-[168px] [image-rendering:pixelated] max-sm:size-[192px]" />
               )}
             </div>
-            <div className="flex w-full min-w-0 flex-1 flex-col gap-3 text-sm/5 text-pretty text-fg">
+            <div className="flex w-full min-w-0 flex-1 flex-col gap-3 text-100 text-pretty text-fg">
               <p>
                 {msg('fcTotpScanWith')}{' '}
                 {apps.map((a, i) => (
@@ -99,11 +96,11 @@ export default function LoginConfigTotp({ kcContext, i18n }: { kcContext: TotpCo
               </p>
               {/* Desde el propio móvil no se puede escanear su pantalla: el enlace otpauth:// abre la app con la clave. */}
               {uri && (
-                <div className="hidden max-sm:pointer-coarse:block">
+                <div className="hidden max-sm:touch:block">
                   <a href={uri} className={BUTTON_SECONDARY}>{msg('fcTotpOpenApp')}</a>
                 </div>
               )}
-              <a id="mode-manual" href={totp.manualUrl} onClick={switchTo('manual')} ref={(el) => void (focusAfter.current = el)} className="mt-auto inline-flex min-h-6 w-fit items-center pointer-coarse:py-3">
+              <a id="mode-manual" href={totp.manualUrl} onClick={switchTo('manual')} ref={(el) => void (focusAfter.current = el)} className="inline-flex min-h-6 w-fit items-center touch:py-3">
                 {msg('loginTotpUnableToScan')}
               </a>
             </div>
@@ -121,7 +118,7 @@ export default function LoginConfigTotp({ kcContext, i18n }: { kcContext: TotpCo
           onInput={(e) => void (e.currentTarget.value = e.currentTarget.value.replace(/\D/g, '').slice(0, p.digits))}
           autoFocus={codeError !== undefined}
           error={codeError}
-          className="text-lg/6 font-medium tracking-[0.16em] tabular-nums"
+          className="text-300 font-medium tracking-[0.16em] tabular-nums"
         />
         <input type="hidden" id="totpSecret" name="totpSecret" value={totp.totpSecret} />
         <input type="hidden" id="mode" name="mode" value={mode} />
@@ -133,26 +130,5 @@ export default function LoginConfigTotp({ kcContext, i18n }: { kcContext: TotpCo
         <Actions submit={msg('fcTotpActivate')} cancel={isAppInitiatedAction && msg('doCancel')} submitProps={{ id: 'saveTOTPBtn' }} />
       </form>
     </Template>
-  );
-}
-
-/** La clave en grupos de cuatro, con un botón para copiarla (en el móvil se pega en la app del mismo móvil). */
-function SecretKey({ value, copyLabel, copiedLabel, buttonRef }: { value: string; copyLabel: string; copiedLabel: string; buttonRef?: (el: HTMLButtonElement | null) => void }) {
-  const [copied, setCopied] = useState(false);
-  return (
-    <div className="flex items-center gap-2 rounded-xl bg-container py-2 pr-2 pl-4">
-      <p id="kc-totp-secret-key" className="min-w-0 flex-1 text-base/6 font-medium tracking-wider text-balance text-fg tabular-nums select-all">{value}</p>
-      <button
-        ref={buttonRef}
-        type="button"
-        onClick={() => void navigator.clipboard.writeText(value.replaceAll(' ', '')).then(() => setCopied(true))}
-        className="grid size-10 shrink-0 place-items-center rounded-lg text-fg-muted transition-colors duration-quick hover:bg-surface hover:text-fg pointer-coarse:size-11"
-        aria-label={copied ? copiedLabel : copyLabel}
-        title={copied ? copiedLabel : copyLabel}
-      >
-        {copied ? <IconCheck /> : <IconCopy />}
-      </button>
-      <span role="status" className="sr-only">{copied ? copiedLabel : ''}</span>
-    </div>
   );
 }

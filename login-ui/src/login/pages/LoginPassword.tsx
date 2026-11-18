@@ -39,7 +39,7 @@ export default function LoginPassword({ kcContext, i18n }: { kcContext: Extract<
         autoFocus={!onPasskey}
         error={error}
         reveal={{ show: msgStr('showPassword'), hide: msgStr('hidePassword') }}
-        labelAside={realm.resetPasswordAllowed && <a href={url.loginResetCredentialsUrl} className="-my-0.5 inline-flex min-h-6 items-center text-sm/5 pointer-coarse:-my-3 pointer-coarse:py-3">{msg('doForgotPassword')}</a>}
+        labelAside={realm.resetPasswordAllowed && <a href={url.loginResetCredentialsUrl} className="-my-0.5 inline-flex min-h-6 items-center text-100 touch:-my-3 touch:py-3">{msg('doForgotPassword')}</a>}
       />
       <button id="kc-login" name="login" type="submit" disabled={submitting} className={`${BUTTON_PRIMARY} mt-3`}>{msg('doLogIn')}</button>
     </form>

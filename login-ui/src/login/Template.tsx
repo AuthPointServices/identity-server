@@ -1,3 +1,4 @@
+import { nativeButtonClass } from '@authpoint/ui';
 import { useInitialize } from 'keycloakify/login/Template.useInitialize';
 import type { TemplateProps } from 'keycloakify/login/TemplateProps';
 import { useEffect, type ReactNode } from 'react';
@@ -19,8 +20,8 @@ export type LayoutProps = TemplateProps<KcContext, I18n> & {
 
 /**
  * La página de acceso, a pantalla partida: a la izquierda la marca, el formulario en una columna de 400 px y el idioma;
- * a la derecha, desde 1024 px, el panel de la marca. El formulario va anclado arriba, para que el título no se mueva al
- * salir un error. En el teléfono sólo queda la columna del formulario.
+ * a la derecha, desde 1024 px, el panel de la marca. El formulario va anclado arriba. En el teléfono sólo queda la
+ * columna del formulario.
  */
 export default function Template(props: LayoutProps) {
   const { kcContext, i18n, headerNode, subtitle, art, tryAnotherWay = true, children, socialProvidersNode, infoNode, documentTitle } = props;
@@ -49,11 +50,11 @@ export default function Template(props: LayoutProps) {
   const infoAsSubtitle = showMessage && message.type === 'info' && !subtitle;
 
   return (
-    <div className="grid min-h-dvh bg-surface lg:grid-cols-[minmax(560px,5fr)_minmax(0,6fr)]">
-      <div className="flex min-w-0 flex-col px-6 pt-5 pb-6 sm:px-12 sm:pt-8 lg:px-16 [@media(max-height:820px)]:pt-5">
+    <div className="grid min-h-dvh bg-bg lg:grid-cols-[minmax(560px,5fr)_minmax(0,6fr)]">
+      <div className="flex min-w-0 flex-col px-6 pt-5 pb-10 sm:px-12 sm:pt-8 lg:px-16 [@media(max-height:820px)]:pt-5">
         <header className="flex h-10 items-center justify-between gap-4 lg:justify-end">
           {/* Desde 1024 px el nombre ya está en el panel: aquí sólo en la columna sola. */}
-          <p className="text-lg/6 font-semibold tracking-[-0.02em] text-fg lg:hidden">{brand}</p>
+          <p className="text-300 leading-tight font-bold text-fg-strong lg:hidden">{brand}</p>
           {enabledLanguages.length > 1 && (
             <div className="relative -mr-2 flex items-center">
               <select
@@ -63,7 +64,7 @@ export default function Template(props: LayoutProps) {
                   const href = enabledLanguages.find((l) => l.languageTag === e.target.value)?.href;
                   if (href) window.location.href = href;
                 }}
-                className="h-10 cursor-pointer appearance-none rounded-lg bg-transparent pr-8 pl-2.5 text-sm/5 font-medium text-fg-muted transition-colors duration-quick hover:bg-container hover:text-fg pointer-coarse:h-11"
+                className="h-(--size-control-m) cursor-pointer appearance-none rounded-full bg-transparent pr-8 pl-3 text-100 font-medium text-fg-muted transition-colors duration-quick hover:bg-hover hover:text-fg-strong"
               >
                 {enabledLanguages.map((l) => (
                   <option key={l.languageTag} value={l.languageTag}>{l.label}</option>
@@ -74,11 +75,12 @@ export default function Template(props: LayoutProps) {
           )}
         </header>
 
-        {/* En pantallas bajas (portátiles de 720 a 800 px), menos aire arriba y abajo: el formulario entero cabe sin desplazar. */}
-        <main className="mx-auto flex w-full max-w-[400px] flex-1 flex-col pt-[clamp(32px,calc(18vh-48px),136px)] pb-10 max-sm:pt-8 [@media(max-height:820px)]:pt-6 [@media(max-height:820px)]:pb-4">
-          <h1 className="text-[30px]/[38px] font-semibold tracking-[-0.025em] text-balance text-fg max-sm:text-[26px]/[34px]">{headerNode}</h1>
+        {/* El aire sobre el título depende sólo de la ventana: el título no se mueve con un error y lo que no cabe se
+            desplaza (decisión del juez, ui/DESIGN.md). Redondeado a 4 px. */}
+        <main className="mx-auto flex w-full max-w-[400px] flex-1 flex-col pt-6 md:pt-[round(down,clamp(32px,13svh,160px),4px)]">
+          <h1 className="text-700 leading-tight font-bold text-balance text-fg-strong">{headerNode}</h1>
           {(subtitle || infoAsSubtitle) && (
-            <p className="mt-2 text-base/6 text-pretty text-fg-muted">{infoAsSubtitle ? <ServerText html={message.summary} /> : subtitle}</p>
+            <p className="mt-2 text-200 text-pretty text-fg-muted">{infoAsSubtitle ? <ServerText html={message.summary} /> : subtitle}</p>
           )}
 
           <div className="mt-8 flex flex-col gap-5 max-sm:mt-6">
@@ -87,9 +89,9 @@ export default function Template(props: LayoutProps) {
 
             {/* Quien entra, cuando Keycloak ya lo sabe (al volver a pedir la contraseña, en los dos pasos…). */}
             {auth?.showUsername && !auth.showResetCredentials && (
-              <div className="flex min-h-12 items-center justify-between gap-3 rounded-xl border border-border bg-surface-2 py-1.5 pr-1.5 pl-4">
-                <span title={auth.attemptedUsername} className="min-w-0 truncate text-[15px]/[22px] font-medium text-fg">{auth.attemptedUsername}</span>
-                <a href={url.loginRestartFlowUrl} className="shrink-0 rounded-lg px-3 py-2 text-sm/5 no-underline! hover:bg-accent/8 pointer-coarse:py-3">
+              <div className="flex items-center justify-between gap-3 rounded-lg border-(length:--border-1) border-border bg-layer-1 py-1 pr-1 pl-4">
+                <span title={auth.attemptedUsername} className="min-w-0 truncate text-200 font-medium text-fg-strong">{auth.attemptedUsername}</span>
+                <a href={url.loginRestartFlowUrl} className={`${nativeButtonClass({ variant: 'quiet' })} text-accent-content! no-underline!`}>
                   {msg('restartLoginTooltip')}
                 </a>
               </div>
@@ -107,7 +109,7 @@ export default function Template(props: LayoutProps) {
             {socialProvidersNode}
           </div>
 
-          {displayInfo && infoNode && <div className="mt-8 text-sm/5 text-fg-muted">{infoNode}</div>}
+          {displayInfo && infoNode && <div className="mt-8 text-100 text-fg-muted">{infoNode}</div>}
         </main>
       </div>
 
@@ -119,12 +121,13 @@ export default function Template(props: LayoutProps) {
 /**
  * El panel de la marca, desde 1024 px: el shader de fuego y el nombre grande abajo, en blanco. Debajo del shader va un
  * fotograma suyo (assets/fire.webp, 50 KB): es lo que se ve sin WebGL (aceleración gráfica apagada) o mientras carga.
+ * Mide la ventana y no se desplaza con el formulario.
  */
 function BrandPanel({ brand }: { brand: string }) {
   return (
-    <aside aria-hidden="true" style={{ backgroundImage: `url(${fireStill})` }} className="relative hidden overflow-hidden bg-black bg-cover bg-center lg:block forced-colors:hidden">
+    <aside aria-hidden="true" style={{ backgroundImage: `url(${fireStill})` }} className="sticky top-0 hidden h-dvh self-start overflow-hidden bg-black bg-cover bg-center lg:block forced-colors:hidden">
       <FireField className="absolute inset-0" />
-      <p className="absolute bottom-14 left-14 text-[clamp(56px,6vw,88px)]/[0.95] font-semibold tracking-[-0.045em] text-white">{brand}</p>
+      <p className="absolute bottom-14 left-14 text-[clamp(56px,6vw,88px)]/[0.95] font-bold tracking-[-0.045em] text-white">{brand}</p>
     </aside>
   );
 }
