@@ -1,9 +1,5 @@
-import DefaultPage from 'keycloakify/login/DefaultPage';
-import UserProfileFormFields from 'keycloakify/login/UserProfileFormFields';
-import { classes } from './classes';
 import { useI18n } from './i18n';
 import type { KcContext } from './KcContext';
-import Template from './Template';
 
 import LoginPage from './pages/Login';
 import LoginUsernamePage from './pages/LoginUsername';
@@ -36,11 +32,19 @@ import SelectOrganizationPage from './pages/SelectOrganization';
 import CodePage from './pages/Code';
 import LoginOauthGrantPage from './pages/LoginOauthGrant';
 import LoginPasskeysConditionalAuthenticatePage from './pages/LoginPasskeysConditionalAuthenticate';
+import DeleteCredentialPage from './pages/DeleteCredential';
+import FrontchannelLogoutPage from './pages/FrontchannelLogout';
+import IdpReviewUserProfilePage from './pages/IdpReviewUserProfile';
+import LoginIdpLinkConfirmOverridePage from './pages/LoginIdpLinkConfirmOverride';
+import LoginIdpLinkEmailPage from './pages/LoginIdpLinkEmail';
+import LoginOauth2DeviceVerifyUserCodePage from './pages/LoginOauth2DeviceVerifyUserCode';
+import LoginX509InfoPage from './pages/LoginX509Info';
+import SamlPostFormPage from './pages/SamlPostForm';
 
 /**
- * Cada pantalla de Keycloak con su página; las poco frecuentes, con la de Keycloakify y nuestras clases. Las nuestras
- * van en el mismo archivo que la app, sin carga diferida: cada clic es una página nueva de Keycloak, y si la pantalla
- * llega en otro archivo el navegador pinta antes la página vacía (un parpadeo en blanco en cada navegación).
+ * Cada pantalla de Keycloak con su página, también las que el realm aún no usa: todas con el mismo diseño. Van en el
+ * mismo archivo que la app, sin carga diferida: cada clic es una página nueva de Keycloak, y si la pantalla llega en otro
+ * archivo el navegador pinta antes la página vacía (un parpadeo en blanco en cada navegación).
  */
 export default function KcPage({ kcContext }: { kcContext: KcContext }) {
   const { i18n } = useI18n({ kcContext });
@@ -110,18 +114,27 @@ export default function KcPage({ kcContext }: { kcContext: KcContext }) {
             return <CodePage kcContext={kcContext} i18n={i18n} />;
           case 'login-passkeys-conditional-authenticate.ftl':
             return <LoginPasskeysConditionalAuthenticatePage kcContext={kcContext} i18n={i18n} />;
-          default:
-            return (
-              <DefaultPage
-                kcContext={kcContext}
-                i18n={i18n}
-                classes={classes}
-                Template={Template}
-                doUseDefaultCss={false}
-                UserProfileFormFields={UserProfileFormFields}
-                doMakeUserConfirmPassword
-              />
-            );
+          case 'delete-credential.ftl':
+            return <DeleteCredentialPage kcContext={kcContext} i18n={i18n} />;
+          case 'frontchannel-logout.ftl':
+            return <FrontchannelLogoutPage kcContext={kcContext} i18n={i18n} />;
+          case 'idp-review-user-profile.ftl':
+            return <IdpReviewUserProfilePage kcContext={kcContext} i18n={i18n} />;
+          case 'login-idp-link-confirm-override.ftl':
+            return <LoginIdpLinkConfirmOverridePage kcContext={kcContext} i18n={i18n} />;
+          case 'login-idp-link-email.ftl':
+            return <LoginIdpLinkEmailPage kcContext={kcContext} i18n={i18n} />;
+          case 'login-oauth2-device-verify-user-code.ftl':
+            return <LoginOauth2DeviceVerifyUserCodePage kcContext={kcContext} i18n={i18n} />;
+          case 'login-x509-info.ftl':
+            return <LoginX509InfoPage kcContext={kcContext} i18n={i18n} />;
+          case 'saml-post-form.ftl':
+            return <SamlPostFormPage kcContext={kcContext} i18n={i18n} />;
+          default: {
+            // Una pantalla nueva de Keycloakify sin página nuestra no compila: se diseña antes de subir de versión.
+            const unknown: never = kcContext;
+            return unknown;
+          }
         }
       })()}
     </>

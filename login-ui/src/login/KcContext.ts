@@ -9,6 +9,8 @@ export type KcContextExtension = {
 // Keycloak manda las mismas URLs a todas las páginas; Keycloakify declara en cada una sólo las que usa la suya.
 export type KcContextExtensionPerPage = {
   'register.ftl': { url: { loginResetCredentialsUrl: string } };
+  // BrokeredIdentityContext.getEmail: adónde mandó Keycloak el enlace para conectar la cuenta.
+  'login-idp-link-email.ftl': { brokerContext: { email?: string } };
   // TotpBean.getUsername: el usuario, para armar el enlace otpauth:// (src/login/totp.ts).
   'login-config-totp.ftl': { totp: { username?: string } };
   // Las otras formas de entrar de este paso (AuthenticationContextBean): «Recibir un código por correo».

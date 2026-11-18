@@ -28,7 +28,7 @@ export default function LoginResetOtp({ kcContext, i18n }: { kcContext: Extract<
           options={configuredOtpCredentials.userOtpCredentials.map((c, i) => ({ id: `kc-otp-credential-${i}`, value: c.id, label: c.userLabel }))}
         />
         <div className="mt-3 flex flex-col gap-2">
-          <button id="kc-otp-reset-form-submit" type="submit" className={BUTTON_PRIMARY}>{msg('fcResetOtpSubmit')}</button>
+          <button id="kc-otp-reset-form-submit" type="submit" className={BUTTON_PRIMARY}>{msg('fcRemove')}</button>
           {/* Salir sin quitar ninguno: la contraseña nueva ya quedó guardada. */}
           <a href={url.loginRestartFlowUrl} className={BUTTON_TEXT}>{msg('fcBackToLogin')}</a>
         </div>

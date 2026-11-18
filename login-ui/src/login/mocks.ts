@@ -8,6 +8,7 @@ import type { KcContext, KcContextExtension, KcContextExtensionPerPage } from '.
 const kcContextExtension: KcContextExtension = { themeName: themeNames[0] ?? 'fretchcop', properties: { ...kcEnvDefaults, FC_ACCOUNT_URL: '#cuenta' } };
 const kcContextExtensionPerPage: KcContextExtensionPerPage = {
   'register.ftl': { url: { loginResetCredentialsUrl: '#reset' } },
+  'login-idp-link-email.ftl': { brokerContext: { email: 'ana@example.test' } },
   'login-config-totp.ftl': { totp: { username: 'ana@example.test' } },
   'login-password.ftl': { auth: { authenticationSelections: [] } },
   'fc-email-code.ftl': { fcEmailCode: { mode: 'login', email: 'ana@example.test', minutes: 10, resendIn: 0, active: true } },

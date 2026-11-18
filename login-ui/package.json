@@ -5,7 +5,7 @@
   "packageManager": "pnpm@12.6.0",
   "scripts": {
     "dev": "vite",
-    "check": "tsc -b && eslint . && node scripts/es-keys.mjs && node scripts/totp-uri.test.mjs",
+    "check": "tsc -b && eslint . && node scripts/es-keys.mjs && node scripts/totp-uri.test.mjs && node scripts/x509.test.mjs",
     "build": "tsc -b && vite build && keycloakify build"
   },
   "dependencies": {
