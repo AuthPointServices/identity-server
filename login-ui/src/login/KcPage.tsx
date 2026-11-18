@@ -34,6 +34,7 @@ import LoginResetOtpPage from './pages/LoginResetOtp';
 import WebauthnErrorPage from './pages/WebauthnError';
 import SelectOrganizationPage from './pages/SelectOrganization';
 import CodePage from './pages/Code';
+import LoginOauthGrantPage from './pages/LoginOauthGrant';
 import LoginPasskeysConditionalAuthenticatePage from './pages/LoginPasskeysConditionalAuthenticate';
 
 /**
@@ -103,6 +104,8 @@ export default function KcPage({ kcContext }: { kcContext: KcContext }) {
             return <WebauthnErrorPage kcContext={kcContext} i18n={i18n} />;
           case 'select-organization.ftl':
             return <SelectOrganizationPage kcContext={kcContext} i18n={i18n} />;
+          case 'login-oauth-grant.ftl':
+            return <LoginOauthGrantPage kcContext={kcContext} i18n={i18n} />;
           case 'code.ftl':
             return <CodePage kcContext={kcContext} i18n={i18n} />;
           case 'login-passkeys-conditional-authenticate.ftl':
