@@ -1,4 +1,3 @@
-import { Art, type ArtKind } from '../components/Art';
 import { BUTTON_PRIMARY, ServerText } from '../components/ui';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../KcContext';
@@ -7,24 +6,23 @@ import Template from '../Template';
 type InfoContext = Extract<KcContext, { pageId: 'info.ftl' }>;
 
 /**
- * Qué aviso es, por su texto (Keycloak sólo manda el texto ya traducido): su ilustración, la frase que lo explica y,
- * cuando no sabe de qué app venías, adónde ir. Los demás avisos se pintan como llegan.
+ * Qué aviso es, por su texto (Keycloak sólo manda el texto ya traducido): la frase que lo explica y, cuando no sabe de
+ * qué app venías, adónde ir. Los demás avisos se pintan como llegan.
  */
-function kindOf({ messageHeader, message, requiredActions }: InfoContext, { msgStr }: I18n): { art?: ArtKind; hint?: string; fallback?: 'account' | 'login' } {
+function kindOf({ messageHeader, message, requiredActions }: InfoContext, { msgStr }: I18n): { hint?: string; fallback?: 'account' | 'login' } {
   const is = (key: Parameters<I18n['msgStr']>[0]) => message.summary === msgStr(key);
   if (requiredActions?.length) return {};
-  if (is('alreadyLoggedIn')) return { art: 'signed-in', hint: msgStr('fcAlreadyInHint'), fallback: 'account' };
-  if (is('successLogout')) return { art: 'signed-out', hint: msgStr('fcSignedOutHint'), fallback: 'login' };
-  if (is('emailVerifiedMessage')) return { art: 'email-ok', hint: messageHeader ? undefined : msgStr('fcEmailVerifiedHint'), fallback: 'account' };
-  if (is('emailVerifiedAlreadyMessage')) return { art: 'email-ok', fallback: 'account' };
-  if (messageHeader === 'accountUpdatedTitle') return { art: 'account-ok', fallback: 'login' };
+  if (is('alreadyLoggedIn')) return { hint: msgStr('fcAlreadyInHint'), fallback: 'account' };
+  if (is('successLogout')) return { hint: msgStr('fcSignedOutHint'), fallback: 'login' };
+  if (is('emailVerifiedMessage')) return { hint: messageHeader ? undefined : msgStr('fcEmailVerifiedHint'), fallback: 'account' };
+  if (is('emailVerifiedAlreadyMessage')) return { fallback: 'account' };
+  if (messageHeader === 'accountUpdatedTitle') return { fallback: 'login' };
   return {};
 }
 
 /**
  * Los avisos de Keycloak (correo verificado, sesión cerrada, acciones pendientes…). Sin un título propio, el aviso hace
- * de título y no se repite debajo; con título, el aviso va justo bajo él, como en las demás pantallas. Los de estado
- * llevan su ilustración. La única salida va como botón principal; si Keycloak no da ninguna (no sabe de qué app
+ * de título y no se repite debajo; con título, el aviso va justo bajo él, como en las demás pantallas. La única salida va como botón principal; si Keycloak no da ninguna (no sabe de qué app
  * venías), lleva a la Cuenta (FC_ACCOUNT_URL), que pide entrar si hace falta.
  */
 export default function Info({ kcContext, i18n }: { kcContext: InfoContext; i18n: I18n }) {
@@ -46,7 +44,6 @@ export default function Info({ kcContext, i18n }: { kcContext: InfoContext; i18n
       i18n={i18n}
       doUseDefaultCss={false}
       displayMessage={false}
-      art={kind.art && <Art kind={kind.art} />}
       headerNode={<ServerText html={header} />}
       documentTitle={header.replace(/<[^>]*>/g, '')}
       subtitle={

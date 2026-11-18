@@ -2,5 +2,3 @@ node_modules/
 dist/
 dist_keycloak/
 /public/keycloakify-dev-resources/
-art/out/
-art/fire.js

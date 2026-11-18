@@ -1,4 +1,3 @@
-import { Art } from '../components/Art';
 import { BUTTON_PRIMARY, BUTTON_TEXT } from '../components/ui';
 import type { I18n } from '../i18n';
 import type { KcContext } from '../KcContext';
@@ -13,7 +12,6 @@ export default function LogoutConfirm({ kcContext, i18n }: { kcContext: Extract<
       kcContext={kcContext}
       i18n={i18n}
       doUseDefaultCss={false}
-      art={<Art kind="sign-out" />}
       headerNode={msg('logoutConfirmTitle')}
       documentTitle={msgStr('logoutConfirmTitle')}
       subtitle={msg('fcLogoutHint', realm.displayName || realm.name)}

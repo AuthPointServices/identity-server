@@ -12,8 +12,6 @@ import type { KcContext } from './KcContext';
 export type LayoutProps = TemplateProps<KcContext, I18n> & {
   /** Una frase bajo el título que explica la pantalla. */
   subtitle?: ReactNode;
-  /** La ilustración de una pantalla de estado (components/Art): centrada, entre el texto y los botones. */
-  art?: ReactNode;
   /** Sin «Prueba otra forma»: la página ya ofrece cada otra forma con su nombre. */
   tryAnotherWay?: boolean;
 };
@@ -24,7 +22,7 @@ export type LayoutProps = TemplateProps<KcContext, I18n> & {
  * columna del formulario.
  */
 export default function Template(props: LayoutProps) {
-  const { kcContext, i18n, headerNode, subtitle, art, tryAnotherWay = true, children, socialProvidersNode, infoNode, documentTitle } = props;
+  const { kcContext, i18n, headerNode, subtitle, tryAnotherWay = true, children, socialProvidersNode, infoNode, documentTitle } = props;
   const { displayInfo = false, displayMessage = true } = props;
   const { realm, auth, url, message, isAppInitiatedAction } = kcContext;
   const { msg, msgStr, currentLanguage, enabledLanguages } = i18n;
@@ -85,7 +83,6 @@ export default function Template(props: LayoutProps) {
 
           <div className="mt-8 flex flex-col gap-5 max-sm:mt-6">
             {showMessage && !infoAsSubtitle && <Notice type={message.type} html={message.summary} />}
-            {art && <div className="flex justify-center py-2">{art}</div>}
 
             {/* Quien entra, cuando Keycloak ya lo sabe (al volver a pedir la contraseña, en los dos pasos…). */}
             {auth?.showUsername && !auth.showResetCredentials && (
