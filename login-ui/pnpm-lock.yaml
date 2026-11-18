@@ -167,8 +167,8 @@ importers:
   .:
     dependencies:
       '@authpoint/ui':
-        specifier: link:../../ui
-        version: link:../../ui
+        specifier: https://github.com/AuthPointServices/ui/releases/download/v0.1.0/authpoint-ui-0.1.0.tgz
+        version: https://github.com/AuthPointServices/ui/releases/download/v0.1.0/authpoint-ui-0.1.0.tgz(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@fontsource-variable/geist':
         specifier: 5.3.0
         version: 5.3.0
@@ -235,6 +235,14 @@ importers:
         version: 8.0.16(jiti@2.7.0)
 
 packages:
+
+  '@authpoint/ui@https://github.com/AuthPointServices/ui/releases/download/v0.1.0/authpoint-ui-0.1.0.tgz':
+    resolution: {integrity: sha512-9+UCzZRjbpNqXKNuvIp10kfLloVp3rKkbt070fo0znQXIEBTYCb7m0ftK03suF8T3d1CFbFT0ABcslUVkW+Sng==, tarball: https://github.com/AuthPointServices/ui/releases/download/v0.1.0/authpoint-ui-0.1.0.tgz}
+    version: 0.1.0
+    engines: {node: '>=24'}
+    peerDependencies:
+      react: ^19
+      react-dom: ^19
 
   '@babel/code-frame@7.29.7':
     resolution: {integrity: sha512-Aup7aUOfpbAUg2ROOJN6Iw5f9DMBlzu0mIkm/malLQFN/YQgO48wCj0Kxa3sEHJvPVFg7siR+qRInwXd2qhQKw==}
@@ -1374,6 +1382,16 @@ packages:
     resolution: {integrity: sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==}
 
 snapshots:
+
+  '@authpoint/ui@https://github.com/AuthPointServices/ui/releases/download/v0.1.0/authpoint-ui-0.1.0.tgz(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+    dependencies:
+      '@fontsource-variable/geist': 5.3.0
+      lucide-react: 1.73.0(@types/react@19.2.17)(react@19.2.7)
+      react: 19.2.7
+      react-aria-components: 1.22.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      react-dom: 19.2.7(react@19.2.7)
+    transitivePeerDependencies:
+      - '@types/react'
 
   '@babel/code-frame@7.29.7':
     dependencies:

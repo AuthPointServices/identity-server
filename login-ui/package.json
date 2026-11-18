@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build && keycloakify build"
   },
   "dependencies": {
-    "@authpoint/ui": "link:../../ui",
+    "@authpoint/ui": "https://github.com/AuthPointServices/ui/releases/download/v0.1.0/authpoint-ui-0.1.0.tgz",
     "@fontsource-variable/geist": "5.3.0",
     "keycloakify": "11.16.4",
     "lucide-react": "1.73.0",
