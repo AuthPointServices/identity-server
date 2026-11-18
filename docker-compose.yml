@@ -37,6 +37,21 @@ services:
       retries: 30
       start_period: 30s
     networks: [default, dokploy-network]
+    # La raíz (account.<dominio>/) lleva a la Cuenta; si no, Traefik responde 404, porque en Domains sólo se publican
+    # unas rutas. Path exacto: no publica nada más de Keycloak. noop@internal: Traefik responde sin tocar el contenedor.
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.seedle-account-home.redirectregex.regex=.*"
+      - "traefik.http.middlewares.seedle-account-home.redirectregex.replacement=${ACCOUNTS_URL}"
+      - "traefik.http.routers.seedle-account-home.rule=Host(`${ACCOUNT_HOST:?ACCOUNT_HOST, p. ej. account.example.com}`) && Path(`/`)"
+      - "traefik.http.routers.seedle-account-home.entrypoints=websecure"
+      - "traefik.http.routers.seedle-account-home.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.seedle-account-home.middlewares=seedle-account-home"
+      - "traefik.http.routers.seedle-account-home.service=noop@internal"
+      - "traefik.http.routers.seedle-account-home-web.rule=Host(`${ACCOUNT_HOST}`) && Path(`/`)"
+      - "traefik.http.routers.seedle-account-home-web.entrypoints=web"
+      - "traefik.http.routers.seedle-account-home-web.middlewares=seedle-account-home"
+      - "traefik.http.routers.seedle-account-home-web.service=noop@internal"
 
   config:
     build: { context: ., target: config }

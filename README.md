@@ -39,7 +39,8 @@ cambie ahí se pierde en el próximo `apply.sh`. Los cambios van en `config/`.
    (`jdbc:postgresql://<nombre>:5432/<base>`).
 2. **Compose:** este repo, rama `main`, archivo `docker-compose.yml`.
 3. **Environment:** las variables de `.env.example`, con estas diferencias:
-   - `KC_HOSTNAME=https://account.<dominio>`, y `KC_DB_URL`, `KC_DB_USERNAME`, `KC_DB_PASSWORD` de la base.
+   - `KC_HOSTNAME=https://account.<dominio>` y `ACCOUNT_HOST=account.<dominio>` (la raíz lleva a la Cuenta), y
+     `KC_DB_URL`, `KC_DB_USERNAME`, `KC_DB_PASSWORD` de la base.
    - `ACCOUNTS_URL=https://myaccount.<dominio>`; `ORANGE_URL` y `LETGRID_URL`, las de cada producto.
    - `PASSKEY_RP_ID=<dominio>` y el SMTP real. Sin `MAILPIT_UI`, `KC_URL` ni `PG_ADMIN_DSN`.
    - Los secretos, generados para producción (`openssl rand -hex 32`), nunca los de desarrollo.
