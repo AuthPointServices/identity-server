@@ -28,6 +28,9 @@ expect "sin PKCE no entra" invalid_request "$(sed -n 's/.*error=\([a-z_]*\).*/\1
 admin="$KC_URL/admin/realms/$REALM"
 sa=$(token -d scope=kc-admin-api)
 expect "la cuenta de servicio lee eventos" 200 "$(code -H "Authorization: Bearer $sa" "$admin/events?max=1")"
+expect "la cuenta de servicio lee los clientes" 200 "$(code -H "Authorization: Bearer $sa" "$admin/clients?max=1")"
+leaked=$(curl -sf -H "Authorization: Bearer $sa" "$admin/clients?clientId=accounts" | python3 -c 'import sys,json;s=json.load(sys.stdin)[0].get("secret","");print("no" if set(s)<={"*"} else "sí")')
+expect "sin ver ningún secreto" no "$leaked"
 expect "la cuenta de servicio no ve usuarios" 403 "$(code -H "Authorization: Bearer $sa" "$admin/users?max=1")"
 expect "sin kc-admin-api no hay administración" 401 "$(code -H "Authorization: Bearer $(token)" "$admin/events?max=1")"
 
