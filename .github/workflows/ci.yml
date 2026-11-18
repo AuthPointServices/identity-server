@@ -41,9 +41,14 @@ jobs:
         with:
           path: .cache
           key: downloads-${{ hashFiles('versions.env') }}
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
       # Las pantallas de acceso (login-ui, React con Keycloakify) se empaquetan en un jar con Maven, que trae el runner.
+      # Desde login-ui: corepack toma el pnpm de su package.json; desde la raíz bajaría el último.
       - name: login theme
-        run: corepack enable && pnpm --dir login-ui install --frozen-lockfile && pnpm --dir login-ui check && pnpm --dir login-ui build
+        working-directory: login-ui
+        run: corepack enable && pnpm install --frozen-lockfile && pnpm check && pnpm build
       - name: env
         run: |
           sed 's#^PG_ADMIN_DSN=.*#PG_ADMIN_DSN=postgres://postgres:postgres@127.0.0.1:5432/postgres?sslmode=disable#' .env.example > .env
