@@ -97,17 +97,16 @@ requiredActions:
     providerId: delete_account
     enabled: true
     defaultAction: false
-  # Activar los dos pasos por correo (providers/ConfigureEmailCode.java): la Cuenta lo lanza con
-  # kc_action=fc-configure-email-code.
-  - alias: fc-configure-email-code
-    name: Configure email codes
-    providerId: fc-configure-email-code
-    enabled: true
-    defaultAction: false
   # Generar los códigos de recuperación (Keycloak de serie): la Cuenta lo lanza con kc_action=CONFIGURE_RECOVERY_AUTHN_CODES.
   - alias: CONFIGURE_RECOVERY_AUTHN_CODES
     name: Recovery Authentication Codes
     providerId: CONFIGURE_RECOVERY_AUTHN_CODES
+    enabled: true
+    defaultAction: false
+  # Registrar una llave de seguridad (USB/NFC/Bluetooth) como segundo paso: la Cuenta lo lanza con kc_action=webauthn-register.
+  - alias: webauthn-register
+    name: Webauthn Register
+    providerId: webauthn-register
     enabled: true
     defaultAction: false
 
@@ -188,7 +187,7 @@ authenticationFlows:
         authenticatorFlow: false
         userSetupAllowed: false
   - alias: identifier first - conditional 2fa
-    description: The code from the app or the email, unless the account has none or entered with a passkey
+    description: The app or a security key, unless the account has none or entered with a passkey
     providerId: basic-flow
     topLevel: false
     builtIn: false
@@ -216,13 +215,13 @@ authenticationFlows:
         priority: 30
         authenticatorFlow: false
         userSetupAllowed: false
-      # El código por correo como segundo paso, para quien lo activó (providers/EmailCodeSecondFactor.java).
-      - authenticator: fc-email-code-2fa
+      # La llave de seguridad (USB/NFC/Bluetooth) como segundo paso, para quien la registró (webauthn, no la passkey sin contraseña).
+      - authenticator: webauthn-authenticator
         requirement: ALTERNATIVE
         priority: 40
         authenticatorFlow: false
         userSetupAllowed: false
-      # Un código de recuperación, por si pierdes la app y el correo. Keycloak de serie.
+      # Un código de recuperación, por si pierdes la app y la llave de seguridad. Keycloak de serie.
       - authenticator: auth-recovery-authn-code-form
         requirement: ALTERNATIVE
         priority: 50
